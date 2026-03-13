@@ -5,27 +5,27 @@ import { useState } from "react";
 const services = [
   {
     icon: "✦",
-    title: "Private Collector Consultations",
+    title: "Collector Advisory",
     description:
-      "One-on-one sessions with a senior advisor to define your collecting strategy, budget, and aesthetic direction.",
+      "Private consultations to define your collecting strategy, budget, and aesthetic direction. Whether you are acquiring your first serious work or refining an existing collection, we provide guidance rooted in curatorial insight and market awareness.",
   },
   {
     icon: "✦",
-    title: "Residential Art Placement",
+    title: "Artwork Placement",
     description:
-      "We assess your home's architecture, lighting, and décor to recommend and place works that integrate beautifully.",
+      "We work directly in your space — private residence, office, or hotel — to assess architecture, lighting, and environment, recommending and placing works that integrate meaningfully.",
   },
   {
     icon: "✦",
-    title: "Corporate & Office Art",
+    title: "Artist Introductions",
     description:
-      "Curated programs for offices, lobbies, and boardrooms that reflect brand identity and inspire creativity.",
+      "Gain access to artists before their work reaches the broader market. We facilitate studio visits and direct introductions so collectors can discover emerging voices early and build lasting relationships with the artists they champion.",
   },
   {
     icon: "✦",
-    title: "Hospitality & Hotel Curation",
+    title: "Private Sales & Projects",
     description:
-      "Full-service art programs for boutique hotels, resorts, and spas — from concept to installation.",
+      "Discreet acquisition and placement of works outside public exhibitions, including access to works held in private collections, commissions, and special projects for corporate or hospitality clients.",
   },
 ];
 
@@ -56,73 +56,133 @@ export default function ConsultationPage() {
   return (
     <>
       {/* Page header */}
-      <div className="bg-[#0a0a0a] pt-36 pb-20 px-6 text-center">
-        <p
-          className="text-[#c9a84c] tracking-[0.5em] text-xs uppercase mb-4"
-          style={{ fontFamily: "Jost, system-ui, sans-serif" }}
-        >
-          Personal Service
-        </p>
-        <h1
-          className="text-[#f5f0e8] font-light"
-          style={{
-            fontFamily: "Cormorant Garamond, Georgia, serif",
-            fontSize: "clamp(2.5rem, 5vw, 4.5rem)",
-          }}
-        >
-          Book a Consultation
-        </h1>
-        <div className="h-px w-16 bg-[#c9a84c] mx-auto mt-6 mb-6" />
-        <p
-          className="text-[#f5f0e8]/50 max-w-lg mx-auto text-sm leading-relaxed"
-          style={{ fontFamily: "Jost, system-ui, sans-serif" }}
-        >
-          Connect with one of our senior advisors to discuss your vision. All
-          consultations are private, complimentary, and tailored to your needs.
-        </p>
+      <div
+        className="page-hero"
+        style={{ backgroundColor: "#0a0a0a" }}
+      >
+        <div className="page-container">
+          <p
+            style={{
+              fontFamily: "Jost, system-ui, sans-serif",
+              color: "#c9a84c",
+              letterSpacing: "0.5em",
+              fontSize: "0.75rem",
+              textTransform: "uppercase",
+              marginBottom: "1rem",
+            }}
+          >
+            Personal Service
+          </p>
+          <h1
+            style={{
+              fontFamily: "Cormorant Garamond, Georgia, serif",
+              color: "#f5f0e8",
+              fontWeight: 300,
+              fontSize: "clamp(2.5rem, 5vw, 4.5rem)",
+              lineHeight: 1.1,
+            }}
+          >
+            Book a Consultation
+          </h1>
+          <div
+            style={{
+              width: "60px",
+              height: "1px",
+              backgroundColor: "#c9a84c",
+              margin: "1.5rem auto",
+            }}
+          />
+          <p
+            style={{
+              fontFamily: "Jost, system-ui, sans-serif",
+              color: "rgba(245,240,232,0.5)",
+              maxWidth: "32rem",
+              margin: "0 auto",
+              fontSize: "0.875rem",
+              lineHeight: 1.75,
+            }}
+          >
+            Connect with us to discuss your collecting goals or an upcoming
+            project. All consultations are private, complimentary, and tailored
+            entirely to your vision.
+          </p>
+        </div>
       </div>
 
-      <section className="bg-[#faf7f2] py-20 px-6 md:px-10">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-16">
+      {/* Main content */}
+      <section style={{ backgroundColor: "#faf7f2", padding: "5rem 0" }}>
+        <div className="page-container">
+          <div className="consult-grid">
             {/* Services column */}
-            <div className="lg:col-span-2 space-y-10">
+            <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
               <div>
                 <p
-                  className="text-[#c9a84c] tracking-[0.4em] text-xs uppercase mb-3"
-                  style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                  style={{
+                    fontFamily: "Jost, system-ui, sans-serif",
+                    color: "#c9a84c",
+                    letterSpacing: "0.4em",
+                    fontSize: "0.75rem",
+                    textTransform: "uppercase",
+                    marginBottom: "0.75rem",
+                  }}
                 >
                   Our Services
                 </p>
                 <h2
-                  className="text-[#0a0a0a] font-light text-3xl"
                   style={{
                     fontFamily: "Cormorant Garamond, Georgia, serif",
+                    color: "#0a0a0a",
+                    fontWeight: 300,
+                    fontSize: "1.875rem",
+                    marginBottom: "1rem",
                   }}
                 >
-                  How We Can Help
+                  How We Work With You
                 </h2>
-                <div className="h-px w-10 bg-[#c9a84c] mt-4" />
+                <div
+                  style={{
+                    width: "2.5rem",
+                    height: "1px",
+                    backgroundColor: "#c9a84c",
+                  }}
+                />
               </div>
 
-              <div className="space-y-8">
+              <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
                 {services.map((service) => (
-                  <div key={service.title} className="flex gap-4">
-                    <span className="text-[#c9a84c] text-xs mt-1 shrink-0">
+                  <div
+                    key={service.title}
+                    style={{ display: "flex", gap: "1rem" }}
+                  >
+                    <span
+                      style={{
+                        color: "#c9a84c",
+                        fontSize: "0.75rem",
+                        marginTop: "0.25rem",
+                        flexShrink: 0,
+                      }}
+                    >
                       {service.icon}
                     </span>
                     <div>
                       <h3
-                        className="text-[#0a0a0a] font-light text-lg mb-1"
                         style={{
                           fontFamily: "Cormorant Garamond, Georgia, serif",
+                          color: "#0a0a0a",
+                          fontWeight: 300,
+                          fontSize: "1.125rem",
+                          marginBottom: "0.25rem",
                         }}
                       >
                         {service.title}
                       </h3>
                       <p
-                        className="text-[#0a0a0a]/50 text-sm leading-relaxed"
-                        style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                        style={{
+                          fontFamily: "Jost, system-ui, sans-serif",
+                          color: "rgba(10,10,10,0.5)",
+                          fontSize: "0.875rem",
+                          lineHeight: 1.75,
+                        }}
                       >
                         {service.description}
                       </p>
@@ -132,18 +192,35 @@ export default function ConsultationPage() {
               </div>
 
               {/* Contact details */}
-              <div className="pt-4 border-t border-[#0a0a0a]/10">
+              <div
+                style={{
+                  paddingTop: "1.5rem",
+                  borderTop: "1px solid rgba(10,10,10,0.1)",
+                }}
+              >
                 <p
-                  className="text-[#c9a84c] tracking-[0.3em] text-xs uppercase mb-4"
-                  style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                  style={{
+                    fontFamily: "Jost, system-ui, sans-serif",
+                    color: "#c9a84c",
+                    letterSpacing: "0.3em",
+                    fontSize: "0.75rem",
+                    textTransform: "uppercase",
+                    marginBottom: "1rem",
+                  }}
                 >
                   Direct Contact
                 </p>
                 <div
-                  className="space-y-2 text-sm text-[#0a0a0a]/60"
-                  style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.5rem",
+                    fontFamily: "Jost, system-ui, sans-serif",
+                    fontSize: "0.875rem",
+                    color: "rgba(10,10,10,0.6)",
+                  }}
                 >
-                  <p>(949) 555-0192</p>
+                  <p>(949) 303-3673</p>
                   <p>hello@lagunaartadvisory.com</p>
                   <p>Mon – Sat, 9am – 6pm PST</p>
                 </div>
@@ -151,25 +228,58 @@ export default function ConsultationPage() {
             </div>
 
             {/* Form column */}
-            <div className="lg:col-span-3">
+            <div>
               {submitted ? (
-                <div className="h-full flex items-center justify-center min-h-[500px]">
-                  <div className="text-center px-8">
-                    <div className="w-16 h-16 border border-[#c9a84c] flex items-center justify-center mx-auto mb-6">
-                      <span className="text-[#c9a84c] text-2xl">✦</span>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    minHeight: "500px",
+                  }}
+                >
+                  <div style={{ textAlign: "center", padding: "0 2rem" }}>
+                    <div
+                      style={{
+                        width: "4rem",
+                        height: "4rem",
+                        border: "1px solid #c9a84c",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        margin: "0 auto 1.5rem",
+                      }}
+                    >
+                      <span style={{ color: "#c9a84c", fontSize: "1.5rem" }}>✦</span>
                     </div>
                     <h2
-                      className="text-[#0a0a0a] font-light text-3xl mb-4"
                       style={{
                         fontFamily: "Cormorant Garamond, Georgia, serif",
+                        color: "#0a0a0a",
+                        fontWeight: 300,
+                        fontSize: "1.875rem",
+                        marginBottom: "1rem",
                       }}
                     >
                       Thank You, {form.name.split(" ")[0]}
                     </h2>
-                    <div className="h-px w-12 bg-[#c9a84c] mx-auto mb-6" />
+                    <div
+                      style={{
+                        width: "3rem",
+                        height: "1px",
+                        backgroundColor: "#c9a84c",
+                        margin: "0 auto 1.5rem",
+                      }}
+                    />
                     <p
-                      className="text-[#0a0a0a]/60 text-sm leading-relaxed max-w-sm mx-auto"
-                      style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                      style={{
+                        fontFamily: "Jost, system-ui, sans-serif",
+                        color: "rgba(10,10,10,0.6)",
+                        fontSize: "0.875rem",
+                        lineHeight: 1.75,
+                        maxWidth: "22rem",
+                        margin: "0 auto 2rem",
+                      }}
                     >
                       Your consultation request has been received. One of our
                       senior advisors will be in touch within 24 hours to
@@ -187,22 +297,41 @@ export default function ConsultationPage() {
                           message: "",
                         });
                       }}
-                      className="mt-8 border border-[#0a0a0a]/20 text-[#0a0a0a]/60 px-8 py-3 text-xs tracking-[0.2em] uppercase hover:border-[#c9a84c] hover:text-[#c9a84c] transition-all duration-300 cursor-pointer"
-                      style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                      className="hover:border-[#c9a84c] hover:text-[#c9a84c] transition-all duration-300 cursor-pointer"
+                      style={{
+                        border: "1px solid rgba(10,10,10,0.2)",
+                        color: "rgba(10,10,10,0.6)",
+                        padding: "0.75rem 2rem",
+                        fontSize: "0.75rem",
+                        letterSpacing: "0.2em",
+                        textTransform: "uppercase",
+                        fontFamily: "Jost, system-ui, sans-serif",
+                        backgroundColor: "transparent",
+                        cursor: "pointer",
+                      }}
                     >
                       Submit Another
                     </button>
                   </div>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <form
+                  onSubmit={handleSubmit}
+                  style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
+                >
+                  <div className="form-two-col">
                     {/* Full Name */}
-                    <div className="space-y-2">
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                       <label
                         htmlFor="name"
-                        className="block text-xs tracking-[0.2em] uppercase text-[#0a0a0a]/50"
-                        style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                        style={{
+                          fontFamily: "Jost, system-ui, sans-serif",
+                          fontSize: "0.75rem",
+                          letterSpacing: "0.2em",
+                          textTransform: "uppercase",
+                          color: "rgba(10,10,10,0.5)",
+                          display: "block",
+                        }}
                       >
                         Full Name *
                       </label>
@@ -213,18 +342,36 @@ export default function ConsultationPage() {
                         required
                         value={form.name}
                         onChange={handleChange}
-                        className="w-full border-b border-[#0a0a0a]/20 bg-transparent py-3 text-sm text-[#0a0a0a] outline-none focus:border-[#c9a84c] transition-colors duration-300 placeholder:text-[#0a0a0a]/20"
+                        className="focus:border-[#c9a84c] transition-colors duration-300"
                         placeholder="Alexandra Whitmore"
-                        style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                        style={{
+                          width: "100%",
+                          borderBottom: "1px solid rgba(10,10,10,0.2)",
+                          borderTop: "none",
+                          borderLeft: "none",
+                          borderRight: "none",
+                          backgroundColor: "transparent",
+                          padding: "0.75rem 0",
+                          fontSize: "0.875rem",
+                          color: "#0a0a0a",
+                          outline: "none",
+                          fontFamily: "Jost, system-ui, sans-serif",
+                        }}
                       />
                     </div>
 
                     {/* Email */}
-                    <div className="space-y-2">
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                       <label
                         htmlFor="email"
-                        className="block text-xs tracking-[0.2em] uppercase text-[#0a0a0a]/50"
-                        style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                        style={{
+                          fontFamily: "Jost, system-ui, sans-serif",
+                          fontSize: "0.75rem",
+                          letterSpacing: "0.2em",
+                          textTransform: "uppercase",
+                          color: "rgba(10,10,10,0.5)",
+                          display: "block",
+                        }}
                       >
                         Email Address *
                       </label>
@@ -235,18 +382,36 @@ export default function ConsultationPage() {
                         required
                         value={form.email}
                         onChange={handleChange}
-                        className="w-full border-b border-[#0a0a0a]/20 bg-transparent py-3 text-sm text-[#0a0a0a] outline-none focus:border-[#c9a84c] transition-colors duration-300 placeholder:text-[#0a0a0a]/20"
+                        className="focus:border-[#c9a84c] transition-colors duration-300"
                         placeholder="your@email.com"
-                        style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                        style={{
+                          width: "100%",
+                          borderBottom: "1px solid rgba(10,10,10,0.2)",
+                          borderTop: "none",
+                          borderLeft: "none",
+                          borderRight: "none",
+                          backgroundColor: "transparent",
+                          padding: "0.75rem 0",
+                          fontSize: "0.875rem",
+                          color: "#0a0a0a",
+                          outline: "none",
+                          fontFamily: "Jost, system-ui, sans-serif",
+                        }}
                       />
                     </div>
 
                     {/* Phone */}
-                    <div className="space-y-2">
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                       <label
                         htmlFor="phone"
-                        className="block text-xs tracking-[0.2em] uppercase text-[#0a0a0a]/50"
-                        style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                        style={{
+                          fontFamily: "Jost, system-ui, sans-serif",
+                          fontSize: "0.75rem",
+                          letterSpacing: "0.2em",
+                          textTransform: "uppercase",
+                          color: "rgba(10,10,10,0.5)",
+                          display: "block",
+                        }}
                       >
                         Phone Number
                       </label>
@@ -256,18 +421,36 @@ export default function ConsultationPage() {
                         type="tel"
                         value={form.phone}
                         onChange={handleChange}
-                        className="w-full border-b border-[#0a0a0a]/20 bg-transparent py-3 text-sm text-[#0a0a0a] outline-none focus:border-[#c9a84c] transition-colors duration-300 placeholder:text-[#0a0a0a]/20"
+                        className="focus:border-[#c9a84c] transition-colors duration-300"
                         placeholder="(555) 000-0000"
-                        style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                        style={{
+                          width: "100%",
+                          borderBottom: "1px solid rgba(10,10,10,0.2)",
+                          borderTop: "none",
+                          borderLeft: "none",
+                          borderRight: "none",
+                          backgroundColor: "transparent",
+                          padding: "0.75rem 0",
+                          fontSize: "0.875rem",
+                          color: "#0a0a0a",
+                          outline: "none",
+                          fontFamily: "Jost, system-ui, sans-serif",
+                        }}
                       />
                     </div>
 
                     {/* Space Type */}
-                    <div className="space-y-2">
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                       <label
                         htmlFor="spaceType"
-                        className="block text-xs tracking-[0.2em] uppercase text-[#0a0a0a]/50"
-                        style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                        style={{
+                          fontFamily: "Jost, system-ui, sans-serif",
+                          fontSize: "0.75rem",
+                          letterSpacing: "0.2em",
+                          textTransform: "uppercase",
+                          color: "rgba(10,10,10,0.5)",
+                          display: "block",
+                        }}
                       >
                         Space Type *
                       </label>
@@ -277,29 +460,45 @@ export default function ConsultationPage() {
                         required
                         value={form.spaceType}
                         onChange={handleChange}
-                        className="w-full border-b border-[#0a0a0a]/20 bg-transparent py-3 text-sm text-[#0a0a0a] outline-none focus:border-[#c9a84c] transition-colors duration-300 cursor-pointer appearance-none"
-                        style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                        className="focus:border-[#c9a84c] transition-colors duration-300"
+                        style={{
+                          width: "100%",
+                          borderBottom: "1px solid rgba(10,10,10,0.2)",
+                          borderTop: "none",
+                          borderLeft: "none",
+                          borderRight: "none",
+                          backgroundColor: "transparent",
+                          padding: "0.75rem 0",
+                          fontSize: "0.875rem",
+                          color: "#0a0a0a",
+                          outline: "none",
+                          cursor: "pointer",
+                          appearance: "none",
+                          fontFamily: "Jost, system-ui, sans-serif",
+                        }}
                       >
-                        <option value="" disabled>
-                          Select a space type
-                        </option>
+                        <option value="" disabled>Select a space type</option>
                         <option value="home">Private Residence</option>
                         <option value="office">Office / Corporate</option>
                         <option value="hotel">Hotel / Hospitality</option>
-                        <option value="collection">
-                          Private Collection (no placement)
-                        </option>
+                        <option value="collection">Private Collection (no placement)</option>
                         <option value="other">Other</option>
                       </select>
                     </div>
                   </div>
 
                   {/* Preferred Date */}
-                  <div className="space-y-2">
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                     <label
                       htmlFor="date"
-                      className="block text-xs tracking-[0.2em] uppercase text-[#0a0a0a]/50"
-                      style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                      style={{
+                        fontFamily: "Jost, system-ui, sans-serif",
+                        fontSize: "0.75rem",
+                        letterSpacing: "0.2em",
+                        textTransform: "uppercase",
+                        color: "rgba(10,10,10,0.5)",
+                        display: "block",
+                      }}
                     >
                       Preferred Date
                     </label>
@@ -309,17 +508,35 @@ export default function ConsultationPage() {
                       type="date"
                       value={form.date}
                       onChange={handleChange}
-                      className="w-full border-b border-[#0a0a0a]/20 bg-transparent py-3 text-sm text-[#0a0a0a] outline-none focus:border-[#c9a84c] transition-colors duration-300"
-                      style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                      className="focus:border-[#c9a84c] transition-colors duration-300"
+                      style={{
+                        width: "100%",
+                        borderBottom: "1px solid rgba(10,10,10,0.2)",
+                        borderTop: "none",
+                        borderLeft: "none",
+                        borderRight: "none",
+                        backgroundColor: "transparent",
+                        padding: "0.75rem 0",
+                        fontSize: "0.875rem",
+                        color: "#0a0a0a",
+                        outline: "none",
+                        fontFamily: "Jost, system-ui, sans-serif",
+                      }}
                     />
                   </div>
 
                   {/* Message */}
-                  <div className="space-y-2">
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                     <label
                       htmlFor="message"
-                      className="block text-xs tracking-[0.2em] uppercase text-[#0a0a0a]/50"
-                      style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                      style={{
+                        fontFamily: "Jost, system-ui, sans-serif",
+                        fontSize: "0.75rem",
+                        letterSpacing: "0.2em",
+                        textTransform: "uppercase",
+                        color: "rgba(10,10,10,0.5)",
+                        display: "block",
+                      }}
                     >
                       Message & Notes
                     </label>
@@ -329,26 +546,54 @@ export default function ConsultationPage() {
                       rows={5}
                       value={form.message}
                       onChange={handleChange}
-                      className="w-full border-b border-[#0a0a0a]/20 bg-transparent py-3 text-sm text-[#0a0a0a] outline-none focus:border-[#c9a84c] transition-colors duration-300 resize-none placeholder:text-[#0a0a0a]/20"
+                      className="focus:border-[#c9a84c] transition-colors duration-300"
                       placeholder="Tell us about your space, your aesthetic preferences, budget range, or any specific works you have in mind..."
-                      style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                      style={{
+                        width: "100%",
+                        borderBottom: "1px solid rgba(10,10,10,0.2)",
+                        borderTop: "none",
+                        borderLeft: "none",
+                        borderRight: "none",
+                        backgroundColor: "transparent",
+                        padding: "0.75rem 0",
+                        fontSize: "0.875rem",
+                        color: "#0a0a0a",
+                        outline: "none",
+                        resize: "none",
+                        fontFamily: "Jost, system-ui, sans-serif",
+                      }}
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full bg-[#0a0a0a] text-[#f5f0e8] py-4 text-xs tracking-[0.3em] uppercase hover:bg-[#c9a84c] hover:text-[#0a0a0a] transition-all duration-400 cursor-pointer mt-4"
-                    style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                    className="hover:bg-[#c9a84c] hover:text-[#0a0a0a] transition-all duration-300 cursor-pointer"
+                    style={{
+                      width: "100%",
+                      backgroundColor: "#0a0a0a",
+                      color: "#f5f0e8",
+                      padding: "1rem",
+                      fontSize: "0.75rem",
+                      letterSpacing: "0.3em",
+                      textTransform: "uppercase",
+                      fontFamily: "Jost, system-ui, sans-serif",
+                      border: "none",
+                      cursor: "pointer",
+                      marginTop: "1rem",
+                    }}
                   >
                     Request Consultation
                   </button>
 
                   <p
-                    className="text-xs text-[#0a0a0a]/30 text-center"
-                    style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                    style={{
+                      fontFamily: "Jost, system-ui, sans-serif",
+                      fontSize: "0.75rem",
+                      color: "rgba(10,10,10,0.3)",
+                      textAlign: "center",
+                    }}
                   >
-                    All consultations are private and complimentary. We respond
-                    within 24 hours.
+                    All consultations are private and complimentary. We respond within 24 hours.
                   </p>
                 </form>
               )}
@@ -356,6 +601,19 @@ export default function ConsultationPage() {
           </div>
         </div>
       </section>
+
+      <style>{`
+        .form-two-col {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1.5rem;
+        }
+        @media (max-width: 640px) {
+          .form-two-col {
+            grid-template-columns: 1fr;
+          }
+        }
+      `}</style>
     </>
   );
 }

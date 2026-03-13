@@ -61,3 +61,68 @@ h1, h2, h3, h4, h5, h6 {
   height: 1px;
   background: var(--color-gold);
 }
+
+/* ── Shared page layout helpers ── */
+
+/* Centered content container used across all pages */
+.page-container {
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+/* Page hero header — clears the 80px fixed navbar */
+.page-hero {
+  padding-top: 8rem;
+  padding-bottom: 5rem;
+  text-align: center;
+}
+
+/* 3-column grid: desktop → tablet 2-col → mobile 1-col */
+.section-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+/* 2-column grid for advisory note */
+.two-col-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* Consultation layout: sidebar + form */
+.consult-grid {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: 4rem;
+}
+
+@media (max-width: 768px) {
+  .page-container {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+  .section-grid {
+    grid-template-columns: 1fr;
+  }
+  .two-col-grid {
+    grid-template-columns: 1fr;
+  }
+  .consult-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .section-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .consult-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}

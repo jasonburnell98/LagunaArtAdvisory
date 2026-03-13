@@ -25,27 +25,39 @@ const featuredWorks = [
 const services = [
   {
     icon: "✦",
-    title: "Private Collection Curation",
+    title: "Curated Exhibitions",
     description:
-      "We source and authenticate works from leading galleries, estates, and emerging artists worldwide, tailored to your aesthetic vision.",
+      "We present 6–8 thoughtfully curated exhibitions per year — solo shows for represented artists and occasional themed group exhibitions — allowing collectors to experience cohesive bodies of work in meaningful context.",
+  },
+  {
+    icon: "✦",
+    title: "Collector Advisory",
+    description:
+      "Private consultations for collectors building or refining a collection. We provide guidance rooted in curatorial insight, market awareness, and deep respect for artistic vision — from first acquisition to long-term collection strategy.",
   },
   {
     icon: "✦",
     title: "Artwork Placement",
     description:
-      "Our advisors work directly in your space — home, office, or hotel — to ensure each piece enhances the architectural dialogue.",
+      "We place exceptional contemporary work in private residences, offices, and hospitality spaces. Our advisors assess architecture, lighting, and environment to ensure each piece resonates in its new home.",
   },
   {
     icon: "✦",
-    title: "Investment Advisory",
+    title: "Artist Development",
     description:
-      "Informed by decades of market knowledge, we guide collectors toward acquisitions that hold both cultural and financial value.",
+      "Studio visits, portfolio reviews, career guidance, and direct collector introductions. We cultivate lasting relationships between artists and the collectors who champion their work.",
   },
   {
     icon: "✦",
-    title: "Virtual Preview",
+    title: "Private Sales",
     description:
-      "Experience how an artwork will look in your space before committing, using our digital placement technology.",
+      "Discreet placement of artworks outside of public exhibitions, including access to works held in private collections, commissions, and special projects.",
+  },
+  {
+    icon: "✦",
+    title: "Community & Events",
+    description:
+      "Collector preview nights before public openings, artist talks, and curated gatherings that build meaningful connections between artists and the people who collect their work.",
   },
 ];
 
@@ -81,7 +93,7 @@ export default function HomePage() {
             className="text-[#c9a84c] tracking-[0.5em] text-xs uppercase mb-6 opacity-0 animate-[fadeInDown_1s_0.2s_forwards]"
             style={{ fontFamily: "Jost, system-ui, sans-serif" }}
           >
-            Est. 2008 · Laguna Beach, California
+            Contemporary Gallery & Art Advisory · Laguna Beach, California
           </p>
 
           {/* Main heading */}
@@ -110,7 +122,7 @@ export default function HomePage() {
             className="text-[#f5f0e8]/70 text-lg md:text-xl font-light tracking-widest mb-12 opacity-0 animate-[fadeInUp_1s_1s_forwards]"
             style={{ fontFamily: "Cormorant Garamond, Georgia, serif" }}
           >
-            Curating Fine Art for Discerning Collectors
+            Discovering Artists. Building Collections. Shaping Legacies.
           </p>
 
           {/* CTAs */}
@@ -146,31 +158,65 @@ export default function HomePage() {
       </section>
 
       {/* ── FEATURED WORKS ── */}
-      <section id="featured" className="bg-[#f5f0e8] py-24 px-6 md:px-10">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
+      <section
+        id="featured"
+        style={{ backgroundColor: "#f5f0e8", padding: "6rem 0" }}
+      >
+        {/* Centered container */}
+        <div
+          style={{
+            maxWidth: "1100px",
+            margin: "0 auto",
+            padding: "0 2rem",
+          }}
+        >
+          {/* Section header */}
+          <div style={{ textAlign: "center", marginBottom: "4rem" }}>
             <p
-              className="text-[#c9a84c] tracking-[0.4em] text-xs uppercase mb-4"
-              style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+              style={{
+                fontFamily: "Jost, system-ui, sans-serif",
+                color: "#c9a84c",
+                letterSpacing: "0.4em",
+                fontSize: "0.75rem",
+                textTransform: "uppercase",
+                marginBottom: "1rem",
+              }}
             >
               Current Exhibition
             </p>
             <h2
-              className="text-[#0a0a0a] font-light"
               style={{
                 fontFamily: "Cormorant Garamond, Georgia, serif",
+                color: "#0a0a0a",
+                fontWeight: 300,
                 fontSize: "clamp(2rem, 4vw, 3.5rem)",
+                lineHeight: 1.1,
               }}
             >
               Featured Works
             </h2>
-            <div className="gold-divider mt-6" />
+            <div
+              style={{
+                width: "60px",
+                height: "1px",
+                backgroundColor: "#c9a84c",
+                margin: "1.5rem auto 0",
+              }}
+            />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Artwork grid */}
+          <div className="section-grid" style={{ gap: "2rem" }}>
             {featuredWorks.map((work) => (
-              <div key={work.id} className="group cursor-pointer">
-                <div className="relative overflow-hidden bg-[#e8e0d0] aspect-[4/5]">
+              <div
+                key={work.id}
+                className="group cursor-pointer"
+                style={{ width: "100%" }}
+              >
+                <div
+                  className="relative overflow-hidden bg-[#e8e0d0]"
+                  style={{ aspectRatio: "4/5", position: "relative" }}
+                >
                   <Image
                     src={work.image}
                     alt={work.title}
@@ -179,18 +225,26 @@ export default function HomePage() {
                   />
                   <div className="absolute inset-0 bg-[#0a0a0a]/0 group-hover:bg-[#0a0a0a]/20 transition-all duration-500" />
                 </div>
-                <div className="pt-4 pb-2">
+                <div style={{ paddingTop: "1rem", paddingBottom: "0.5rem" }}>
                   <h3
-                    className="text-[#0a0a0a] text-lg font-light"
                     style={{
                       fontFamily: "Cormorant Garamond, Georgia, serif",
+                      color: "#0a0a0a",
+                      fontSize: "1.125rem",
+                      fontWeight: 300,
                     }}
                   >
                     {work.title}
                   </h3>
                   <p
-                    className="text-[#0a0a0a]/50 text-xs tracking-widest uppercase mt-1"
-                    style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                    style={{
+                      fontFamily: "Jost, system-ui, sans-serif",
+                      color: "rgba(10,10,10,0.5)",
+                      fontSize: "0.75rem",
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                      marginTop: "0.25rem",
+                    }}
                   >
                     {work.artist}
                   </p>
@@ -199,7 +253,8 @@ export default function HomePage() {
             ))}
           </div>
 
-          <div className="text-center mt-12">
+          {/* CTA link */}
+          <div style={{ textAlign: "center", marginTop: "3rem" }}>
             <Link
               href="/gallery"
               className="inline-block border border-[#0a0a0a]/30 text-[#0a0a0a]/70 px-10 py-3.5 text-xs tracking-[0.3em] uppercase hover:border-[#c9a84c] hover:text-[#c9a84c] transition-all duration-300"
@@ -212,47 +267,89 @@ export default function HomePage() {
       </section>
 
       {/* ── SERVICES ── */}
-      <section id="services" className="bg-[#0a0a0a] py-24 px-6 md:px-10">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
+      <section
+        id="services"
+        style={{ backgroundColor: "#0a0a0a", padding: "6rem 0" }}
+      >
+        {/* Centered container */}
+        <div
+          style={{
+            maxWidth: "1100px",
+            margin: "0 auto",
+            padding: "0 2rem",
+          }}
+        >
+          {/* Section header */}
+          <div style={{ textAlign: "center", marginBottom: "4rem" }}>
             <p
-              className="text-[#c9a84c] tracking-[0.4em] text-xs uppercase mb-4"
-              style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+              style={{
+                fontFamily: "Jost, system-ui, sans-serif",
+                color: "#c9a84c",
+                letterSpacing: "0.4em",
+                fontSize: "0.75rem",
+                textTransform: "uppercase",
+                marginBottom: "1rem",
+              }}
             >
               What We Offer
             </p>
             <h2
-              className="text-[#f5f0e8] font-light"
               style={{
                 fontFamily: "Cormorant Garamond, Georgia, serif",
+                color: "#f5f0e8",
+                fontWeight: 300,
                 fontSize: "clamp(2rem, 4vw, 3.5rem)",
+                lineHeight: 1.1,
               }}
             >
               Advisory Services
             </h2>
-            <div className="h-px w-16 bg-[#c9a84c] mx-auto mt-6" />
+            <div
+              style={{
+                width: "60px",
+                height: "1px",
+                backgroundColor: "#c9a84c",
+                margin: "1.5rem auto 0",
+              }}
+            />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Services grid */}
+          <div className="section-grid" style={{ gap: "2rem" }}>
             {services.map((service) => (
               <div
                 key={service.title}
-                className="border border-[#f5f0e8]/10 p-8 hover:border-[#c9a84c]/40 transition-all duration-500 group"
+                className="border border-[#f5f0e8]/10 hover:border-[#c9a84c]/40 transition-all duration-500 group"
+                style={{ padding: "2rem" }}
               >
-                <span className="text-[#c9a84c] text-sm block mb-4">
+                <span
+                  style={{
+                    color: "#c9a84c",
+                    fontSize: "0.875rem",
+                    display: "block",
+                    marginBottom: "1rem",
+                  }}
+                >
                   {service.icon}
                 </span>
                 <h3
-                  className="text-[#f5f0e8] text-xl font-light mb-3"
                   style={{
                     fontFamily: "Cormorant Garamond, Georgia, serif",
+                    color: "#f5f0e8",
+                    fontSize: "1.25rem",
+                    fontWeight: 300,
+                    marginBottom: "0.75rem",
                   }}
                 >
                   {service.title}
                 </h3>
                 <p
-                  className="text-[#f5f0e8]/50 text-sm leading-relaxed"
-                  style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                  style={{
+                    fontFamily: "Jost, system-ui, sans-serif",
+                    color: "rgba(245,240,232,0.5)",
+                    fontSize: "0.875rem",
+                    lineHeight: 1.7,
+                  }}
                 >
                   {service.description}
                 </p>
@@ -265,7 +362,8 @@ export default function HomePage() {
       {/* ── CTA BANNER ── */}
       <section
         id="cta"
-        className="relative py-32 px-6 overflow-hidden bg-[#1a1a1a]"
+        className="relative overflow-hidden bg-[#1a1a1a]"
+        style={{ padding: "8rem 0" }}
       >
         <div className="absolute inset-0 opacity-10">
           <Image
@@ -277,7 +375,15 @@ export default function HomePage() {
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a]/90 via-[#0a0a0a]/70 to-[#0a0a0a]/90" />
 
-        <div className="relative z-10 text-center max-w-2xl mx-auto">
+        <div
+          className="relative z-10"
+          style={{
+            maxWidth: "42rem",
+            margin: "0 auto",
+            padding: "0 2rem",
+            textAlign: "center",
+          }}
+        >
           <p
             className="text-[#c9a84c] tracking-[0.4em] text-xs uppercase mb-6"
             style={{ fontFamily: "Jost, system-ui, sans-serif" }}
@@ -291,17 +397,18 @@ export default function HomePage() {
               fontSize: "clamp(2rem, 4vw, 3.5rem)",
             }}
           >
-            Let Us Curate Your
+            Discover Artists Early.
             <br />
-            <em className="text-[#c9a84c] not-italic">Perfect Collection</em>
+            <em className="text-[#c9a84c] not-italic">Build Something Lasting.</em>
           </h2>
           <p
             className="text-[#f5f0e8]/50 text-sm leading-relaxed mb-10"
             style={{ fontFamily: "Jost, system-ui, sans-serif" }}
           >
-            Schedule a private consultation with one of our senior advisors. We
-            work with collectors, interior designers, and hospitality brands
-            worldwide.
+            Whether you are building a new collection or refining an existing one,
+            we provide guidance rooted in curatorial insight and a deep respect for
+            artistic vision. Schedule a private consultation — complimentary and
+            tailored entirely to you.
           </p>
           <Link
             href="/consultation"
@@ -313,7 +420,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Keyframe animations */}
+      {/* Responsive styles for grids */}
       <style>{`
         @keyframes fadeInDown {
           from { opacity: 0; transform: translateY(-20px); }
@@ -326,6 +433,22 @@ export default function HomePage() {
         @keyframes fadeIn {
           from { opacity: 0; }
           to { opacity: 1; }
+        }
+
+        /* Section grid — 3 cols desktop, 2 cols tablet, 1 col mobile */
+        .section-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+        }
+        @media (max-width: 768px) {
+          .section-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+        @media (min-width: 769px) and (max-width: 1100px) {
+          .section-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
         }
       `}</style>
     </>

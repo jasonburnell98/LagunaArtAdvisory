@@ -4,9 +4,9 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Laguna Art Advisory | Curating Fine Art for Discerning Collectors",
+  title: "Laguna Art Advisory | Contemporary Gallery & Art Advisory",
   description:
-    "Laguna Art Advisory offers premium art curation, private collector consultations, and artwork placement services for homes, offices, and hotels.",
+    "Laguna Art Advisory is a contemporary gallery and art advisory in Laguna Beach dedicated to discovering compelling artists and connecting their work with passionate collectors. Private consultations, curated exhibitions, and collector advisory services.",
 };
 
 export default function RootLayout({

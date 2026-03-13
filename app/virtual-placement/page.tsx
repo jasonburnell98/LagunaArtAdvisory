@@ -104,7 +104,6 @@ export default function VirtualPlacementPage() {
     setIsDragging(false);
   }, []);
 
-  // Touch support
   const handleTouchStart = useCallback(
     (e: React.TouchEvent) => {
       e.preventDefault();
@@ -153,58 +152,107 @@ export default function VirtualPlacementPage() {
   return (
     <>
       {/* Page header */}
-      <div className="bg-[#0a0a0a] pt-36 pb-16 px-6 text-center">
-        <p
-          className="text-[#c9a84c] tracking-[0.5em] text-xs uppercase mb-4"
-          style={{ fontFamily: "Jost, system-ui, sans-serif" }}
-        >
-          Visualize Your Space
-        </p>
-        <h1
-          className="text-[#f5f0e8] font-light"
-          style={{
-            fontFamily: "Cormorant Garamond, Georgia, serif",
-            fontSize: "clamp(2.5rem, 5vw, 4.5rem)",
-          }}
-        >
-          Virtual Placement
-        </h1>
-        <div className="h-px w-16 bg-[#c9a84c] mx-auto mt-6 mb-6" />
-        <p
-          className="text-[#f5f0e8]/50 max-w-lg mx-auto text-sm leading-relaxed"
-          style={{ fontFamily: "Jost, system-ui, sans-serif" }}
-        >
-          Select a work from our collection, upload a photo of your space, then
-          drag and resize to see how it would look on your walls.
-        </p>
+      <div
+        className="page-hero"
+        style={{ backgroundColor: "#0a0a0a" }}
+      >
+        <div className="page-container">
+          <p
+            style={{
+              fontFamily: "Jost, system-ui, sans-serif",
+              color: "#c9a84c",
+              letterSpacing: "0.5em",
+              fontSize: "0.75rem",
+              textTransform: "uppercase",
+              marginBottom: "1rem",
+            }}
+          >
+            Visualize Your Space
+          </p>
+          <h1
+            style={{
+              fontFamily: "Cormorant Garamond, Georgia, serif",
+              color: "#f5f0e8",
+              fontWeight: 300,
+              fontSize: "clamp(2.5rem, 5vw, 4.5rem)",
+              lineHeight: 1.1,
+            }}
+          >
+            Virtual Placement
+          </h1>
+          <div
+            style={{
+              width: "60px",
+              height: "1px",
+              backgroundColor: "#c9a84c",
+              margin: "1.5rem auto",
+            }}
+          />
+          <p
+            style={{
+              fontFamily: "Jost, system-ui, sans-serif",
+              color: "rgba(245,240,232,0.5)",
+              maxWidth: "32rem",
+              margin: "0 auto",
+              fontSize: "0.875rem",
+              lineHeight: 1.75,
+            }}
+          >
+            Select a work from our collection, upload a photo of your space, then
+            drag and resize to see how it would look on your walls.
+          </p>
+        </div>
       </div>
 
-      <section className="bg-[#faf7f2] py-12 px-4 md:px-10">
-        <div className="max-w-7xl mx-auto">
+      {/* Tool section */}
+      <section style={{ backgroundColor: "#faf7f2", padding: "3rem 0 5rem" }}>
+        <div className="page-container">
           {/* Step layout */}
-          <div className="flex flex-col lg:flex-row gap-8">
+          <div className="vp-layout">
             {/* ── LEFT PANEL: Controls ── */}
-            <div className="lg:w-80 xl:w-96 shrink-0 space-y-8">
+            <div className="vp-controls">
               {/* Step 1: Select artwork */}
               <div>
-                <div className="flex items-center gap-3 mb-4">
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
                   <span
-                    className="w-7 h-7 rounded-full border border-[#c9a84c] flex items-center justify-center text-[#c9a84c] text-xs"
-                    style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                    style={{
+                      width: "1.75rem",
+                      height: "1.75rem",
+                      borderRadius: "50%",
+                      border: "1px solid #c9a84c",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "#c9a84c",
+                      fontSize: "0.75rem",
+                      flexShrink: 0,
+                      fontFamily: "Jost, system-ui, sans-serif",
+                    }}
                   >
                     1
                   </span>
                   <h2
-                    className="text-[#0a0a0a] font-light text-xl"
                     style={{
                       fontFamily: "Cormorant Garamond, Georgia, serif",
+                      color: "#0a0a0a",
+                      fontWeight: 300,
+                      fontSize: "1.25rem",
                     }}
                   >
                     Select Artwork
                   </h2>
                 </div>
 
-                <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.5rem",
+                    maxHeight: "18rem",
+                    overflowY: "auto",
+                    paddingRight: "0.25rem",
+                  }}
+                >
                   {artworks.map((art) => (
                     <button
                       key={art.id}
@@ -212,13 +260,31 @@ export default function VirtualPlacementPage() {
                         setSelectedArtwork(art);
                         setSavedPreview(false);
                       }}
-                      className={`w-full flex items-center gap-3 p-3 border transition-all duration-200 text-left cursor-pointer ${
+                      className={`transition-all duration-200 ${
                         selectedArtwork?.id === art.id
                           ? "border-[#c9a84c] bg-[#c9a84c]/5"
                           : "border-[#0a0a0a]/10 hover:border-[#c9a84c]/40 bg-white"
                       }`}
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.75rem",
+                        padding: "0.75rem",
+                        border: selectedArtwork?.id === art.id
+                          ? "1px solid #c9a84c"
+                          : "1px solid rgba(10,10,10,0.1)",
+                        backgroundColor: selectedArtwork?.id === art.id
+                          ? "rgba(201,168,76,0.05)"
+                          : "#fff",
+                        textAlign: "left",
+                        cursor: "pointer",
+                      }}
                     >
-                      <div className="relative w-10 h-10 shrink-0 overflow-hidden bg-[#e8e0d0]">
+                      <div
+                        className="relative overflow-hidden bg-[#e8e0d0]"
+                        style={{ width: "2.5rem", height: "2.5rem", flexShrink: 0, position: "relative" }}
+                      >
                         <Image
                           src={art.image}
                           alt={art.title}
@@ -226,26 +292,34 @@ export default function VirtualPlacementPage() {
                           className="object-cover"
                         />
                       </div>
-                      <div className="min-w-0">
+                      <div style={{ minWidth: 0 }}>
                         <p
-                          className="text-[#0a0a0a] text-sm truncate"
                           style={{
                             fontFamily: "Cormorant Garamond, Georgia, serif",
+                            color: "#0a0a0a",
+                            fontSize: "0.875rem",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
                           }}
                         >
                           {art.title}
                         </p>
                         <p
-                          className="text-[#0a0a0a]/40 text-xs truncate"
                           style={{
                             fontFamily: "Jost, system-ui, sans-serif",
+                            color: "rgba(10,10,10,0.4)",
+                            fontSize: "0.75rem",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
                           }}
                         >
                           {art.artist}
                         </p>
                       </div>
                       {selectedArtwork?.id === art.id && (
-                        <span className="text-[#c9a84c] text-xs ml-auto shrink-0">
+                        <span style={{ color: "#c9a84c", fontSize: "0.75rem", marginLeft: "auto", flexShrink: 0 }}>
                           ✦
                         </span>
                       )}
@@ -256,17 +330,30 @@ export default function VirtualPlacementPage() {
 
               {/* Step 2: Upload room */}
               <div>
-                <div className="flex items-center gap-3 mb-4">
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
                   <span
-                    className="w-7 h-7 rounded-full border border-[#c9a84c] flex items-center justify-center text-[#c9a84c] text-xs"
-                    style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                    style={{
+                      width: "1.75rem",
+                      height: "1.75rem",
+                      borderRadius: "50%",
+                      border: "1px solid #c9a84c",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "#c9a84c",
+                      fontSize: "0.75rem",
+                      flexShrink: 0,
+                      fontFamily: "Jost, system-ui, sans-serif",
+                    }}
                   >
                     2
                   </span>
                   <h2
-                    className="text-[#0a0a0a] font-light text-xl"
                     style={{
                       fontFamily: "Cormorant Garamond, Georgia, serif",
+                      color: "#0a0a0a",
+                      fontWeight: 300,
+                      fontSize: "1.25rem",
                     }}
                   >
                     Upload Your Room
@@ -283,41 +370,35 @@ export default function VirtualPlacementPage() {
 
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  className={`w-full border-2 border-dashed py-8 text-center transition-all duration-300 cursor-pointer ${
-                    roomImage
-                      ? "border-[#c9a84c]/60 bg-[#c9a84c]/5"
-                      : "border-[#0a0a0a]/20 hover:border-[#c9a84c]/40 bg-white"
-                  }`}
+                  style={{
+                    width: "100%",
+                    border: roomImage
+                      ? "2px dashed rgba(201,168,76,0.6)"
+                      : "2px dashed rgba(10,10,10,0.2)",
+                    backgroundColor: roomImage ? "rgba(201,168,76,0.05)" : "#fff",
+                    padding: "2rem",
+                    textAlign: "center",
+                    cursor: "pointer",
+                    transition: "all 0.3s",
+                  }}
                 >
                   {roomImage ? (
-                    <div className="space-y-1">
-                      <div className="text-[#c9a84c] text-2xl">✦</div>
-                      <p
-                        className="text-[#0a0a0a]/60 text-xs"
-                        style={{ fontFamily: "Jost, system-ui, sans-serif" }}
-                      >
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+                      <div style={{ color: "#c9a84c", fontSize: "1.5rem" }}>✦</div>
+                      <p style={{ fontFamily: "Jost, system-ui, sans-serif", color: "rgba(10,10,10,0.6)", fontSize: "0.75rem" }}>
                         Room photo uploaded
                       </p>
-                      <p
-                        className="text-[#c9a84c] text-xs underline"
-                        style={{ fontFamily: "Jost, system-ui, sans-serif" }}
-                      >
+                      <p style={{ fontFamily: "Jost, system-ui, sans-serif", color: "#c9a84c", fontSize: "0.75rem", textDecoration: "underline" }}>
                         Click to change
                       </p>
                     </div>
                   ) : (
-                    <div className="space-y-2">
-                      <div className="text-[#0a0a0a]/20 text-3xl">⊕</div>
-                      <p
-                        className="text-[#0a0a0a]/50 text-xs"
-                        style={{ fontFamily: "Jost, system-ui, sans-serif" }}
-                      >
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                      <div style={{ color: "rgba(10,10,10,0.2)", fontSize: "1.875rem" }}>⊕</div>
+                      <p style={{ fontFamily: "Jost, system-ui, sans-serif", color: "rgba(10,10,10,0.5)", fontSize: "0.75rem" }}>
                         Click to upload a room photo
                       </p>
-                      <p
-                        className="text-[#0a0a0a]/30 text-xs"
-                        style={{ fontFamily: "Jost, system-ui, sans-serif" }}
-                      >
+                      <p style={{ fontFamily: "Jost, system-ui, sans-serif", color: "rgba(10,10,10,0.3)", fontSize: "0.75rem" }}>
                         JPG, PNG, WEBP supported
                       </p>
                     </div>
@@ -328,37 +409,51 @@ export default function VirtualPlacementPage() {
               {/* Step 3: Adjust size */}
               {selectedArtwork && roomImage && (
                 <div>
-                  <div className="flex items-center gap-3 mb-4">
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
                     <span
-                      className="w-7 h-7 rounded-full border border-[#c9a84c] flex items-center justify-center text-[#c9a84c] text-xs"
-                      style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                      style={{
+                        width: "1.75rem",
+                        height: "1.75rem",
+                        borderRadius: "50%",
+                        border: "1px solid #c9a84c",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "#c9a84c",
+                        fontSize: "0.75rem",
+                        flexShrink: 0,
+                        fontFamily: "Jost, system-ui, sans-serif",
+                      }}
                     >
                       3
                     </span>
                     <h2
-                      className="text-[#0a0a0a] font-light text-xl"
                       style={{
                         fontFamily: "Cormorant Garamond, Georgia, serif",
+                        color: "#0a0a0a",
+                        fontWeight: 300,
+                        fontSize: "1.25rem",
                       }}
                     >
                       Adjust Size
                     </h2>
                   </div>
 
-                  <div className="bg-white border border-[#0a0a0a]/10 p-5 space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span
-                        className="text-[#0a0a0a]/50 text-xs tracking-wider uppercase"
-                        style={{ fontFamily: "Jost, system-ui, sans-serif" }}
-                      >
+                  <div
+                    style={{
+                      backgroundColor: "#fff",
+                      border: "1px solid rgba(10,10,10,0.1)",
+                      padding: "1.25rem",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "1rem",
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                      <span style={{ fontFamily: "Jost, system-ui, sans-serif", color: "rgba(10,10,10,0.5)", fontSize: "0.75rem", letterSpacing: "0.05em", textTransform: "uppercase" }}>
                         Artwork Size
                       </span>
-                      <span
-                        className="text-[#c9a84c] text-sm"
-                        style={{
-                          fontFamily: "Cormorant Garamond, Georgia, serif",
-                        }}
-                      >
+                      <span style={{ fontFamily: "Cormorant Garamond, Georgia, serif", color: "#c9a84c", fontSize: "0.875rem" }}>
                         {artworkSize}px
                       </span>
                     </div>
@@ -370,35 +465,49 @@ export default function VirtualPlacementPage() {
                       onChange={(e) => setArtworkSize(Number(e.target.value))}
                       className="w-full accent-[#c9a84c] cursor-pointer"
                     />
-                    <div
-                      className="flex justify-between text-xs text-[#0a0a0a]/30"
-                      style={{ fontFamily: "Jost, system-ui, sans-serif" }}
-                    >
+                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.75rem", color: "rgba(10,10,10,0.3)", fontFamily: "Jost, system-ui, sans-serif" }}>
                       <span>Small</span>
                       <span>Large</span>
                     </div>
-
-                    <p
-                      className="text-[#0a0a0a]/40 text-xs pt-1"
-                      style={{ fontFamily: "Jost, system-ui, sans-serif" }}
-                    >
+                    <p style={{ fontFamily: "Jost, system-ui, sans-serif", color: "rgba(10,10,10,0.4)", fontSize: "0.75rem", paddingTop: "0.25rem" }}>
                       Drag the artwork on the canvas to reposition it
                     </p>
                   </div>
 
-                  {/* Action buttons */}
-                  <div className="space-y-3 mt-4">
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginTop: "1rem" }}>
                     <button
                       onClick={handleSavePreview}
-                      className="w-full bg-[#0a0a0a] text-[#f5f0e8] py-3.5 text-xs tracking-[0.3em] uppercase hover:bg-[#c9a84c] hover:text-[#0a0a0a] transition-all duration-300 cursor-pointer"
-                      style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                      className="hover:bg-[#c9a84c] hover:text-[#0a0a0a] transition-all duration-300 cursor-pointer"
+                      style={{
+                        width: "100%",
+                        backgroundColor: "#0a0a0a",
+                        color: "#f5f0e8",
+                        padding: "0.875rem",
+                        fontSize: "0.75rem",
+                        letterSpacing: "0.3em",
+                        textTransform: "uppercase",
+                        fontFamily: "Jost, system-ui, sans-serif",
+                        border: "none",
+                        cursor: "pointer",
+                      }}
                     >
                       {savedPreview ? "✦ Preview Saved!" : "Save Preview"}
                     </button>
                     <button
                       onClick={handleReset}
-                      className="w-full border border-[#0a0a0a]/20 text-[#0a0a0a]/50 py-3 text-xs tracking-[0.3em] uppercase hover:border-[#0a0a0a]/40 hover:text-[#0a0a0a]/70 transition-all duration-300 cursor-pointer"
-                      style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                      className="hover:border-[#0a0a0a]/40 hover:text-[#0a0a0a]/70 transition-all duration-300 cursor-pointer"
+                      style={{
+                        width: "100%",
+                        border: "1px solid rgba(10,10,10,0.2)",
+                        color: "rgba(10,10,10,0.5)",
+                        padding: "0.75rem",
+                        fontSize: "0.75rem",
+                        letterSpacing: "0.3em",
+                        textTransform: "uppercase",
+                        fontFamily: "Jost, system-ui, sans-serif",
+                        backgroundColor: "transparent",
+                        cursor: "pointer",
+                      }}
                     >
                       Reset Position
                     </button>
@@ -408,70 +517,85 @@ export default function VirtualPlacementPage() {
             </div>
 
             {/* ── RIGHT PANEL: Canvas ── */}
-            <div className="flex-1 min-h-[400px]">
+            <div style={{ flex: 1, minHeight: "400px" }}>
               {!roomImage ? (
-                /* Placeholder state */
-                <div className="w-full h-full min-h-[500px] bg-[#0a0a0a]/5 border-2 border-dashed border-[#0a0a0a]/15 flex flex-col items-center justify-center text-center p-10">
-                  <div className="text-6xl text-[#0a0a0a]/10 mb-6 select-none">
+                <div
+                  style={{
+                    width: "100%",
+                    minHeight: "500px",
+                    backgroundColor: "rgba(10,10,10,0.05)",
+                    border: "2px dashed rgba(10,10,10,0.15)",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    textAlign: "center",
+                    padding: "2.5rem",
+                  }}
+                >
+                  <div style={{ fontSize: "3.75rem", color: "rgba(10,10,10,0.1)", marginBottom: "1.5rem", userSelect: "none" }}>
                     🖼
                   </div>
                   <h3
-                    className="text-[#0a0a0a]/30 font-light text-2xl mb-3"
                     style={{
                       fontFamily: "Cormorant Garamond, Georgia, serif",
+                      color: "rgba(10,10,10,0.3)",
+                      fontWeight: 300,
+                      fontSize: "1.5rem",
+                      marginBottom: "0.75rem",
                     }}
                   >
                     Your Canvas Awaits
                   </h3>
                   <p
-                    className="text-[#0a0a0a]/25 text-xs max-w-xs leading-relaxed"
-                    style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                    style={{
+                      fontFamily: "Jost, system-ui, sans-serif",
+                      color: "rgba(10,10,10,0.25)",
+                      fontSize: "0.75rem",
+                      maxWidth: "18rem",
+                      lineHeight: 1.75,
+                    }}
                   >
                     Select an artwork and upload a room photo to begin your
                     virtual placement preview.
                   </p>
                 </div>
               ) : (
-                /* Interactive canvas */
                 <div
                   ref={canvasRef}
-                  className="relative w-full overflow-hidden select-none"
+                  className="relative overflow-hidden"
                   style={{
+                    width: "100%",
                     minHeight: "500px",
                     cursor: isDragging ? "grabbing" : "default",
                     touchAction: "none",
+                    userSelect: "none",
+                    position: "relative",
                   }}
                   onMouseMove={handleMouseMove}
                   onMouseUp={handleMouseUp}
                   onMouseLeave={handleMouseUp}
                 >
-                  {/* Room image */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={roomImage}
                     alt="Room"
-                    className="w-full h-full object-cover"
-                    style={{ minHeight: "500px", display: "block" }}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", minHeight: "500px", display: "block" }}
                     draggable={false}
                   />
 
-                  {/* Dark overlay hint */}
                   {!selectedArtwork && (
                     <div className="absolute inset-0 bg-[#0a0a0a]/40 flex items-center justify-center">
-                      <p
-                        className="text-[#f5f0e8]/70 text-sm tracking-widest"
-                        style={{ fontFamily: "Jost, system-ui, sans-serif" }}
-                      >
+                      <p style={{ fontFamily: "Jost, system-ui, sans-serif", color: "rgba(245,240,232,0.7)", fontSize: "0.875rem", letterSpacing: "0.1em" }}>
                         ← Select an artwork to place
                       </p>
                     </div>
                   )}
 
-                  {/* Draggable artwork overlay */}
                   {selectedArtwork && (
                     <div
-                      className="absolute"
                       style={{
+                        position: "absolute",
                         left: position.x,
                         top: position.y,
                         width: artworkSize,
@@ -484,60 +608,36 @@ export default function VirtualPlacementPage() {
                       onTouchMove={handleTouchMove}
                       onTouchEnd={handleTouchEnd}
                     >
-                      {/* Frame border */}
-                      <div className="border-[6px] border-[#e8dcc8] bg-[#e8dcc8]">
-                        <div className="border-2 border-[#d4c8b0]">
+                      <div style={{ border: "6px solid #e8dcc8", backgroundColor: "#e8dcc8" }}>
+                        <div style={{ border: "2px solid #d4c8b0" }}>
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={selectedArtwork.image}
                             alt={selectedArtwork.title}
-                            style={{
-                              width: "100%",
-                              display: "block",
-                              pointerEvents: "none",
-                              userSelect: "none",
-                            }}
+                            style={{ width: "100%", display: "block", pointerEvents: "none", userSelect: "none" }}
                             draggable={false}
                           />
                         </div>
                       </div>
-
-                      {/* Artwork label */}
-                      <div
-                        className="absolute bottom-[-30px] left-0 right-0 text-center"
-                        style={{ pointerEvents: "none" }}
-                      >
-                        <span
-                          className="text-[#f5f0e8] text-xs bg-[#0a0a0a]/70 px-2 py-1 backdrop-blur-sm whitespace-nowrap"
-                          style={{
-                            fontFamily: "Cormorant Garamond, Georgia, serif",
-                          }}
-                        >
+                      <div style={{ position: "absolute", bottom: "-30px", left: 0, right: 0, textAlign: "center", pointerEvents: "none" }}>
+                        <span style={{ fontFamily: "Cormorant Garamond, Georgia, serif", color: "#f5f0e8", fontSize: "0.75rem", backgroundColor: "rgba(10,10,10,0.7)", padding: "0.25rem 0.5rem", whiteSpace: "nowrap" }}>
                           {selectedArtwork.title}
                         </span>
                       </div>
                     </div>
                   )}
 
-                  {/* Canvas UI overlay - top right */}
                   {selectedArtwork && (
-                    <div className="absolute top-3 right-3 bg-[#0a0a0a]/70 backdrop-blur-sm px-3 py-2">
-                      <p
-                        className="text-[#f5f0e8]/60 text-xs"
-                        style={{ fontFamily: "Jost, system-ui, sans-serif" }}
-                      >
+                    <div style={{ position: "absolute", top: "0.75rem", right: "0.75rem", backgroundColor: "rgba(10,10,10,0.7)", backdropFilter: "blur(4px)", padding: "0.5rem 0.75rem" }}>
+                      <p style={{ fontFamily: "Jost, system-ui, sans-serif", color: "rgba(245,240,232,0.6)", fontSize: "0.75rem" }}>
                         Drag to reposition
                       </p>
                     </div>
                   )}
 
-                  {/* Save preview banner */}
                   {savedPreview && (
-                    <div className="absolute bottom-0 left-0 right-0 bg-[#c9a84c] py-3 text-center">
-                      <p
-                        className="text-[#0a0a0a] text-xs tracking-widest uppercase"
-                        style={{ fontFamily: "Jost, system-ui, sans-serif" }}
-                      >
+                    <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, backgroundColor: "#c9a84c", padding: "0.75rem", textAlign: "center" }}>
+                      <p style={{ fontFamily: "Jost, system-ui, sans-serif", color: "#0a0a0a", fontSize: "0.75rem", letterSpacing: "0.1em", textTransform: "uppercase" }}>
                         ✦ Preview Saved Successfully
                       </p>
                     </div>
@@ -548,7 +648,14 @@ export default function VirtualPlacementPage() {
           </div>
 
           {/* Bottom info */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 border-t border-[#0a0a0a]/10 pt-12">
+          <div
+            className="section-grid"
+            style={{
+              marginTop: "4rem",
+              paddingTop: "3rem",
+              borderTop: "1px solid rgba(10,10,10,0.1)",
+            }}
+          >
             {[
               {
                 step: "01",
@@ -566,27 +673,38 @@ export default function VirtualPlacementPage() {
                 desc: "Drag, resize, and see how the artwork transforms your environment.",
               },
             ].map((item) => (
-              <div key={item.step} className="flex gap-4">
+              <div key={item.step} style={{ display: "flex", gap: "1rem" }}>
                 <span
-                  className="text-[#c9a84c]/40 text-3xl font-light shrink-0 leading-none"
                   style={{
                     fontFamily: "Cormorant Garamond, Georgia, serif",
+                    color: "rgba(201,168,76,0.4)",
+                    fontSize: "1.875rem",
+                    fontWeight: 300,
+                    flexShrink: 0,
+                    lineHeight: 1,
                   }}
                 >
                   {item.step}
                 </span>
                 <div>
                   <h4
-                    className="text-[#0a0a0a] font-light text-lg mb-1"
                     style={{
                       fontFamily: "Cormorant Garamond, Georgia, serif",
+                      color: "#0a0a0a",
+                      fontWeight: 300,
+                      fontSize: "1.125rem",
+                      marginBottom: "0.25rem",
                     }}
                   >
                     {item.title}
                   </h4>
                   <p
-                    className="text-[#0a0a0a]/50 text-sm leading-relaxed"
-                    style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                    style={{
+                      fontFamily: "Jost, system-ui, sans-serif",
+                      color: "rgba(10,10,10,0.5)",
+                      fontSize: "0.875rem",
+                      lineHeight: 1.75,
+                    }}
                   >
                     {item.desc}
                   </p>
@@ -596,6 +714,29 @@ export default function VirtualPlacementPage() {
           </div>
         </div>
       </section>
+
+      <style>{`
+        .vp-layout {
+          display: flex;
+          gap: 2rem;
+          align-items: flex-start;
+        }
+        .vp-controls {
+          width: 20rem;
+          flex-shrink: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 2rem;
+        }
+        @media (max-width: 900px) {
+          .vp-layout {
+            flex-direction: column;
+          }
+          .vp-controls {
+            width: 100%;
+          }
+        }
+      `}</style>
     </>
   );
 }

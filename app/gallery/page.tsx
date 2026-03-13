@@ -8,8 +8,8 @@ const artworks = [
     artist: "Elara Montclair",
     medium: "Oil on Canvas",
     dimensions: "48 × 60 in",
-    year: 2023,
-    price: "$18,500",
+    year: 2024,
+    price: "$6,500",
     image: "https://picsum.photos/seed/artwork1/600/700",
   },
   {
@@ -17,39 +17,39 @@ const artworks = [
     title: "Golden Hour Study",
     artist: "Marcus Delacroix",
     medium: "Oil on Linen",
-    dimensions: "36 × 48 in",
-    year: 2022,
-    price: "$12,000",
+    dimensions: "30 × 40 in",
+    year: 2023,
+    price: "$3,200",
     image: "https://picsum.photos/seed/artwork2/600/700",
   },
   {
     id: 3,
     title: "Serenity in Form",
     artist: "Vivienne Hartwell",
-    medium: "Acrylic & Gold Leaf",
+    medium: "Mixed Media on Panel",
     dimensions: "40 × 50 in",
     year: 2024,
-    price: "$22,000",
+    price: "$4,800",
     image: "https://picsum.photos/seed/artwork3/600/700",
   },
   {
     id: 4,
     title: "The Blue Meridian",
     artist: "James Okafor",
-    medium: "Watercolor on Paper",
-    dimensions: "30 × 40 in",
+    medium: "Works on Paper",
+    dimensions: "24 × 30 in",
     year: 2023,
-    price: "$8,500",
+    price: "$1,800",
     image: "https://picsum.photos/seed/artwork4/600/700",
   },
   {
     id: 5,
     title: "Nocturne No. 7",
     artist: "Sofia Vèritas",
-    medium: "Mixed Media",
-    dimensions: "48 × 48 in",
+    medium: "Ceramic Sculpture",
+    dimensions: "14 × 10 × 10 in",
     year: 2024,
-    price: "$31,000",
+    price: "$3,500",
     image: "https://picsum.photos/seed/artwork5/600/700",
   },
   {
@@ -57,9 +57,9 @@ const artworks = [
     title: "Amber Passage",
     artist: "Thomas Crane",
     medium: "Oil on Canvas",
-    dimensions: "54 × 72 in",
-    year: 2022,
-    price: "$45,000",
+    dimensions: "60 × 72 in",
+    year: 2023,
+    price: "$9,000",
     image: "https://picsum.photos/seed/artwork6/600/700",
   },
 ];
@@ -68,43 +68,78 @@ export default function GalleryPage() {
   return (
     <>
       {/* Page header */}
-      <div className="bg-[#0a0a0a] pt-36 pb-20 px-6 text-center">
-        <p
-          className="text-[#c9a84c] tracking-[0.5em] text-xs uppercase mb-4"
-          style={{ fontFamily: "Jost, system-ui, sans-serif" }}
-        >
-          Available Works
-        </p>
-        <h1
-          className="text-[#f5f0e8] font-light"
-          style={{
-            fontFamily: "Cormorant Garamond, Georgia, serif",
-            fontSize: "clamp(2.5rem, 5vw, 4.5rem)",
-          }}
-        >
-          The Collection
-        </h1>
-        <div className="h-px w-16 bg-[#c9a84c] mx-auto mt-6 mb-6" />
-        <p
-          className="text-[#f5f0e8]/50 max-w-lg mx-auto text-sm leading-relaxed"
-          style={{ fontFamily: "Jost, system-ui, sans-serif" }}
-        >
-          Each work is carefully selected and authenticated. Inquire with our
-          advisors for provenance documentation and acquisition guidance.
-        </p>
+      <div
+        className="page-hero"
+        style={{ backgroundColor: "#0a0a0a" }}
+      >
+        <div className="page-container">
+          <p
+            style={{
+              fontFamily: "Jost, system-ui, sans-serif",
+              color: "#c9a84c",
+              letterSpacing: "0.5em",
+              fontSize: "0.75rem",
+              textTransform: "uppercase",
+              marginBottom: "1rem",
+            }}
+          >
+            Available Works
+          </p>
+          <h1
+            style={{
+              fontFamily: "Cormorant Garamond, Georgia, serif",
+              color: "#f5f0e8",
+              fontWeight: 300,
+              fontSize: "clamp(2.5rem, 5vw, 4.5rem)",
+              lineHeight: 1.1,
+            }}
+          >
+            The Collection
+          </h1>
+          <div
+            style={{
+              width: "60px",
+              height: "1px",
+              backgroundColor: "#c9a84c",
+              margin: "1.5rem auto",
+            }}
+          />
+          <p
+            style={{
+              fontFamily: "Jost, system-ui, sans-serif",
+              color: "rgba(245,240,232,0.5)",
+              maxWidth: "32rem",
+              margin: "0 auto",
+              fontSize: "0.875rem",
+              lineHeight: 1.75,
+            }}
+          >
+            We present contemporary artists whose work demonstrates originality,
+            technical integrity, and cultural relevance — painting, sculpture, and
+            mixed media selected for artistic vision and lasting significance.
+          </p>
+        </div>
       </div>
 
       {/* Gallery grid */}
-      <section className="bg-[#faf7f2] py-20 px-6 md:px-10">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+      <section style={{ backgroundColor: "#faf7f2", padding: "5rem 0" }}>
+        <div className="page-container">
+          <div className="section-grid">
             {artworks.map((work) => (
               <article
                 key={work.id}
-                className="group bg-white shadow-sm hover:shadow-xl transition-shadow duration-500"
+                className="group"
+                style={{
+                  backgroundColor: "#fff",
+                  boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
+                  transition: "box-shadow 0.5s ease",
+                }}
               >
                 {/* Image */}
-                <div className="relative overflow-hidden aspect-[5/6]">
+                <div
+                  className="relative overflow-hidden"
+                  style={{ aspectRatio: "5/6", position: "relative" }}
+                >
                   <Image
                     src={work.image}
                     alt={work.title}
@@ -124,45 +159,86 @@ export default function GalleryPage() {
                 </div>
 
                 {/* Info */}
-                <div className="p-6">
-                  <div className="flex items-start justify-between mb-1">
+                <div style={{ padding: "1.5rem" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      justifyContent: "space-between",
+                      marginBottom: "0.25rem",
+                    }}
+                  >
                     <h3
-                      className="text-[#0a0a0a] text-lg font-light leading-tight"
                       style={{
                         fontFamily: "Cormorant Garamond, Georgia, serif",
+                        color: "#0a0a0a",
+                        fontSize: "1.125rem",
+                        fontWeight: 300,
+                        lineHeight: 1.3,
                       }}
                     >
                       {work.title}
                     </h3>
                     <span
-                      className="text-[#c9a84c] text-sm font-light ml-4 whitespace-nowrap"
                       style={{
                         fontFamily: "Cormorant Garamond, Georgia, serif",
+                        color: "#c9a84c",
+                        fontSize: "0.875rem",
+                        fontWeight: 300,
+                        marginLeft: "1rem",
+                        whiteSpace: "nowrap",
                       }}
                     >
                       {work.price}
                     </span>
                   </div>
                   <p
-                    className="text-[#0a0a0a]/50 text-xs tracking-widest uppercase mb-3"
-                    style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                    style={{
+                      fontFamily: "Jost, system-ui, sans-serif",
+                      color: "rgba(10,10,10,0.5)",
+                      fontSize: "0.75rem",
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                      marginBottom: "0.75rem",
+                    }}
                   >
                     {work.artist}
                   </p>
-                  <div className="flex items-center gap-2 mb-5">
-                    <div className="h-px flex-1 bg-[#0a0a0a]/10" />
-                  </div>
                   <div
-                    className="flex justify-between text-xs text-[#0a0a0a]/40 mb-5"
-                    style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+                    style={{
+                      height: "1px",
+                      backgroundColor: "rgba(10,10,10,0.08)",
+                      marginBottom: "0.75rem",
+                    }}
+                  />
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      fontSize: "0.75rem",
+                      color: "rgba(10,10,10,0.4)",
+                      marginBottom: "1.25rem",
+                      fontFamily: "Jost, system-ui, sans-serif",
+                    }}
                   >
                     <span>{work.medium}</span>
                     <span>{work.dimensions}</span>
                   </div>
-                  <button className="w-full border border-[#0a0a0a]/20 text-[#0a0a0a]/70 py-3 text-xs tracking-[0.25em] uppercase hover:border-[#c9a84c] hover:text-[#c9a84c] hover:bg-[#c9a84c]/5 transition-all duration-300 cursor-pointer">
-                    <span style={{ fontFamily: "Jost, system-ui, sans-serif" }}>
-                      Inquire to Purchase
-                    </span>
+                  <button
+                    className="hover:border-[#c9a84c] hover:text-[#c9a84c] hover:bg-[#c9a84c]/5 transition-all duration-300 cursor-pointer"
+                    style={{
+                      width: "100%",
+                      border: "1px solid rgba(10,10,10,0.2)",
+                      color: "rgba(10,10,10,0.7)",
+                      padding: "0.75rem",
+                      fontSize: "0.75rem",
+                      letterSpacing: "0.25em",
+                      textTransform: "uppercase",
+                      fontFamily: "Jost, system-ui, sans-serif",
+                      backgroundColor: "transparent",
+                    }}
+                  >
+                    Inquire to Purchase
                   </button>
                 </div>
               </article>
@@ -170,37 +246,133 @@ export default function GalleryPage() {
           </div>
 
           {/* Advisory note */}
-          <div className="mt-20 border border-[#0a0a0a]/10 p-8 md:p-12 text-center">
-            <p
-              className="text-[#c9a84c] tracking-[0.3em] text-xs uppercase mb-4"
-              style={{ fontFamily: "Jost, system-ui, sans-serif" }}
-            >
-              Private Advisory
-            </p>
-            <h3
-              className="text-[#0a0a0a] font-light mb-4"
+          <div
+            className="two-col-grid"
+            style={{
+              marginTop: "5rem",
+              border: "1px solid rgba(10,10,10,0.1)",
+            }}
+          >
+            {/* Collector pitch */}
+            <div
               style={{
-                fontFamily: "Cormorant Garamond, Georgia, serif",
-                fontSize: "clamp(1.5rem, 3vw, 2.5rem)",
+                padding: "3rem",
+                borderRight: "1px solid rgba(10,10,10,0.1)",
               }}
             >
-              Looking for Something Specific?
-            </h3>
-            <p
-              className="text-[#0a0a0a]/50 text-sm max-w-lg mx-auto leading-relaxed mb-8"
-              style={{ fontFamily: "Jost, system-ui, sans-serif" }}
-            >
-              Our advisors have access to an extensive network of galleries,
-              private collections, and estates. Tell us your vision and we will
-              source accordingly.
-            </p>
-            <Link
-              href="/consultation"
-              className="inline-block bg-[#0a0a0a] text-[#f5f0e8] px-10 py-4 text-xs tracking-[0.3em] uppercase hover:bg-[#c9a84c] hover:text-[#0a0a0a] transition-all duration-300"
-              style={{ fontFamily: "Jost, system-ui, sans-serif" }}
-            >
-              Request Private Advisory
-            </Link>
+              <p
+                style={{
+                  fontFamily: "Jost, system-ui, sans-serif",
+                  color: "#c9a84c",
+                  letterSpacing: "0.3em",
+                  fontSize: "0.75rem",
+                  textTransform: "uppercase",
+                  marginBottom: "1rem",
+                }}
+              >
+                For Collectors
+              </p>
+              <h3
+                style={{
+                  fontFamily: "Cormorant Garamond, Georgia, serif",
+                  color: "#0a0a0a",
+                  fontWeight: 300,
+                  fontSize: "clamp(1.4rem, 2.5vw, 2rem)",
+                  marginBottom: "1rem",
+                }}
+              >
+                Building or Refining Your Collection?
+              </h3>
+              <p
+                style={{
+                  fontFamily: "Jost, system-ui, sans-serif",
+                  color: "rgba(10,10,10,0.5)",
+                  fontSize: "0.875rem",
+                  lineHeight: 1.75,
+                  marginBottom: "2rem",
+                }}
+              >
+                We work directly with collectors to discover, acquire, and place
+                exceptional contemporary artwork. By working with both emerging and
+                established artists, we offer access to unique works that hold
+                aesthetic significance and long-term cultural value.
+              </p>
+              <Link
+                href="/consultation"
+                className="inline-block hover:bg-[#c9a84c] hover:text-[#0a0a0a] transition-all duration-300"
+                style={{
+                  backgroundColor: "#0a0a0a",
+                  color: "#f5f0e8",
+                  padding: "0.875rem 2rem",
+                  fontSize: "0.75rem",
+                  letterSpacing: "0.3em",
+                  textTransform: "uppercase",
+                  fontFamily: "Jost, system-ui, sans-serif",
+                  textDecoration: "none",
+                }}
+              >
+                Request Advisory
+              </Link>
+            </div>
+
+            {/* Artist open call */}
+            <div style={{ padding: "3rem", backgroundColor: "rgba(10,10,10,0.02)" }}>
+              <p
+                style={{
+                  fontFamily: "Jost, system-ui, sans-serif",
+                  color: "#c9a84c",
+                  letterSpacing: "0.3em",
+                  fontSize: "0.75rem",
+                  textTransform: "uppercase",
+                  marginBottom: "1rem",
+                }}
+              >
+                For Artists
+              </p>
+              <h3
+                style={{
+                  fontFamily: "Cormorant Garamond, Georgia, serif",
+                  color: "#0a0a0a",
+                  fontWeight: 300,
+                  fontSize: "clamp(1.4rem, 2.5vw, 2rem)",
+                  marginBottom: "1rem",
+                }}
+              >
+                Open Call for Contemporary Artists
+              </h3>
+              <p
+                style={{
+                  fontFamily: "Jost, system-ui, sans-serif",
+                  color: "rgba(10,10,10,0.5)",
+                  fontSize: "0.875rem",
+                  lineHeight: 1.75,
+                  marginBottom: "2rem",
+                }}
+              >
+                We are currently seeking contemporary artists interested in
+                exhibiting and working with collectors through our gallery and
+                advisory platform. We focus on distinctive voices in painting,
+                sculpture, and mixed media, and aim to build lasting
+                relationships that support both artistic growth and meaningful
+                placement of work.
+              </p>
+              <Link
+                href="/consultation"
+                className="inline-block hover:border-[#c9a84c] hover:text-[#c9a84c] transition-all duration-300"
+                style={{
+                  border: "1px solid rgba(10,10,10,0.3)",
+                  color: "rgba(10,10,10,0.7)",
+                  padding: "0.875rem 2rem",
+                  fontSize: "0.75rem",
+                  letterSpacing: "0.3em",
+                  textTransform: "uppercase",
+                  fontFamily: "Jost, system-ui, sans-serif",
+                  textDecoration: "none",
+                }}
+              >
+                Submit Portfolio
+              </Link>
+            </div>
           </div>
         </div>
       </section>
