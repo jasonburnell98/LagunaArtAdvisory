@@ -708,9 +708,13 @@ function VirtualPlacementTool() {
             <div
               ref={canvasRef}
               style={{
-                flex:        1,
+                flexGrow:    1,          /* don't use flex:1 — it sets flex-basis:0% which collapses height in column layout */
+                flexShrink:  1,
+                flexBasis:   "auto",
+                width:       "100%",     /* ensure full width on mobile column layout */
                 position:    "relative",
                 height:      "500px",
+                minHeight:   "500px",
                 overflow:    "hidden",
                 touchAction: "none",
                 userSelect:  "none",
