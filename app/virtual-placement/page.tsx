@@ -124,13 +124,27 @@ function VirtualPlacementTool() {
     }
   }, []);
 
-  // Attach stream to video element once it is actually in the DOM
+  // Attach stream to video element once it is actually in the DOM.
+  // Also set webkit-playsinline imperatively for iOS Safari.
   useEffect(() => {
     if (cameraActive && streamRef.current && videoRef.current) {
-      videoRef.current.srcObject = streamRef.current;
-      videoRef.current.play().catch((err) => console.error("Video play failed:", err));
+      const video = videoRef.current;
+      video.setAttribute("webkit-playsinline", "");
+      video.setAttribute("playsinline", "");
+      video.muted = true;
+      video.srcObject = streamRef.current;
+      video.play().catch((err) => console.error("Video play failed:", err));
     }
   }, [cameraActive]);
+
+  // On mobile, scroll the camera canvas into view once the stream starts
+  useEffect(() => {
+    if (cameraActive && isMobile && canvasRef.current) {
+      setTimeout(() => {
+        canvasRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 150);
+    }
+  }, [cameraActive, isMobile]);
 
   const stopCamera = useCallback(() => {
     streamRef.current?.getTracks().forEach((t) => t.stop());
@@ -383,7 +397,10 @@ function VirtualPlacementTool() {
             </div>
           )}
 
-          <div className="vp-layout">
+          <div
+            className="vp-layout"
+            style={(isMobile && cameraActive) ? { flexDirection: "column-reverse" } : undefined}
+          >
 
             {/* ── LEFT PANEL: Controls ── */}
             <div className="vp-controls">
