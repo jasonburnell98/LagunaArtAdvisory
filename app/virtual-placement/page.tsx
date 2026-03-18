@@ -111,8 +111,16 @@ function VirtualPlacementTool() {
         audio: false,
       });
       streamRef.current = stream;
-      // Switch to camera mode FIRST so the <video> element mounts, then
-      // the useEffect below will attach the stream once the ref is valid.
+      // video element is always in the DOM, so videoRef.current is always valid
+      const video = videoRef.current!;
+      video.setAttribute("webkit-playsinline", "");
+      video.setAttribute("playsinline", "");
+      video.muted = true;
+      video.srcObject = stream;
+      // Force visible BEFORE play() — iOS Safari refuses to play display:none videos.
+      // React hasn't re-rendered yet so we set it imperatively.
+      video.style.display = "block";
+      try { await video.play(); } catch { /* autoplay policy — video will play on interaction */ }
       setMode("camera");
       setCameraActive(true);
       setRoomImage(null);
@@ -123,19 +131,6 @@ function VirtualPlacementTool() {
       );
     }
   }, []);
-
-  // Attach stream to video element once it is actually in the DOM.
-  // Also set webkit-playsinline imperatively for iOS Safari.
-  useEffect(() => {
-    if (cameraActive && streamRef.current && videoRef.current) {
-      const video = videoRef.current;
-      video.setAttribute("webkit-playsinline", "");
-      video.setAttribute("playsinline", "");
-      video.muted = true;
-      video.srcObject = streamRef.current;
-      video.play().catch((err) => console.error("Video play failed:", err));
-    }
-  }, [cameraActive]);
 
   // On mobile, scroll the camera canvas into view once the stream starts
   useEffect(() => {
@@ -709,322 +704,107 @@ function VirtualPlacementTool() {
               </Link>
             </div>
 
-            {/* ── RIGHT PANEL: Canvas / Camera ── */}
-            <div style={{ flex: 1, minHeight: "400px", position: "relative" }}>
+            {/* ── RIGHT PANEL: unified canvas — video always in DOM ── */}
+            <div
+              ref={canvasRef}
+              style={{
+                flex:        1,
+                position:    "relative",
+                height:      "500px",
+                overflow:    "hidden",
+                touchAction: "none",
+                userSelect:  "none",
+                cursor:      isDragging ? "grabbing" : "default",
+                backgroundColor: mode === "camera" ? "#000" : "rgba(10,10,10,0.05)",
+                border:      mode === "camera" ? "none" : "2px dashed rgba(10,10,10,0.15)",
+              }}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onMouseLeave={handleMouseUp}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
+              {/* Video — always rendered so ref is always valid */}
+              <video
+                ref={videoRef}
+                autoPlay
+                playsInline
+                muted
+                style={{
+                  position:  "absolute",
+                  inset:     0,
+                  width:     "100%",
+                  height:    "100%",
+                  objectFit: "cover",
+                  display:   mode === "camera" ? "block" : "none",
+                }}
+              />
 
-              {/* ── Camera mode ── */}
-              {mode === "camera" && (
-                <div
-                  ref={canvasRef}
-                  className="ar-canvas"
-                  onMouseMove={handleMouseMove}
-                  onMouseUp={handleMouseUp}
-                  onMouseLeave={handleMouseUp}
-                  onTouchStart={handleTouchStart}
-                  onTouchMove={handleTouchMove}
-                  onTouchEnd={handleTouchEnd}
-                  style={{
-                    position:        "relative",
-                    width:           "100%",
-                    height:          "500px",
-                    overflow:        "hidden",
-                    touchAction:     "none",
-                    userSelect:      "none",
-                    cursor:          isDragging ? "grabbing" : "default",
-                    backgroundColor: "#000",
-                  }}
-                >
-                  <video
-                    ref={videoRef}
-                    autoPlay
-                    playsInline
-                    muted
-                    style={{
-                      position:  "absolute",
-                      inset:     0,
-                      width:     "100%",
-                      height:    "100%",
-                      objectFit: "cover",
-                      display:   "block",
-                    }}
-                  />
+              {/* Uploaded room photo */}
+              {mode === "upload" && roomImage && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={roomImage}
+                  alt="Room"
+                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                  draggable={false}
+                />
+              )}
 
-                  {!selectedArtwork && (
-                    <div
-                      style={{
-                        position:        "absolute",
-                        inset:           0,
-                        backgroundColor: "rgba(10,10,10,0.4)",
-                        display:         "flex",
-                        alignItems:      "center",
-                        justifyContent:  "center",
-                      }}
-                    >
-                      <p
-                        style={{
-                          fontFamily:    "Jost, system-ui, sans-serif",
-                          color:         "rgba(245,240,232,0.8)",
-                          fontSize:      "0.875rem",
-                          letterSpacing: "0.1em",
-                        }}
-                      >
-                        ← Select an artwork to place
-                      </p>
-                    </div>
-                  )}
-
-                  <ArtworkOverlay />
-
-                  {/* AR badge */}
-                  <div
-                    style={{
-                      position:        "absolute",
-                      top:             "0.75rem",
-                      left:            "0.75rem",
-                      backgroundColor: "rgba(201,168,76,0.9)",
-                      padding:         "0.3rem 0.75rem",
-                      display:         "flex",
-                      alignItems:      "center",
-                      gap:             "0.4rem",
-                    }}
+              {/* Empty-state placeholder */}
+              {mode === "upload" && !roomImage && (
+                <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1rem", padding: "2rem", textAlign: "center" }}>
+                  <div style={{ fontSize: "3rem", color: "rgba(10,10,10,0.12)" }}>🖼</div>
+                  <h3 style={{ fontFamily: "Cormorant Garamond, Georgia, serif", color: "rgba(10,10,10,0.3)", fontWeight: 300, fontSize: "1.4rem" }}>Your Canvas Awaits</h3>
+                  <p style={{ fontFamily: "Jost, system-ui, sans-serif", color: "rgba(10,10,10,0.3)", fontSize: "0.8rem", maxWidth: "18rem", lineHeight: 1.7 }}>
+                    {isMobile ? 'Tap "Use Live Camera" above to see artwork in your room, or upload a photo.' : 'Upload a photo of your wall, or use the live camera on mobile.'}
+                  </p>
+                  <button
+                    onClick={startCamera}
+                    style={{ backgroundColor: "#0a0a0a", color: "#f5f0e8", border: "none", padding: "0.875rem 2rem", fontSize: "0.75rem", letterSpacing: "0.2em", textTransform: "uppercase", fontFamily: "Jost, system-ui, sans-serif", cursor: "pointer" }}
                   >
-                    <span style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: "#0a0a0a", display: "inline-block" }} />
-                    <span
-                      style={{
-                        fontFamily:    "Jost, system-ui, sans-serif",
-                        color:         "#0a0a0a",
-                        fontSize:      "0.65rem",
-                        letterSpacing: "0.2em",
-                        textTransform: "uppercase",
-                        fontWeight:    600,
-                      }}
-                    >
-                      Live AR
-                    </span>
-                  </div>
-
-                  {selectedArtwork && (
-                    <div
-                      style={{
-                        position:        "absolute",
-                        top:             "0.75rem",
-                        right:           "0.75rem",
-                        backgroundColor: "rgba(10,10,10,0.65)",
-                        backdropFilter:  "blur(4px)",
-                        padding:         "0.5rem 0.75rem",
-                      }}
-                    >
-                      <p
-                        style={{
-                          fontFamily: "Jost, system-ui, sans-serif",
-                          color:      "rgba(245,240,232,0.7)",
-                          fontSize:   "0.7rem",
-                        }}
-                      >
-                        {isMobile ? "Drag · Pinch to resize" : "Drag to reposition"}
-                      </p>
-                    </div>
-                  )}
-
-                  {savedPreview && (
-                    <div
-                      style={{
-                        position:        "absolute",
-                        bottom:          0,
-                        left:            0,
-                        right:           0,
-                        backgroundColor: "#c9a84c",
-                        padding:         "0.75rem",
-                        textAlign:       "center",
-                      }}
-                    >
-                      <p
-                        style={{
-                          fontFamily:    "Jost, system-ui, sans-serif",
-                          color:         "#0a0a0a",
-                          fontSize:      "0.75rem",
-                          letterSpacing: "0.1em",
-                          textTransform: "uppercase",
-                        }}
-                      >
-                        ✦ Screenshot your screen to save this preview
-                      </p>
-                    </div>
-                  )}
+                    📷 Open Camera
+                  </button>
                 </div>
               )}
 
-              {/* ── Upload / photo mode ── */}
-              {mode === "upload" && (
-                <>
-                  {!roomImage ? (
-                    <div
-                      style={{
-                        width:           "100%",
-                        minHeight:       "500px",
-                        backgroundColor: "rgba(10,10,10,0.05)",
-                        border:          "2px dashed rgba(10,10,10,0.15)",
-                        display:         "flex",
-                        flexDirection:   "column",
-                        alignItems:      "center",
-                        justifyContent:  "center",
-                        textAlign:       "center",
-                        padding:         "2.5rem",
-                        gap:             "1rem",
-                      }}
-                    >
-                      <div style={{ fontSize: "3.5rem", color: "rgba(10,10,10,0.1)" }}>🖼</div>
-                      <h3
-                        style={{
-                          fontFamily: "Cormorant Garamond, Georgia, serif",
-                          color:      "rgba(10,10,10,0.3)",
-                          fontWeight: 300,
-                          fontSize:   "1.5rem",
-                        }}
-                      >
-                        Your Canvas Awaits
-                      </h3>
-                      <p
-                        style={{
-                          fontFamily: "Jost, system-ui, sans-serif",
-                          color:      "rgba(10,10,10,0.25)",
-                          fontSize:   "0.8rem",
-                          maxWidth:   "20rem",
-                          lineHeight: 1.75,
-                        }}
-                      >
-                        {isMobile
-                          ? 'Tap "Use Live Camera" to see artwork in your room in real time, or upload a photo of your wall.'
-                          : 'Use the live camera on your phone for real-time AR, or upload a photo of your wall to get started.'}
-                      </p>
-                      <button
-                        onClick={startCamera}
-                        style={{
-                          marginTop:       "0.5rem",
-                          backgroundColor: "#0a0a0a",
-                          color:           "#f5f0e8",
-                          border:          "none",
-                          padding:         "0.875rem 2rem",
-                          fontSize:        "0.75rem",
-                          letterSpacing:   "0.2em",
-                          textTransform:   "uppercase",
-                          fontFamily:      "Jost, system-ui, sans-serif",
-                          cursor:          "pointer",
-                        }}
-                      >
-                        📷 Open Camera
-                      </button>
-                    </div>
-                  ) : (
-                    <div
-                      ref={canvasRef}
-                      style={{
-                        position:    "relative",
-                        width:       "100%",
-                        overflow:    "hidden",
-                        touchAction: "none",
-                        userSelect:  "none",
-                        cursor:      isDragging ? "grabbing" : "default",
-                        minHeight:   "500px",
-                      }}
-                      onMouseMove={handleMouseMove}
-                      onMouseUp={handleMouseUp}
-                      onMouseLeave={handleMouseUp}
-                      onTouchStart={handleTouchStart}
-                      onTouchMove={handleTouchMove}
-                      onTouchEnd={handleTouchEnd}
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={roomImage}
-                        alt="Room"
-                        style={{
-                          width:     "100%",
-                          height:    "100%",
-                          minHeight: "500px",
-                          objectFit: "cover",
-                          display:   "block",
-                        }}
-                        draggable={false}
-                      />
+              {/* Prompt to select artwork */}
+              {(mode === "camera" || (mode === "upload" && roomImage)) && !selectedArtwork && (
+                <div style={{ position: "absolute", inset: 0, backgroundColor: "rgba(10,10,10,0.35)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <p style={{ fontFamily: "Jost, system-ui, sans-serif", color: "rgba(245,240,232,0.85)", fontSize: "0.875rem", letterSpacing: "0.1em" }}>
+                    ← Select an artwork to place
+                  </p>
+                </div>
+              )}
 
-                      {!selectedArtwork && (
-                        <div
-                          style={{
-                            position:        "absolute",
-                            inset:           0,
-                            backgroundColor: "rgba(10,10,10,0.4)",
-                            display:         "flex",
-                            alignItems:      "center",
-                            justifyContent:  "center",
-                          }}
-                        >
-                          <p
-                            style={{
-                              fontFamily:    "Jost, system-ui, sans-serif",
-                              color:         "rgba(245,240,232,0.8)",
-                              fontSize:      "0.875rem",
-                              letterSpacing: "0.1em",
-                            }}
-                          >
-                            ← Select an artwork to place
-                          </p>
-                        </div>
-                      )}
+              {/* Artwork overlay */}
+              <ArtworkOverlay />
 
-                      <ArtworkOverlay />
+              {/* AR badge (camera mode) */}
+              {mode === "camera" && (
+                <div style={{ position: "absolute", top: "0.75rem", left: "0.75rem", backgroundColor: "rgba(201,168,76,0.9)", padding: "0.3rem 0.75rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                  <span style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: "#0a0a0a", display: "inline-block" }} />
+                  <span style={{ fontFamily: "Jost, system-ui, sans-serif", color: "#0a0a0a", fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 600 }}>Live AR</span>
+                </div>
+              )}
 
-                      {selectedArtwork && (
-                        <div
-                          style={{
-                            position:        "absolute",
-                            top:             "0.75rem",
-                            right:           "0.75rem",
-                            backgroundColor: "rgba(10,10,10,0.65)",
-                            backdropFilter:  "blur(4px)",
-                            padding:         "0.5rem 0.75rem",
-                          }}
-                        >
-                          <p
-                            style={{
-                              fontFamily: "Jost, system-ui, sans-serif",
-                              color:      "rgba(245,240,232,0.7)",
-                              fontSize:   "0.7rem",
-                            }}
-                          >
-                            {isMobile ? "Drag · Pinch to resize" : "Drag to reposition"}
-                          </p>
-                        </div>
-                      )}
+              {/* Drag hint */}
+              {selectedArtwork && hasBackground && (
+                <div style={{ position: "absolute", top: "0.75rem", right: "0.75rem", backgroundColor: "rgba(10,10,10,0.65)", backdropFilter: "blur(4px)", padding: "0.5rem 0.75rem" }}>
+                  <p style={{ fontFamily: "Jost, system-ui, sans-serif", color: "rgba(245,240,232,0.7)", fontSize: "0.7rem" }}>
+                    {isMobile ? "Drag · Pinch to resize" : "Drag to reposition"}
+                  </p>
+                </div>
+              )}
 
-                      {savedPreview && (
-                        <div
-                          style={{
-                            position:        "absolute",
-                            bottom:          0,
-                            left:            0,
-                            right:           0,
-                            backgroundColor: "#c9a84c",
-                            padding:         "0.75rem",
-                            textAlign:       "center",
-                          }}
-                        >
-                          <p
-                            style={{
-                              fontFamily:    "Jost, system-ui, sans-serif",
-                              color:         "#0a0a0a",
-                              fontSize:      "0.75rem",
-                              letterSpacing: "0.1em",
-                              textTransform: "uppercase",
-                            }}
-                          >
-                            ✦ Preview Saved Successfully
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </>
+              {/* Save banner */}
+              {savedPreview && (
+                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, backgroundColor: "#c9a84c", padding: "0.75rem", textAlign: "center" }}>
+                  <p style={{ fontFamily: "Jost, system-ui, sans-serif", color: "#0a0a0a", fontSize: "0.75rem", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                    ✦ Screenshot your screen to save this preview
+                  </p>
+                </div>
               )}
             </div>
           </div>
