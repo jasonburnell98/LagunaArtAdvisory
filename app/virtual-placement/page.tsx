@@ -152,9 +152,11 @@ function VirtualPlacementTool() {
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent) => {
+      if (!canvasRef.current) return;
       e.preventDefault();
+      const rect = canvasRef.current.getBoundingClientRect();
       setIsDragging(true);
-      setDragOffset({ x: e.clientX - position.x, y: e.clientY - position.y });
+      setDragOffset({ x: e.clientX - rect.left - position.x, y: e.clientY - rect.top - position.y });
     },
     [position]
   );
@@ -164,8 +166,8 @@ function VirtualPlacementTool() {
       if (!isDragging || !canvasRef.current) return;
       const rect = canvasRef.current.getBoundingClientRect();
       setPosition({
-        x: Math.max(0, Math.min(e.clientX - dragOffset.x, rect.width  - artworkSize)),
-        y: Math.max(0, Math.min(e.clientY - dragOffset.y, rect.height - artworkSize)),
+        x: Math.max(0, Math.min(e.clientX - rect.left - dragOffset.x, rect.width  - artworkSize)),
+        y: Math.max(0, Math.min(e.clientY - rect.top  - dragOffset.y, rect.height - artworkSize)),
       });
     },
     [isDragging, dragOffset, artworkSize]
@@ -181,10 +183,11 @@ function VirtualPlacementTool() {
       if (e.touches.length === 2) {
         setLastPinchDist(getPinchDistance(e.touches));
         setIsDragging(false);
-      } else {
+      } else if (canvasRef.current) {
         const touch = e.touches[0];
+        const rect  = canvasRef.current.getBoundingClientRect();
         setIsDragging(true);
-        setDragOffset({ x: touch.clientX - position.x, y: touch.clientY - position.y });
+        setDragOffset({ x: touch.clientX - rect.left - position.x, y: touch.clientY - rect.top - position.y });
       }
     },
     [position]
@@ -205,8 +208,8 @@ function VirtualPlacementTool() {
         const touch = e.touches[0];
         const rect  = canvasRef.current.getBoundingClientRect();
         setPosition({
-          x: Math.max(0, Math.min(touch.clientX - dragOffset.x, rect.width  - artworkSize)),
-          y: Math.max(0, Math.min(touch.clientY - dragOffset.y, rect.height - artworkSize)),
+          x: Math.max(0, Math.min(touch.clientX - rect.left - dragOffset.x, rect.width  - artworkSize)),
+          y: Math.max(0, Math.min(touch.clientY - rect.top  - dragOffset.y, rect.height - artworkSize)),
         });
       }
     },
@@ -250,9 +253,6 @@ function VirtualPlacementTool() {
           userSelect:  "none",
         }}
         onMouseDown={handleMouseDown}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
       >
         <div style={{ border: "6px solid #e8dcc8", backgroundColor: "#e8dcc8" }}>
           <div style={{ border: "2px solid #d4c8b0" }}>
@@ -698,15 +698,18 @@ function VirtualPlacementTool() {
                   onMouseMove={handleMouseMove}
                   onMouseUp={handleMouseUp}
                   onMouseLeave={handleMouseUp}
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
                   style={{
-                    position:   "relative",
-                    width:      "100%",
-                    overflow:   "hidden",
-                    touchAction: "none",
-                    userSelect:  "none",
-                    cursor:     isDragging ? "grabbing" : "default",
+                    position:        "relative",
+                    width:           "100%",
+                    height:          "500px",
+                    overflow:        "hidden",
+                    touchAction:     "none",
+                    userSelect:      "none",
+                    cursor:          isDragging ? "grabbing" : "default",
                     backgroundColor: "#000",
-                    minHeight:  "500px",
                   }}
                 >
                   <video
@@ -715,9 +718,10 @@ function VirtualPlacementTool() {
                     playsInline
                     muted
                     style={{
+                      position:  "absolute",
+                      inset:     0,
                       width:     "100%",
                       height:    "100%",
-                      minHeight: "500px",
                       objectFit: "cover",
                       display:   "block",
                     }}
@@ -904,6 +908,9 @@ function VirtualPlacementTool() {
                       onMouseMove={handleMouseMove}
                       onMouseUp={handleMouseUp}
                       onMouseLeave={handleMouseUp}
+                      onTouchStart={handleTouchStart}
+                      onTouchMove={handleTouchMove}
+                      onTouchEnd={handleTouchEnd}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
