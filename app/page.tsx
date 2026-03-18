@@ -4,21 +4,21 @@ import Image from "next/image";
 const featuredWorks = [
   {
     id: 1,
-    title: "Coastal Reverie",
-    artist: "Elara Montclair",
-    image: "https://picsum.photos/seed/art1/600/750",
+    title: "Dawns Return",
+    artist: "Alec Xavier",
+    image: "/artists/alec_xavier/dawns_return.JPG",
   },
   {
     id: 2,
-    title: "Golden Hour Study",
-    artist: "Marcus Delacroix",
-    image: "https://picsum.photos/seed/art2/600/750",
+    title: "Amigo Room",
+    artist: "Alec Xavier",
+    image: "/artists/alec_xavier/amigo_room.JPG",
   },
   {
     id: 3,
-    title: "Serenity in Form",
-    artist: "Vivienne Hartwell",
-    image: "https://picsum.photos/seed/art3/600/750",
+    title: "Oil / Canvas 36×24",
+    artist: "Emily O'Flaherty",
+    image: "/artists/emily_oflaherty/oil_canvas_36_24.JPG",
   },
 ];
 
@@ -73,7 +73,7 @@ export default function HomePage() {
         <div
           className="absolute inset-0 opacity-20"
           style={{
-            backgroundImage: `url("https://picsum.photos/seed/hero-bg/1920/1080")`,
+            backgroundImage: `url("/artists/alec_xavier/dawns_return.JPG")`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             filter: "grayscale(40%) brightness(0.4)",
@@ -365,14 +365,16 @@ export default function HomePage() {
         className="relative overflow-hidden bg-[#1a1a1a]"
         style={{ padding: "8rem 0" }}
       >
-        <div className="absolute inset-0 opacity-10">
-          <Image
-            src="https://picsum.photos/seed/cta-bg/1920/600"
-            alt=""
-            fill
-            className="object-cover"
-          />
-        </div>
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url("/artists/alec_xavier/cinema.JPG")`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            opacity: 0.12,
+            filter: "grayscale(30%) brightness(0.5)",
+          }}
+        />
         <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a]/90 via-[#0a0a0a]/70 to-[#0a0a0a]/90" />
 
         <div

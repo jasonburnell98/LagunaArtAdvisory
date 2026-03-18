@@ -38,7 +38,7 @@ const alecXavierWorks = [
     artist: "Alec Xavier",
     year: 2025,
     medium: "Acrylic/Canvas",
-    dimensions: "24x18 in",
+    dimensions: "24x18",
     sn: "SN/2025.001.01",
     image: "/artists/alec_xavier/palms.JPG",
   },
@@ -48,7 +48,7 @@ const alecXavierWorks = [
     artist: "Alec Xavier",
     year: 2025,
     medium: "Acrylic/Canvas",
-    dimensions: "28x22 in",
+    dimensions: "28x22",
     sn: "SN/2025.001.02",
     image: "/artists/alec_xavier/springs.JPG",
   },
@@ -58,7 +58,7 @@ const alecXavierWorks = [
     artist: "Alec Xavier",
     year: 2025,
     medium: "Acrylic/Canvas",
-    dimensions: "48x24 in",
+    dimensions: "48x24",
     sn: "SN/2025.001.03",
     image: "/artists/alec_xavier/amigo_room.JPG",
   },
@@ -68,7 +68,7 @@ const alecXavierWorks = [
     artist: "Alec Xavier",
     year: 2025,
     medium: "Acrylic/Canvas",
-    dimensions: "24x36 in",
+    dimensions: "24x36",
     sn: "SN/2025.001.03",
     image: "/artists/alec_xavier/fatal_window.JPG",
   },
@@ -158,7 +158,7 @@ const alecXavierWorks = [
     artist: "Alec Xavier",
     year: 2020,
     medium: "Digital Art",
-    dimensions: "17x30 Framed",
+    dimensions: "17x30",
     sn: "SN/2020.339.58",
     image: "/artists/alec_xavier/infinite_human_sn_2020_339_58.JPG",
   },
@@ -168,7 +168,7 @@ const alecXavierWorks = [
     artist: "Alec Xavier",
     year: 2020,
     medium: "Digital Art",
-    dimensions: "17x30 Framed",
+    dimensions: "17x30",
     sn: "SN/2020.339.59",
     image: "/artists/alec_xavier/infinite_human_sn_2020_339_59.JPG",
   },
@@ -228,6 +228,17 @@ type Artwork = {
   image: string;
 };
 
+function buildPreviewUrl(work: Artwork) {
+  const params = new URLSearchParams({
+    id: work.id,
+    image: work.image,
+    artist: work.artist,
+    ...(work.title ? { title: work.title } : {}),
+    ...(work.dimensions ? { dimensions: work.dimensions } : {}),
+  });
+  return `/virtual-placement?${params.toString()}`;
+}
+
 function ArtworkCard({ work }: { work: Artwork }) {
   return (
     <article
@@ -252,7 +263,7 @@ function ArtworkCard({ work }: { work: Artwork }) {
         {/* Hover overlay */}
         <div className="absolute inset-0 bg-[#0a0a0a]/0 group-hover:bg-[#0a0a0a]/30 transition-all duration-500 flex items-center justify-center">
           <Link
-            href="/virtual-placement"
+            href={buildPreviewUrl(work)}
             className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[#f5f0e8]/10 backdrop-blur-sm border border-[#f5f0e8]/40 text-[#f5f0e8] text-xs tracking-[0.2em] uppercase px-4 py-2 hover:bg-[#c9a84c]/20 hover:border-[#c9a84c]"
             style={{ fontFamily: "Jost, system-ui, sans-serif" }}
           >
