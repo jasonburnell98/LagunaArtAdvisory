@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 const alecXavierWorks = [
   {
@@ -217,6 +220,21 @@ const emilyOflaherty = [
   },
 ];
 
+const artistSections = [
+  {
+    artist: "Alec Xavier",
+    bio: "Available Works",
+    works: alecXavierWorks,
+  },
+  {
+    artist: "Emily O'Flaherty",
+    bio: "Available Works",
+    works: emilyOflaherty,
+  },
+];
+
+const ALL_ARTISTS = "All Artists";
+
 type Artwork = {
   id: string;
   title: string | null;
@@ -423,6 +441,16 @@ function ArtistSection({
 }
 
 export default function GalleryPage() {
+  const [activeArtist, setActiveArtist] = useState<string>(ALL_ARTISTS);
+
+  const artistNames = artistSections.map((s) => s.artist);
+  const filterOptions = [ALL_ARTISTS, ...artistNames];
+
+  const visibleSections =
+    activeArtist === ALL_ARTISTS
+      ? artistSections
+      : artistSections.filter((s) => s.artist === activeArtist);
+
   return (
     <>
       {/* Page header */}
@@ -476,30 +504,121 @@ export default function GalleryPage() {
         </div>
       </div>
 
+      {/* Filter bar */}
+      <div
+        style={{
+          backgroundColor: "#f5f0e8",
+          borderBottom: "1px solid rgba(10,10,10,0.08)",
+          position: "sticky",
+          top: 0,
+          zIndex: 20,
+        }}
+      >
+        <div
+          className="page-container"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            padding: "1rem var(--page-padding, 1.5rem)",
+            flexWrap: "wrap",
+          }}
+        >
+          <span
+            style={{
+              fontFamily: "Jost, system-ui, sans-serif",
+              fontSize: "0.7rem",
+              letterSpacing: "0.25em",
+              textTransform: "uppercase",
+              color: "rgba(10,10,10,0.35)",
+              marginRight: "0.75rem",
+              whiteSpace: "nowrap",
+            }}
+          >
+            Filter by Artist
+          </span>
+
+          {filterOptions.map((option) => {
+            const isActive = activeArtist === option;
+            return (
+              <button
+                key={option}
+                onClick={() => setActiveArtist(option)}
+                style={{
+                  fontFamily: "Jost, system-ui, sans-serif",
+                  fontSize: "0.7rem",
+                  letterSpacing: "0.15em",
+                  textTransform: "uppercase",
+                  padding: "0.45rem 1.1rem",
+                  border: isActive
+                    ? "1px solid #c9a84c"
+                    : "1px solid rgba(10,10,10,0.15)",
+                  backgroundColor: isActive ? "#c9a84c" : "transparent",
+                  color: isActive ? "#0a0a0a" : "rgba(10,10,10,0.55)",
+                  cursor: "pointer",
+                  transition: "all 0.25s ease",
+                  whiteSpace: "nowrap",
+                }}
+                onMouseEnter={(e) => {
+                  if (!isActive) {
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = "#c9a84c";
+                    (e.currentTarget as HTMLButtonElement).style.color = "#c9a84c";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive) {
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(10,10,10,0.15)";
+                    (e.currentTarget as HTMLButtonElement).style.color = "rgba(10,10,10,0.55)";
+                  }
+                }}
+              >
+                {option}
+              </button>
+            );
+          })}
+
+          {activeArtist !== ALL_ARTISTS && (
+            <span
+              style={{
+                fontFamily: "Jost, system-ui, sans-serif",
+                fontSize: "0.7rem",
+                color: "rgba(10,10,10,0.35)",
+                marginLeft: "auto",
+                letterSpacing: "0.05em",
+              }}
+            >
+              {visibleSections.reduce((acc, s) => acc + s.works.length, 0)}{" "}
+              {visibleSections.reduce((acc, s) => acc + s.works.length, 0) === 1
+                ? "work"
+                : "works"}
+            </span>
+          )}
+        </div>
+      </div>
+
       {/* Gallery */}
       <section style={{ backgroundColor: "#faf7f2", padding: "5rem 0" }}>
         <div className="page-container">
 
-          <ArtistSection
-            artist="Alec Xavier"
-            bio="Available Works"
-            works={alecXavierWorks}
-          />
-
-          {/* Divider */}
-          <div
-            style={{
-              height: "1px",
-              backgroundColor: "rgba(10,10,10,0.1)",
-              margin: "2rem 0 5rem",
-            }}
-          />
-
-          <ArtistSection
-            artist="Emily O'Flaherty"
-            bio="Available Works"
-            works={emilyOflaherty}
-          />
+          {visibleSections.map((section, index) => (
+            <div key={section.artist}>
+              <ArtistSection
+                artist={section.artist}
+                bio={section.bio}
+                works={section.works}
+              />
+              {/* Divider between sections */}
+              {index < visibleSections.length - 1 && (
+                <div
+                  style={{
+                    height: "1px",
+                    backgroundColor: "rgba(10,10,10,0.1)",
+                    margin: "2rem 0 5rem",
+                  }}
+                />
+              )}
+            </div>
+          ))}
 
           {/* Advisory note */}
           <div
