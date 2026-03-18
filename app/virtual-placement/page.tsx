@@ -107,31 +107,37 @@ function VirtualPlacementTool() {
     setCameraError(null);
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: { ideal: "environment" },
-          width:  { ideal: 1920 },
-          height: { ideal: 1080 },
-        },
+        video: { facingMode: { ideal: "environment" } },
+        audio: false,
       });
       streamRef.current = stream;
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        await videoRef.current.play();
-      }
+      // Switch to camera mode FIRST so the <video> element mounts, then
+      // the useEffect below will attach the stream once the ref is valid.
       setMode("camera");
       setCameraActive(true);
       setRoomImage(null);
-    } catch {
+    } catch (err) {
+      console.error("Camera error:", err);
       setCameraError(
-        "Camera access was denied. Please allow camera access in your browser settings, or upload a room photo instead."
+        "Camera access was denied or unavailable. Please allow camera access in your browser settings, or upload a room photo instead."
       );
     }
   }, []);
 
+  // Attach stream to video element once it is actually in the DOM
+  useEffect(() => {
+    if (cameraActive && streamRef.current && videoRef.current) {
+      videoRef.current.srcObject = streamRef.current;
+      videoRef.current.play().catch((err) => console.error("Video play failed:", err));
+    }
+  }, [cameraActive]);
+
   const stopCamera = useCallback(() => {
     streamRef.current?.getTracks().forEach((t) => t.stop());
     streamRef.current = null;
-    if (videoRef.current) videoRef.current.srcObject = null;
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
     setCameraActive(false);
     setMode("upload");
   }, []);
@@ -520,7 +526,6 @@ function VirtualPlacementTool() {
                   ref={fileInputRef}
                   type="file"
                   accept="image/*"
-                  capture="environment"
                   onChange={handleFileUpload}
                   className="hidden"
                 />
