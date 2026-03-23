@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // ── Artwork Data ─────────────────────────────────────────────────────────────
 // price: number (USD cents) → shows "Buy Now" + Stripe checkout
@@ -662,9 +662,11 @@ const inputStyle: React.CSSProperties = {
 function ArtworkCard({
   work,
   onInquire,
+  isSold = false,
 }: {
   work: Artwork;
   onInquire: (work: Artwork) => void;
+  isSold?: boolean;
 }) {
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
@@ -715,18 +717,46 @@ function ArtworkCard({
           src={work.image}
           alt={work.title ?? `${work.artist} — ${work.medium}`}
           fill
-          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          className={`object-cover transition-transform duration-700 ${isSold ? "grayscale-[40%]" : "group-hover:scale-105"}`}
         />
-        {/* Hover overlay */}
-        <div className="absolute inset-0 bg-[#0a0a0a]/0 group-hover:bg-[#0a0a0a]/30 transition-all duration-500 flex items-center justify-center">
-          <Link
-            href={buildPreviewUrl(work)}
-            className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[#f5f0e8]/10 backdrop-blur-sm border border-[#f5f0e8]/40 text-[#f5f0e8] text-xs tracking-[0.2em] uppercase px-4 py-2 hover:bg-[#c9a84c]/20 hover:border-[#c9a84c]"
-            style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+        {/* Sold overlay */}
+        {isSold && (
+          <div
+            className="absolute inset-0 flex items-center justify-center"
+            style={{ backgroundColor: "rgba(10,10,10,0.45)" }}
           >
-            Preview in Room
-          </Link>
-        </div>
+            <div
+              style={{
+                border: "1px solid rgba(245,240,232,0.6)",
+                padding: "0.5rem 1.25rem",
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: "Jost, system-ui, sans-serif",
+                  color: "#f5f0e8",
+                  fontSize: "0.65rem",
+                  letterSpacing: "0.4em",
+                  textTransform: "uppercase",
+                }}
+              >
+                Sold
+              </span>
+            </div>
+          </div>
+        )}
+        {/* Hover overlay — only show if not sold */}
+        {!isSold && (
+          <div className="absolute inset-0 bg-[#0a0a0a]/0 group-hover:bg-[#0a0a0a]/30 transition-all duration-500 flex items-center justify-center">
+            <Link
+              href={buildPreviewUrl(work)}
+              className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[#f5f0e8]/10 backdrop-blur-sm border border-[#f5f0e8]/40 text-[#f5f0e8] text-xs tracking-[0.2em] uppercase px-4 py-2 hover:bg-[#c9a84c]/20 hover:border-[#c9a84c]"
+              style={{ fontFamily: "Jost, system-ui, sans-serif" }}
+            >
+              Preview in Room
+            </Link>
+          </div>
+        )}
       </div>
 
       {/* Info */}
@@ -810,8 +840,26 @@ function ArtworkCard({
           </p>
         )}
 
-        {/* CTA — Buy Now or Inquire */}
-        {work.price !== null ? (
+        {/* CTA — Sold / Buy Now / Inquire */}
+        {isSold ? (
+          <button
+            disabled
+            style={{
+              width: "100%",
+              border: "1px solid rgba(10,10,10,0.1)",
+              color: "rgba(10,10,10,0.25)",
+              padding: "0.75rem",
+              fontSize: "0.75rem",
+              letterSpacing: "0.25em",
+              textTransform: "uppercase",
+              fontFamily: "Jost, system-ui, sans-serif",
+              backgroundColor: "transparent",
+              cursor: "default",
+            }}
+          >
+            Sold
+          </button>
+        ) : work.price !== null ? (
           <div>
             <button
               onClick={handleBuyNow}
@@ -876,11 +924,13 @@ function ArtistSection({
   bio,
   works,
   onInquire,
+  soldIds,
 }: {
   artist: string;
   bio: string;
   works: Artwork[];
   onInquire: (work: Artwork) => void;
+  soldIds: Set<string>;
 }) {
   return (
     <div style={{ marginBottom: "5rem" }}>
@@ -930,7 +980,12 @@ function ArtistSection({
       {/* Grid */}
       <div className="section-grid">
         {works.map((work) => (
-          <ArtworkCard key={work.id} work={work} onInquire={onInquire} />
+          <ArtworkCard
+            key={work.id}
+            work={work}
+            onInquire={onInquire}
+            isSold={soldIds.has(work.id)}
+          />
         ))}
       </div>
     </div>
@@ -941,6 +996,21 @@ function ArtistSection({
 export default function GalleryPage() {
   const [activeArtist, setActiveArtist] = useState<string>(ALL_ARTISTS);
   const [inquiryWork, setInquiryWork] = useState<Artwork | null>(null);
+  const [soldIds, setSoldIds] = useState<Set<string>>(new Set());
+
+  // Fetch sold inventory on mount — updates gallery sold state from the database
+  useEffect(() => {
+    fetch("/api/inventory")
+      .then((res) => res.json())
+      .then((data: { sold: string[] }) => {
+        if (Array.isArray(data.sold)) {
+          setSoldIds(new Set(data.sold));
+        }
+      })
+      .catch(() => {
+        // Fail silently — gallery shows all as available if inventory is unreachable
+      });
+  }, []);
 
   const artistNames = artistSections.map((s) => s.artist);
   const filterOptions = [ALL_ARTISTS, ...artistNames];
@@ -1112,6 +1182,7 @@ export default function GalleryPage() {
                 bio={section.bio}
                 works={section.works}
                 onInquire={setInquiryWork}
+                soldIds={soldIds}
               />
               {index < visibleSections.length - 1 && (
                 <div
