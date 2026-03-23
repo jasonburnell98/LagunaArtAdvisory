@@ -43,8 +43,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const appUrl =
-      process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+    // Prefer the explicit env var; otherwise infer from the incoming request
+    // so it works on any domain (localhost, Vercel, custom domain) automatically.
+    const host = req.headers.get("host") ?? "localhost:3000";
+    const protocol = host.startsWith("localhost") ? "http" : "https";
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? `${protocol}://${host}`;
 
     // Build absolute image URL for Stripe (must be https in production)
     const imageUrl = image.startsWith("http")
