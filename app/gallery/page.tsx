@@ -3,276 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-
-// ── Artwork Data ─────────────────────────────────────────────────────────────
-// price: number (USD cents) → shows "Buy Now" + Stripe checkout
-// price: null               → shows "Inquire to Purchase" modal
-// price: undefined          → shows "Inquire to Purchase" modal
-
-const alecXavierWorks = [
-  {
-    id: "ax-1",
-    title: "Dawns Return",
-    artist: "Alec Xavier",
-    year: 2024,
-    medium: "Acrylic/Canvas",
-    dimensions: "40x50",
-    sn: "SN/2024.001.01",
-    image: "/artists/alec_xavier/dawns_return.JPG",
-    price: null, // Large piece — inquire for price
-  },
-  {
-    id: "ax-2",
-    title: "ASK",
-    artist: "Alec Xavier",
-    year: 2026,
-    medium: "Acrylic/Canvas",
-    dimensions: "30x40",
-    sn: "SN/2026.001.01",
-    image: "/artists/alec_xavier/ASK.JPG",
-    price: null, // Large piece — inquire for price
-  },
-  {
-    id: "ax-3",
-    title: "Sections",
-    artist: "Alec Xavier",
-    year: 2021,
-    medium: "Acrylic/Canvas",
-    dimensions: "24x36",
-    sn: "SN/2022.002.012",
-    image: "/artists/alec_xavier/sections.JPG",
-    price: 150000, // $1,500
-  },
-  {
-    id: "ax-4",
-    title: "Palms",
-    artist: "Alec Xavier",
-    year: 2025,
-    medium: "Acrylic/Canvas",
-    dimensions: "24x18",
-    sn: "SN/2025.001.01",
-    image: "/artists/alec_xavier/palms.JPG",
-    price: 70000, // $700
-  },
-  {
-    id: "ax-5",
-    title: "Springs",
-    artist: "Alec Xavier",
-    year: 2025,
-    medium: "Acrylic/Canvas",
-    dimensions: "28x22",
-    sn: "SN/2025.001.02",
-    image: "/artists/alec_xavier/springs.JPG",
-    price: 50000, // $500
-  },
-  {
-    id: "ax-6",
-    title: "Amigo Room",
-    artist: "Alec Xavier",
-    year: 2025,
-    medium: "Acrylic/Canvas",
-    dimensions: "48x24",
-    sn: "SN/2025.001.03",
-    image: "/artists/alec_xavier/amigo_room.JPG",
-    price: 50000, // $500
-  },
-  {
-    id: "ax-7",
-    title: "Fatal Widow",
-    artist: "Alec Xavier",
-    year: 2025,
-    medium: "Acrylic/Canvas",
-    dimensions: "24x36",
-    sn: "SN/2025.001.03",
-    image: "/artists/alec_xavier/fatal_window.JPG",
-    price: null, // Inquire to purchase
-  },
-  {
-    id: "ax-8",
-    title: "Lateral",
-    artist: "Alec Xavier",
-    year: 2025,
-    medium: "Acrylic/Canvas",
-    dimensions: "18x24",
-    sn: "SN/2025.001.05",
-    image: "/artists/alec_xavier/lateral.JPG",
-    price: 40000, // $400
-  },
-  {
-    id: "ax-9",
-    title: "Tres Palms",
-    artist: "Alec Xavier",
-    year: 2025,
-    medium: "Acrylic/Canvas",
-    dimensions: "18x24",
-    sn: "SN/2025.001.06",
-    image: "/artists/alec_xavier/tres_palms.JPG",
-    price: 40000, // $400
-  },
-  {
-    id: "ax-10",
-    title: "Minds Alter",
-    artist: "Alec Xavier",
-    year: 2025,
-    medium: "Acrylic/Canvas",
-    dimensions: "18x24",
-    sn: "SN/2025.001.07",
-    image: "/artists/alec_xavier/minds_alter.JPG",
-    price: 50000, // $500
-  },
-  {
-    id: "ax-11",
-    title: "Sums",
-    artist: "Alec Xavier",
-    year: 2025,
-    medium: "Acrylic/Canvas",
-    dimensions: "18x24",
-    sn: "SN/2025.001.08",
-    image: "/artists/alec_xavier/sums.JPG",
-    price: 80000, // $800
-  },
-  {
-    id: "ax-12",
-    title: "Cinema",
-    artist: "Alec Xavier",
-    year: 2025,
-    medium: "Acrylic/Canvas",
-    dimensions: "24x36",
-    sn: "SN/2024.001.11",
-    image: "/artists/alec_xavier/cinema.JPG",
-    price: 50000, // $500
-  },
-  {
-    id: "ax-13",
-    title: "Ballerina",
-    artist: "Alec Xavier",
-    year: 2026,
-    medium: "Acrylic/Canvas",
-    dimensions: null,
-    sn: "SN/2026.001.12",
-    image: "/artists/alec_xavier/ballerina.JPG",
-    price: 80000, // $800
-  },
-  {
-    id: "ax-14",
-    title: "Saints",
-    artist: "Alec Xavier",
-    year: null,
-    medium: "Oil/Canvas",
-    dimensions: null,
-    sn: "SN/2026.001.13",
-    image: "/artists/alec_xavier/saints.JPG",
-    price: null,
-  },
-  {
-    id: "ax-15",
-    title: "Opis",
-    artist: "Alec Xavier",
-    year: null,
-    medium: "Acrylic/Canvas",
-    dimensions: null,
-    sn: "SN/2026.001.14",
-    image: "/artists/alec_xavier/Opis.JPG",
-    price: 50000, // $500
-  },
-  {
-    id: "ax-16",
-    title: "Infinite Human Framed 9",
-    artist: "Alec Xavier",
-    year: 2020,
-    medium: "Digital Art",
-    dimensions: "17x30 Framed",
-    sn: "SN/2020.339.58",
-    image: "/artists/alec_xavier/infinite_human_sn_2020_339_58.JPG",
-    price: 150000, // $1,500
-  },
-  {
-    id: "ax-17",
-    title: "Infinite Human Framed 10",
-    artist: "Alec Xavier",
-    year: 2020,
-    medium: "Digital Art",
-    dimensions: "17x30 Framed",
-    sn: "SN/2020.339.59",
-    image: "/artists/alec_xavier/infinite_human_sn_2020_339_59.JPG",
-    price: 150000, // $1,500
-  },
-];
-
-const emilyOflaherty = [
-  {
-    id: "eo-1",
-    title: null,
-    artist: "Emily O'Flaherty",
-    year: 2026,
-    medium: "Oil/Canvas",
-    dimensions: "22x28",
-    sn: null,
-    image: "/artists/emily_oflaherty/oil_canvas_22_28_1.JPG",
-    price: 180000, // $1,800
-  },
-  {
-    id: "eo-2",
-    title: null,
-    artist: "Emily O'Flaherty",
-    year: 2026,
-    medium: "Oil/Canvas",
-    dimensions: "22x28",
-    sn: null,
-    image: "/artists/emily_oflaherty/oil_canvas_22_28_2.JPG",
-    price: 120000, // $1,200
-  },
-  {
-    id: "eo-3",
-    title: null,
-    artist: "Emily O'Flaherty",
-    year: 2026,
-    medium: "Acrylic/Canvas",
-    dimensions: "20x24",
-    sn: "SN/2020.339.52",
-    image: "/artists/emily_oflaherty/oil_canvas_20_24.JPG",
-    price: 120000, // $1,200
-  },
-  {
-    id: "eo-4",
-    title: null,
-    artist: "Emily O'Flaherty",
-    year: 2026,
-    medium: "Oil/Canvas",
-    dimensions: "36x24",
-    sn: null,
-    image: "/artists/emily_oflaherty/oil_canvas_36_24.JPG",
-    price: 180000, // $1,800
-  },
-];
-
-const artistSections = [
-  {
-    artist: "Alec Xavier",
-    bio: "Available Works",
-    works: alecXavierWorks,
-  },
-  {
-    artist: "Emily O'Flaherty",
-    bio: "Available Works",
-    works: emilyOflaherty,
-  },
-];
-
-const ALL_ARTISTS = "All Artists";
+import type { ArtworkRow } from "@/lib/supabase";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
-type Artwork = {
-  id: string;
-  title: string | null;
-  artist: string;
-  year: number | null;
-  medium: string;
-  dimensions: string | null;
-  sn: string | null;
-  image: string;
-  price: number | null; // USD cents; null = inquire
-};
+// ArtworkRow comes from the Supabase schema in lib/supabase.ts
+type Artwork = ArtworkRow;
+
+const ALL_ARTISTS = "All Artists";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function formatPrice(cents: number) {
@@ -308,7 +45,9 @@ function InquiryModal({
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const displayTitle = work.title ?? `${work.artist} — ${work.medium} (${work.dimensions ?? "Dimensions TBD"})`;
+  const displayTitle =
+    work.title ??
+    `${work.artist} — ${work.medium} (${work.dimensions ?? "Dimensions TBD"})`;
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -342,7 +81,6 @@ function InquiryModal({
   };
 
   return (
-    // Backdrop
     <div
       onClick={onClose}
       style={{
@@ -357,7 +95,6 @@ function InquiryModal({
         padding: "1.5rem",
       }}
     >
-      {/* Panel */}
       <div
         onClick={(e) => e.stopPropagation()}
         style={{
@@ -370,7 +107,6 @@ function InquiryModal({
           position: "relative",
         }}
       >
-        {/* Close */}
         <button
           onClick={onClose}
           aria-label="Close"
@@ -390,7 +126,6 @@ function InquiryModal({
         </button>
 
         {submitted ? (
-          // ── Success state ────────────────────────────────────────────────
           <div style={{ textAlign: "center", padding: "2rem 0" }}>
             <div
               style={{
@@ -463,9 +198,7 @@ function InquiryModal({
             </button>
           </div>
         ) : (
-          // ── Form state ───────────────────────────────────────────────────
           <>
-            {/* Header */}
             <div style={{ marginBottom: "2rem" }}>
               <p
                 style={{
@@ -509,12 +242,8 @@ function InquiryModal({
               onSubmit={handleSubmit}
               style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}
             >
-              {/* Name */}
               <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-                <label
-                  htmlFor="inq-name"
-                  style={labelStyle}
-                >
+                <label htmlFor="inq-name" style={labelStyle}>
                   Full Name *
                 </label>
                 <input
@@ -529,7 +258,6 @@ function InquiryModal({
                 />
               </div>
 
-              {/* Email + Phone row */}
               <div
                 style={{
                   display: "grid",
@@ -568,7 +296,6 @@ function InquiryModal({
                 </div>
               </div>
 
-              {/* Message */}
               <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
                 <label htmlFor="inq-message" style={labelStyle}>
                   Message
@@ -635,7 +362,6 @@ function InquiryModal({
   );
 }
 
-// Shared form element styles
 const labelStyle: React.CSSProperties = {
   fontFamily: "Jost, system-ui, sans-serif",
   fontSize: "0.7rem",
@@ -662,14 +388,13 @@ const inputStyle: React.CSSProperties = {
 function ArtworkCard({
   work,
   onInquire,
-  isSold = false,
 }: {
   work: Artwork;
   onInquire: (work: Artwork) => void;
-  isSold?: boolean;
 }) {
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
+  const isSold = work.sold;
 
   const handleBuyNow = async () => {
     setCheckoutLoading(true);
@@ -688,9 +413,7 @@ function ArtworkCard({
         }),
       });
       const data = await res.json();
-      if (!res.ok || !data.url) {
-        throw new Error(data.error ?? "Checkout failed.");
-      }
+      if (!res.ok || !data.url) throw new Error(data.error ?? "Checkout failed.");
       window.location.href = data.url;
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Checkout unavailable.";
@@ -717,7 +440,9 @@ function ArtworkCard({
           src={work.image}
           alt={work.title ?? `${work.artist} — ${work.medium}`}
           fill
-          className={`object-cover transition-transform duration-700 ${isSold ? "grayscale-[40%]" : "group-hover:scale-105"}`}
+          className={`object-cover transition-transform duration-700 ${
+            isSold ? "grayscale-[40%]" : "group-hover:scale-105"
+          }`}
         />
         {/* Sold overlay */}
         {isSold && (
@@ -745,7 +470,7 @@ function ArtworkCard({
             </div>
           </div>
         )}
-        {/* Hover overlay — only show if not sold */}
+        {/* Hover overlay */}
         {!isSold && (
           <div className="absolute inset-0 bg-[#0a0a0a]/0 group-hover:bg-[#0a0a0a]/30 transition-all duration-500 flex items-center justify-center">
             <Link
@@ -840,7 +565,7 @@ function ArtworkCard({
           </p>
         )}
 
-        {/* CTA — Sold / Buy Now / Inquire */}
+        {/* CTA */}
         {isSold ? (
           <button
             disabled
@@ -921,20 +646,15 @@ function ArtworkCard({
 // ── Artist Section ────────────────────────────────────────────────────────────
 function ArtistSection({
   artist,
-  bio,
   works,
   onInquire,
-  soldIds,
 }: {
   artist: string;
-  bio: string;
   works: Artwork[];
   onInquire: (work: Artwork) => void;
-  soldIds: Set<string>;
 }) {
   return (
     <div style={{ marginBottom: "5rem" }}>
-      {/* Artist heading */}
       <div
         style={{
           display: "flex",
@@ -972,20 +692,14 @@ function ArtistSection({
               letterSpacing: "0.05em",
             }}
           >
-            {bio}
+            Available Works
           </p>
         </div>
       </div>
 
-      {/* Grid */}
       <div className="section-grid">
         {works.map((work) => (
-          <ArtworkCard
-            key={work.id}
-            work={work}
-            onInquire={onInquire}
-            isSold={soldIds.has(work.id)}
-          />
+          <ArtworkCard key={work.id} work={work} onInquire={onInquire} />
         ))}
       </div>
     </div>
@@ -994,27 +708,30 @@ function ArtistSection({
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 export default function GalleryPage() {
+  const [artworks, setArtworks] = useState<Artwork[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeArtist, setActiveArtist] = useState<string>(ALL_ARTISTS);
   const [inquiryWork, setInquiryWork] = useState<Artwork | null>(null);
-  const [soldIds, setSoldIds] = useState<Set<string>>(new Set());
 
-  // Fetch sold inventory on mount — updates gallery sold state from the database
+  // Fetch all artworks (includes sold status) from the database on mount
   useEffect(() => {
-    fetch("/api/inventory")
+    fetch("/api/artworks")
       .then((res) => res.json())
-      .then((data: { sold: string[] }) => {
-        if (Array.isArray(data.sold)) {
-          setSoldIds(new Set(data.sold));
-        }
+      .then((data: { artworks: Artwork[] }) => {
+        if (Array.isArray(data.artworks)) setArtworks(data.artworks);
       })
-      .catch(() => {
-        // Fail silently — gallery shows all as available if inventory is unreachable
-      });
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
 
-  const artistNames = artistSections.map((s) => s.artist);
-  const filterOptions = [ALL_ARTISTS, ...artistNames];
+  // Compute artist sections dynamically from DB data — order preserved by display_order
+  const artistNames = [...new Set(artworks.map((w) => w.artist))];
+  const artistSections = artistNames.map((artist) => ({
+    artist,
+    works: artworks.filter((w) => w.artist === artist),
+  }));
 
+  const filterOptions = [ALL_ARTISTS, ...artistNames];
   const visibleSections =
     activeArtist === ALL_ARTISTS
       ? artistSections
@@ -1022,7 +739,6 @@ export default function GalleryPage() {
 
   return (
     <>
-      {/* Inquiry Modal */}
       {inquiryWork && (
         <InquiryModal work={inquiryWork} onClose={() => setInquiryWork(null)} />
       )}
@@ -1175,156 +891,181 @@ export default function GalleryPage() {
       {/* Gallery */}
       <section style={{ backgroundColor: "#faf7f2", padding: "5rem 0" }}>
         <div className="page-container">
-          {visibleSections.map((section, index) => (
-            <div key={section.artist}>
-              <ArtistSection
-                artist={section.artist}
-                bio={section.bio}
-                works={section.works}
-                onInquire={setInquiryWork}
-                soldIds={soldIds}
-              />
-              {index < visibleSections.length - 1 && (
-                <div
-                  style={{
-                    height: "1px",
-                    backgroundColor: "rgba(10,10,10,0.1)",
-                    margin: "2rem 0 5rem",
-                  }}
-                />
-              )}
-            </div>
-          ))}
-
-          {/* Advisory note */}
-          <div
-            className="two-col-grid"
-            style={{
-              marginTop: "5rem",
-              border: "1px solid rgba(10,10,10,0.1)",
-            }}
-          >
-            {/* Collector pitch */}
+          {/* Loading skeleton */}
+          {loading && (
             <div
               style={{
-                padding: "3rem",
-                borderRight: "1px solid rgba(10,10,10,0.1)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                minHeight: "30rem",
+                flexDirection: "column",
+                gap: "1rem",
               }}
             >
+              <span style={{ color: "#c9a84c", fontSize: "1.25rem" }}>✦</span>
               <p
                 style={{
                   fontFamily: "Jost, system-ui, sans-serif",
-                  color: "#c9a84c",
-                  letterSpacing: "0.3em",
-                  fontSize: "0.75rem",
-                  textTransform: "uppercase",
-                  marginBottom: "1rem",
-                }}
-              >
-                For Collectors
-              </p>
-              <h3
-                style={{
-                  fontFamily: "Cormorant Garamond, Georgia, serif",
-                  color: "#0a0a0a",
-                  fontWeight: 300,
-                  fontSize: "clamp(1.4rem, 2.5vw, 2rem)",
-                  marginBottom: "1rem",
-                }}
-              >
-                Building or Refining Your Collection?
-              </h3>
-              <p
-                style={{
-                  fontFamily: "Jost, system-ui, sans-serif",
-                  color: "rgba(10,10,10,0.5)",
-                  fontSize: "0.875rem",
-                  lineHeight: 1.75,
-                  marginBottom: "2rem",
-                }}
-              >
-                We work directly with collectors to discover, acquire, and place
-                exceptional contemporary artwork. By working with both emerging and
-                established artists, we offer access to unique works that hold
-                aesthetic significance and long-term cultural value.
-              </p>
-              <Link
-                href="/consultation"
-                className="inline-block hover:bg-[#c9a84c] hover:text-[#0a0a0a] transition-all duration-300"
-                style={{
-                  backgroundColor: "#0a0a0a",
-                  color: "#f5f0e8",
-                  padding: "0.875rem 2rem",
                   fontSize: "0.75rem",
                   letterSpacing: "0.3em",
                   textTransform: "uppercase",
-                  fontFamily: "Jost, system-ui, sans-serif",
-                  textDecoration: "none",
+                  color: "rgba(10,10,10,0.3)",
                 }}
               >
-                Request Advisory
-              </Link>
+                Loading Collection…
+              </p>
             </div>
+          )}
 
-            {/* Artist open call */}
-            <div style={{ padding: "3rem", backgroundColor: "rgba(10,10,10,0.02)" }}>
-              <p
+          {/* Gallery sections */}
+          {!loading &&
+            visibleSections.map((section, index) => (
+              <div key={section.artist}>
+                <ArtistSection
+                  artist={section.artist}
+                  works={section.works}
+                  onInquire={setInquiryWork}
+                />
+                {index < visibleSections.length - 1 && (
+                  <div
+                    style={{
+                      height: "1px",
+                      backgroundColor: "rgba(10,10,10,0.1)",
+                      margin: "2rem 0 5rem",
+                    }}
+                  />
+                )}
+              </div>
+            ))}
+
+          {/* Advisory note */}
+          {!loading && (
+            <div
+              className="two-col-grid"
+              style={{
+                marginTop: "5rem",
+                border: "1px solid rgba(10,10,10,0.1)",
+              }}
+            >
+              <div
                 style={{
-                  fontFamily: "Jost, system-ui, sans-serif",
-                  color: "#c9a84c",
-                  letterSpacing: "0.3em",
-                  fontSize: "0.75rem",
-                  textTransform: "uppercase",
-                  marginBottom: "1rem",
+                  padding: "3rem",
+                  borderRight: "1px solid rgba(10,10,10,0.1)",
                 }}
               >
-                For Artists
-              </p>
-              <h3
-                style={{
-                  fontFamily: "Cormorant Garamond, Georgia, serif",
-                  color: "#0a0a0a",
-                  fontWeight: 300,
-                  fontSize: "clamp(1.4rem, 2.5vw, 2rem)",
-                  marginBottom: "1rem",
-                }}
-              >
-                Open Call for Contemporary Artists
-              </h3>
-              <p
-                style={{
-                  fontFamily: "Jost, system-ui, sans-serif",
-                  color: "rgba(10,10,10,0.5)",
-                  fontSize: "0.875rem",
-                  lineHeight: 1.75,
-                  marginBottom: "2rem",
-                }}
-              >
-                We are currently seeking contemporary artists interested in
-                exhibiting and working with collectors through our gallery and
-                advisory platform. We focus on distinctive voices in painting,
-                sculpture, and mixed media, and aim to build lasting
-                relationships that support both artistic growth and meaningful
-                placement of work.
-              </p>
-              <Link
-                href="/consultation"
-                className="inline-block hover:border-[#c9a84c] hover:text-[#c9a84c] transition-all duration-300"
-                style={{
-                  border: "1px solid rgba(10,10,10,0.3)",
-                  color: "rgba(10,10,10,0.7)",
-                  padding: "0.875rem 2rem",
-                  fontSize: "0.75rem",
-                  letterSpacing: "0.3em",
-                  textTransform: "uppercase",
-                  fontFamily: "Jost, system-ui, sans-serif",
-                  textDecoration: "none",
-                }}
-              >
-                Submit Portfolio
-              </Link>
+                <p
+                  style={{
+                    fontFamily: "Jost, system-ui, sans-serif",
+                    color: "#c9a84c",
+                    letterSpacing: "0.3em",
+                    fontSize: "0.75rem",
+                    textTransform: "uppercase",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  For Collectors
+                </p>
+                <h3
+                  style={{
+                    fontFamily: "Cormorant Garamond, Georgia, serif",
+                    color: "#0a0a0a",
+                    fontWeight: 300,
+                    fontSize: "clamp(1.4rem, 2.5vw, 2rem)",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  Building or Refining Your Collection?
+                </h3>
+                <p
+                  style={{
+                    fontFamily: "Jost, system-ui, sans-serif",
+                    color: "rgba(10,10,10,0.5)",
+                    fontSize: "0.875rem",
+                    lineHeight: 1.75,
+                    marginBottom: "2rem",
+                  }}
+                >
+                  We work directly with collectors to discover, acquire, and place
+                  exceptional contemporary artwork. By working with both emerging and
+                  established artists, we offer access to unique works that hold
+                  aesthetic significance and long-term cultural value.
+                </p>
+                <Link
+                  href="/consultation"
+                  className="inline-block hover:bg-[#c9a84c] hover:text-[#0a0a0a] transition-all duration-300"
+                  style={{
+                    backgroundColor: "#0a0a0a",
+                    color: "#f5f0e8",
+                    padding: "0.875rem 2rem",
+                    fontSize: "0.75rem",
+                    letterSpacing: "0.3em",
+                    textTransform: "uppercase",
+                    fontFamily: "Jost, system-ui, sans-serif",
+                    textDecoration: "none",
+                  }}
+                >
+                  Request Advisory
+                </Link>
+              </div>
+
+              <div style={{ padding: "3rem", backgroundColor: "rgba(10,10,10,0.02)" }}>
+                <p
+                  style={{
+                    fontFamily: "Jost, system-ui, sans-serif",
+                    color: "#c9a84c",
+                    letterSpacing: "0.3em",
+                    fontSize: "0.75rem",
+                    textTransform: "uppercase",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  For Artists
+                </p>
+                <h3
+                  style={{
+                    fontFamily: "Cormorant Garamond, Georgia, serif",
+                    color: "#0a0a0a",
+                    fontWeight: 300,
+                    fontSize: "clamp(1.4rem, 2.5vw, 2rem)",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  Open Call for Contemporary Artists
+                </h3>
+                <p
+                  style={{
+                    fontFamily: "Jost, system-ui, sans-serif",
+                    color: "rgba(10,10,10,0.5)",
+                    fontSize: "0.875rem",
+                    lineHeight: 1.75,
+                    marginBottom: "2rem",
+                  }}
+                >
+                  We are currently seeking contemporary artists interested in
+                  exhibiting and working with collectors through our gallery and
+                  advisory platform. We focus on distinctive voices in painting,
+                  sculpture, and mixed media.
+                </p>
+                <Link
+                  href="/consultation"
+                  className="inline-block hover:border-[#c9a84c] hover:text-[#c9a84c] transition-all duration-300"
+                  style={{
+                    border: "1px solid rgba(10,10,10,0.3)",
+                    color: "rgba(10,10,10,0.7)",
+                    padding: "0.875rem 2rem",
+                    fontSize: "0.75rem",
+                    letterSpacing: "0.3em",
+                    textTransform: "uppercase",
+                    fontFamily: "Jost, system-ui, sans-serif",
+                    textDecoration: "none",
+                  }}
+                >
+                  Submit Portfolio
+                </Link>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
     </>

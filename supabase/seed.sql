@@ -1,0 +1,62 @@
+-- ─────────────────────────────────────────────────────────────────────────────
+-- Laguna Art Advisory — Artworks Table
+-- Run this in: Supabase Dashboard → SQL Editor → New Query → Run
+-- ─────────────────────────────────────────────────────────────────────────────
+
+-- Create table
+CREATE TABLE IF NOT EXISTS artworks (
+  id                   TEXT PRIMARY KEY,
+  title                TEXT,
+  artist               TEXT NOT NULL,
+  year                 INTEGER,
+  medium               TEXT NOT NULL,
+  dimensions           TEXT,
+  sn                   TEXT,
+  image                TEXT NOT NULL,
+  price                INTEGER,        -- USD cents; NULL = inquire to purchase
+  sold                 BOOLEAN NOT NULL DEFAULT FALSE,
+  sold_at              TIMESTAMPTZ,
+  sold_session_id      TEXT,
+  sold_amount          INTEGER,
+  sold_customer_email  TEXT,
+  display_order        INTEGER NOT NULL DEFAULT 0,
+  created_at           TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Enable Row Level Security
+ALTER TABLE artworks ENABLE ROW LEVEL SECURITY;
+
+-- Allow anyone to read artworks (gallery is public)
+CREATE POLICY "Public read artworks"
+  ON artworks FOR SELECT TO anon USING (true);
+
+-- ── Seed: Alec Xavier ─────────────────────────────────────────────────────────
+INSERT INTO artworks (id, title, artist, year, medium, dimensions, sn, image, price, display_order)
+VALUES
+  ('ax-1',  'Dawns Return',            'Alec Xavier', 2024, 'Acrylic/Canvas', '40x50', 'SN/2024.001.01',  '/artists/alec_xavier/dawns_return.JPG',                NULL,   1),
+  ('ax-2',  'ASK',                     'Alec Xavier', 2026, 'Acrylic/Canvas', '30x40', 'SN/2026.001.01',  '/artists/alec_xavier/ASK.JPG',                         NULL,   2),
+  ('ax-3',  'Sections',                'Alec Xavier', 2021, 'Acrylic/Canvas', '24x36', 'SN/2022.002.012', '/artists/alec_xavier/sections.JPG',                    180000, 3),
+  ('ax-4',  'Palms',                   'Alec Xavier', 2025, 'Acrylic/Canvas', '24x18', 'SN/2025.001.01',  '/artists/alec_xavier/palms.JPG',                       120000, 4),
+  ('ax-5',  'Springs',                 'Alec Xavier', 2025, 'Acrylic/Canvas', '28x22', 'SN/2025.001.02',  '/artists/alec_xavier/springs.JPG',                     150000, 5),
+  ('ax-6',  'Amigo Room',              'Alec Xavier', 2025, 'Acrylic/Canvas', '48x24', 'SN/2025.001.03',  '/artists/alec_xavier/amigo_room.JPG',                  NULL,   6),
+  ('ax-7',  'Fatal Widow',             'Alec Xavier', 2025, 'Acrylic/Canvas', '24x36', 'SN/2025.001.03',  '/artists/alec_xavier/fatal_window.JPG',                180000, 7),
+  ('ax-8',  'Lateral',                 'Alec Xavier', 2025, 'Acrylic/Canvas', '18x24', 'SN/2025.001.05',  '/artists/alec_xavier/lateral.JPG',                     120000, 8),
+  ('ax-9',  'Tres Palms',              'Alec Xavier', 2025, 'Acrylic/Canvas', '18x24', 'SN/2025.001.06',  '/artists/alec_xavier/tres_palms.JPG',                  120000, 9),
+  ('ax-10', 'Minds Alter',             'Alec Xavier', 2025, 'Acrylic/Canvas', '18x24', 'SN/2025.001.07',  '/artists/alec_xavier/minds_alter.JPG',                 120000, 10),
+  ('ax-11', 'Sums',                    'Alec Xavier', 2025, 'Acrylic/Canvas', '18x24', 'SN/2025.001.08',  '/artists/alec_xavier/sums.JPG',                        120000, 11),
+  ('ax-12', 'Cinema',                  'Alec Xavier', 2025, 'Acrylic/Canvas', '24x36', 'SN/2024.001.11',  '/artists/alec_xavier/cinema.JPG',                      NULL,   12),
+  ('ax-13', 'Ballerina',               'Alec Xavier', 2026, 'Acrylic/Canvas',  NULL,   'SN/2026.001.12',  '/artists/alec_xavier/ballerina.JPG',                   NULL,   13),
+  ('ax-14', 'Saints',                  'Alec Xavier',  NULL, 'Oil/Canvas',     NULL,   'SN/2026.001.13',  '/artists/alec_xavier/saints.JPG',                      NULL,   14),
+  ('ax-15', 'Opis',                    'Alec Xavier',  NULL, 'Acrylic/Canvas', NULL,   'SN/2026.001.13',  '/artists/alec_xavier/Opis.JPG',                        NULL,   15),
+  ('ax-16', 'Infinite Human Framed 9', 'Alec Xavier', 2020, 'Digital Art',   '17x30', 'SN/2020.339.58',  '/artists/alec_xavier/infinite_human_sn_2020_339_58.JPG', 80000, 16),
+  ('ax-17', 'Infinite Human Framed 10','Alec Xavier', 2020, 'Digital Art',   '17x30', 'SN/2020.339.59',  '/artists/alec_xavier/infinite_human_sn_2020_339_59.JPG', 80000, 17)
+ON CONFLICT (id) DO NOTHING;
+
+-- ── Seed: Emily O'Flaherty ────────────────────────────────────────────────────
+INSERT INTO artworks (id, title, artist, year, medium, dimensions, sn, image, price, display_order)
+VALUES
+  ('eo-1', NULL, 'Emily O''Flaherty', 2026, 'Oil/Canvas',     '22x28', NULL,              '/artists/emily_oflaherty/oil_canvas_22_28_1.JPG', NULL, 18),
+  ('eo-2', NULL, 'Emily O''Flaherty', 2026, 'Oil/Canvas',     '22x28', NULL,              '/artists/emily_oflaherty/oil_canvas_22_28_2.JPG', NULL, 19),
+  ('eo-3', NULL, 'Emily O''Flaherty', 2026, 'Acrylic/Canvas', '20x24', 'SN/2020.339.52', '/artists/emily_oflaherty/oil_canvas_20_24.JPG',   NULL, 20),
+  ('eo-4', NULL, 'Emily O''Flaherty', 2026, 'Oil/Canvas',     '36x24', NULL,              '/artists/emily_oflaherty/oil_canvas_36_24.JPG',   NULL, 21)
+ON CONFLICT (id) DO NOTHING;

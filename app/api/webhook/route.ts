@@ -1,21 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { Redis } from "@upstash/redis";
+import { createServerSupabaseClient } from "@/lib/supabase";
 
 // ── Stripe ────────────────────────────────────────────────────────────────────
 const stripe = process.env.STRIPE_SECRET_KEY
   ? new Stripe(process.env.STRIPE_SECRET_KEY)
   : null;
-
-// ── Upstash Redis ─────────────────────────────────────────────────────────────
-// Env vars are auto-populated when you connect Upstash from the Vercel dashboard.
-const redis =
-  process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
-    ? new Redis({
-        url: process.env.UPSTASH_REDIS_REST_URL,
-        token: process.env.UPSTASH_REDIS_REST_TOKEN,
-      })
-    : null;
 
 // Stripe sends the raw body — we MUST NOT parse it as JSON before verifying.
 export async function POST(req: NextRequest) {
@@ -48,27 +38,32 @@ export async function POST(req: NextRequest) {
     const session = event.data.object as Stripe.Checkout.Session;
     const artworkId = session.metadata?.artwork_id;
 
-    if (artworkId) {
-      if (redis) {
-        // Store sold record in Redis hash: { artworkId → JSON blob }
-        await redis.hset("sold_artworks", {
-          [artworkId]: JSON.stringify({
-            soldAt: new Date().toISOString(),
-            sessionId: session.id,
-            amountTotal: session.amount_total,
-            customerEmail: session.customer_details?.email ?? null,
-          }),
-        });
-        console.log(`[Webhook] ✓ Marked ${artworkId} as sold in inventory.`);
-      } else {
-        // Redis not configured — log the sale but don't crash
-        console.warn(
-          `[Webhook] Redis not configured. Artwork ${artworkId} sold but NOT marked in inventory. ` +
-            "Add UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN to env vars."
-        );
-      }
-    } else {
+    if (!artworkId) {
       console.warn("[Webhook] checkout.session.completed has no artwork_id in metadata.");
+      return NextResponse.json({ received: true });
+    }
+
+    try {
+      const supabase = createServerSupabaseClient();
+
+      const { error } = await supabase
+        .from("artworks")
+        .update({
+          sold: true,
+          sold_at: new Date().toISOString(),
+          sold_session_id: session.id,
+          sold_amount: session.amount_total,
+          sold_customer_email: session.customer_details?.email ?? null,
+        })
+        .eq("id", artworkId);
+
+      if (error) throw error;
+
+      console.log(`[Webhook] ✓ Artwork "${artworkId}" marked as sold in Supabase.`);
+    } catch (err) {
+      console.error(`[Webhook] Failed to mark artwork "${artworkId}" as sold:`, err);
+      // Return 500 so Stripe retries the webhook
+      return NextResponse.json({ error: "Database update failed." }, { status: 500 });
     }
   }
 
