@@ -41,7 +41,7 @@ const alecXavierWorks = [
     dimensions: "24x36",
     sn: "SN/2022.002.012",
     image: "/artists/alec_xavier/sections.JPG",
-    price: 180000, // $1,800 — update when confirmed
+    price: 150000, // $1,500
   },
   {
     id: "ax-4",
@@ -52,7 +52,7 @@ const alecXavierWorks = [
     dimensions: "24x18",
     sn: "SN/2025.001.01",
     image: "/artists/alec_xavier/palms.JPG",
-    price: 120000, // $1,200 — update when confirmed
+    price: 70000, // $700
   },
   {
     id: "ax-5",
@@ -63,7 +63,7 @@ const alecXavierWorks = [
     dimensions: "28x22",
     sn: "SN/2025.001.02",
     image: "/artists/alec_xavier/springs.JPG",
-    price: 150000, // $1,500 — update when confirmed
+    price: 50000, // $500
   },
   {
     id: "ax-6",
@@ -74,7 +74,7 @@ const alecXavierWorks = [
     dimensions: "48x24",
     sn: "SN/2025.001.03",
     image: "/artists/alec_xavier/amigo_room.JPG",
-    price: null, // Large piece — inquire for price
+    price: 50000, // $500
   },
   {
     id: "ax-7",
@@ -85,7 +85,7 @@ const alecXavierWorks = [
     dimensions: "24x36",
     sn: "SN/2025.001.03",
     image: "/artists/alec_xavier/fatal_window.JPG",
-    price: 180000, // $1,800 — update when confirmed
+    price: null, // Inquire to purchase
   },
   {
     id: "ax-8",
@@ -96,7 +96,7 @@ const alecXavierWorks = [
     dimensions: "18x24",
     sn: "SN/2025.001.05",
     image: "/artists/alec_xavier/lateral.JPG",
-    price: 120000, // $1,200 — update when confirmed
+    price: 40000, // $400
   },
   {
     id: "ax-9",
@@ -107,7 +107,7 @@ const alecXavierWorks = [
     dimensions: "18x24",
     sn: "SN/2025.001.06",
     image: "/artists/alec_xavier/tres_palms.JPG",
-    price: 120000, // $1,200 — update when confirmed
+    price: 40000, // $400
   },
   {
     id: "ax-10",
@@ -118,7 +118,7 @@ const alecXavierWorks = [
     dimensions: "18x24",
     sn: "SN/2025.001.07",
     image: "/artists/alec_xavier/minds_alter.JPG",
-    price: 120000, // $1,200 — update when confirmed
+    price: 50000, // $500
   },
   {
     id: "ax-11",
@@ -129,7 +129,7 @@ const alecXavierWorks = [
     dimensions: "18x24",
     sn: "SN/2025.001.08",
     image: "/artists/alec_xavier/sums.JPG",
-    price: 120000, // $1,200 — update when confirmed
+    price: 80000, // $800
   },
   {
     id: "ax-12",
@@ -140,7 +140,7 @@ const alecXavierWorks = [
     dimensions: "24x36",
     sn: "SN/2024.001.11",
     image: "/artists/alec_xavier/cinema.JPG",
-    price: null, // Large piece — inquire for price
+    price: 50000, // $500
   },
   {
     id: "ax-13",
@@ -151,7 +151,7 @@ const alecXavierWorks = [
     dimensions: null,
     sn: "SN/2026.001.12",
     image: "/artists/alec_xavier/ballerina.JPG",
-    price: null,
+    price: 80000, // $800
   },
   {
     id: "ax-14",
@@ -171,9 +171,9 @@ const alecXavierWorks = [
     year: null,
     medium: "Acrylic/Canvas",
     dimensions: null,
-    sn: "SN/2026.001.13",
+    sn: "SN/2026.001.14",
     image: "/artists/alec_xavier/Opis.JPG",
-    price: null,
+    price: 50000, // $500
   },
   {
     id: "ax-16",
@@ -181,10 +181,10 @@ const alecXavierWorks = [
     artist: "Alec Xavier",
     year: 2020,
     medium: "Digital Art",
-    dimensions: "17x30",
+    dimensions: "17x30 Framed",
     sn: "SN/2020.339.58",
     image: "/artists/alec_xavier/infinite_human_sn_2020_339_58.JPG",
-    price: 80000, // $800 — update when confirmed
+    price: 150000, // $1,500
   },
   {
     id: "ax-17",
@@ -192,10 +192,10 @@ const alecXavierWorks = [
     artist: "Alec Xavier",
     year: 2020,
     medium: "Digital Art",
-    dimensions: "17x30",
+    dimensions: "17x30 Framed",
     sn: "SN/2020.339.59",
     image: "/artists/alec_xavier/infinite_human_sn_2020_339_59.JPG",
-    price: 80000, // $800 — update when confirmed
+    price: 150000, // $1,500
   },
 ];
 
@@ -209,7 +209,7 @@ const emilyOflaherty = [
     dimensions: "22x28",
     sn: null,
     image: "/artists/emily_oflaherty/oil_canvas_22_28_1.JPG",
-    price: null,
+    price: 180000, // $1,800
   },
   {
     id: "eo-2",
@@ -220,7 +220,7 @@ const emilyOflaherty = [
     dimensions: "22x28",
     sn: null,
     image: "/artists/emily_oflaherty/oil_canvas_22_28_2.JPG",
-    price: null,
+    price: 120000, // $1,200
   },
   {
     id: "eo-3",
@@ -231,7 +231,7 @@ const emilyOflaherty = [
     dimensions: "20x24",
     sn: "SN/2020.339.52",
     image: "/artists/emily_oflaherty/oil_canvas_20_24.JPG",
-    price: null,
+    price: 120000, // $1,200
   },
   {
     id: "eo-4",
@@ -242,7 +242,7 @@ const emilyOflaherty = [
     dimensions: "36x24",
     sn: null,
     image: "/artists/emily_oflaherty/oil_canvas_36_24.JPG",
-    price: null,
+    price: 180000, // $1,800
   },
 ];
 
