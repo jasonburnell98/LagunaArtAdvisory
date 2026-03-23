@@ -643,6 +643,15 @@ function ArtworkCard({
   );
 }
 
+// ── Artist Bios ───────────────────────────────────────────────────────────────
+const artistBios: Record<string, string[]> = {
+  "Emily O'Flaherty": [
+    "Emily O'Flaherty is a graduate of Academy of Art University where she developed her voice as a working artist while living in San Francisco. During this time, she immersed herself in the city's creative landscape, shaping a style that is both feminine and ethereal.",
+    "Her work spans landscapes, figurative painting, and still life, often embracing an intentionally \u201cunfinished\u201d quality that preserves immediacy and emotional expression. Through soft palettes and intuitive mark-making, Emily captures fleeting moments with a sense of quiet depth and vulnerability.",
+    "After completing her studies, she relocated to Orange County where she continues to grow her artistic practice. In addition to her studio work, Emily is a dedicated educator, teaching high school students and traveling throughout the region to share the transformative benefits of art with young people.",
+  ],
+};
+
 // ── Artist Section ────────────────────────────────────────────────────────────
 function ArtistSection({
   artist,
@@ -653,6 +662,8 @@ function ArtistSection({
   works: Artwork[];
   onInquire: (work: Artwork) => void;
 }) {
+  const bio = artistBios[artist];
+
   return (
     <div style={{ marginBottom: "5rem" }}>
       <div
@@ -660,7 +671,7 @@ function ArtistSection({
           display: "flex",
           alignItems: "center",
           gap: "1.5rem",
-          marginBottom: "2.5rem",
+          marginBottom: bio ? "1.5rem" : "2.5rem",
         }}
       >
         <div
@@ -696,6 +707,32 @@ function ArtistSection({
           </p>
         </div>
       </div>
+
+      {bio && (
+        <div
+          style={{
+            maxWidth: "48rem",
+            marginBottom: "2.5rem",
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+          }}
+        >
+          {bio.map((paragraph, i) => (
+            <p
+              key={i}
+              style={{
+                fontFamily: "Jost, system-ui, sans-serif",
+                color: "rgba(10,10,10,0.6)",
+                fontSize: "0.9rem",
+                lineHeight: 1.85,
+              }}
+            >
+              {paragraph}
+            </p>
+          ))}
+        </div>
+      )}
 
       <div className="section-grid">
         {works.map((work) => (

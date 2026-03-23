@@ -30,6 +30,13 @@ ALTER TABLE artworks ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Public read artworks"
   ON artworks FOR SELECT TO anon USING (true);
 
+-- ── Seed: Test / Payment Testing ─────────────────────────────────────────────
+-- Remove or set sold=TRUE when payment testing is complete
+INSERT INTO artworks (id, title, artist, year, medium, dimensions, sn, image, price, display_order)
+VALUES
+  ('test-payment-1', 'Test Painting (Payment Test)', 'Test Artist', 2024, 'Acrylic/Canvas', '8x10', 'TEST/001', '/artists/alec_xavier/palms.JPG', 100, 0)
+ON CONFLICT (id) DO NOTHING;
+
 -- ── Seed: Alec Xavier ─────────────────────────────────────────────────────────
 INSERT INTO artworks (id, title, artist, year, medium, dimensions, sn, image, price, display_order)
 VALUES
