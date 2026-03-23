@@ -4,6 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
+// ── Artwork Data ─────────────────────────────────────────────────────────────
+// price: number (USD cents) → shows "Buy Now" + Stripe checkout
+// price: null               → shows "Inquire to Purchase" modal
+// price: undefined          → shows "Inquire to Purchase" modal
+
 const alecXavierWorks = [
   {
     id: "ax-1",
@@ -14,6 +19,7 @@ const alecXavierWorks = [
     dimensions: "40x50",
     sn: "SN/2024.001.01",
     image: "/artists/alec_xavier/dawns_return.JPG",
+    price: null, // Large piece — inquire for price
   },
   {
     id: "ax-2",
@@ -24,6 +30,7 @@ const alecXavierWorks = [
     dimensions: "30x40",
     sn: "SN/2026.001.01",
     image: "/artists/alec_xavier/ASK.JPG",
+    price: null, // Large piece — inquire for price
   },
   {
     id: "ax-3",
@@ -34,6 +41,7 @@ const alecXavierWorks = [
     dimensions: "24x36",
     sn: "SN/2022.002.012",
     image: "/artists/alec_xavier/sections.JPG",
+    price: 180000, // $1,800 — update when confirmed
   },
   {
     id: "ax-4",
@@ -44,6 +52,7 @@ const alecXavierWorks = [
     dimensions: "24x18",
     sn: "SN/2025.001.01",
     image: "/artists/alec_xavier/palms.JPG",
+    price: 120000, // $1,200 — update when confirmed
   },
   {
     id: "ax-5",
@@ -54,6 +63,7 @@ const alecXavierWorks = [
     dimensions: "28x22",
     sn: "SN/2025.001.02",
     image: "/artists/alec_xavier/springs.JPG",
+    price: 150000, // $1,500 — update when confirmed
   },
   {
     id: "ax-6",
@@ -64,6 +74,7 @@ const alecXavierWorks = [
     dimensions: "48x24",
     sn: "SN/2025.001.03",
     image: "/artists/alec_xavier/amigo_room.JPG",
+    price: null, // Large piece — inquire for price
   },
   {
     id: "ax-7",
@@ -74,6 +85,7 @@ const alecXavierWorks = [
     dimensions: "24x36",
     sn: "SN/2025.001.03",
     image: "/artists/alec_xavier/fatal_window.JPG",
+    price: 180000, // $1,800 — update when confirmed
   },
   {
     id: "ax-8",
@@ -84,6 +96,7 @@ const alecXavierWorks = [
     dimensions: "18x24",
     sn: "SN/2025.001.05",
     image: "/artists/alec_xavier/lateral.JPG",
+    price: 120000, // $1,200 — update when confirmed
   },
   {
     id: "ax-9",
@@ -94,6 +107,7 @@ const alecXavierWorks = [
     dimensions: "18x24",
     sn: "SN/2025.001.06",
     image: "/artists/alec_xavier/tres_palms.JPG",
+    price: 120000, // $1,200 — update when confirmed
   },
   {
     id: "ax-10",
@@ -104,6 +118,7 @@ const alecXavierWorks = [
     dimensions: "18x24",
     sn: "SN/2025.001.07",
     image: "/artists/alec_xavier/minds_alter.JPG",
+    price: 120000, // $1,200 — update when confirmed
   },
   {
     id: "ax-11",
@@ -114,6 +129,7 @@ const alecXavierWorks = [
     dimensions: "18x24",
     sn: "SN/2025.001.08",
     image: "/artists/alec_xavier/sums.JPG",
+    price: 120000, // $1,200 — update when confirmed
   },
   {
     id: "ax-12",
@@ -124,6 +140,7 @@ const alecXavierWorks = [
     dimensions: "24x36",
     sn: "SN/2024.001.11",
     image: "/artists/alec_xavier/cinema.JPG",
+    price: null, // Large piece — inquire for price
   },
   {
     id: "ax-13",
@@ -134,6 +151,7 @@ const alecXavierWorks = [
     dimensions: null,
     sn: "SN/2026.001.12",
     image: "/artists/alec_xavier/ballerina.JPG",
+    price: null,
   },
   {
     id: "ax-14",
@@ -144,6 +162,7 @@ const alecXavierWorks = [
     dimensions: null,
     sn: "SN/2026.001.13",
     image: "/artists/alec_xavier/saints.JPG",
+    price: null,
   },
   {
     id: "ax-15",
@@ -154,6 +173,7 @@ const alecXavierWorks = [
     dimensions: null,
     sn: "SN/2026.001.13",
     image: "/artists/alec_xavier/Opis.JPG",
+    price: null,
   },
   {
     id: "ax-16",
@@ -164,6 +184,7 @@ const alecXavierWorks = [
     dimensions: "17x30",
     sn: "SN/2020.339.58",
     image: "/artists/alec_xavier/infinite_human_sn_2020_339_58.JPG",
+    price: 80000, // $800 — update when confirmed
   },
   {
     id: "ax-17",
@@ -174,6 +195,7 @@ const alecXavierWorks = [
     dimensions: "17x30",
     sn: "SN/2020.339.59",
     image: "/artists/alec_xavier/infinite_human_sn_2020_339_59.JPG",
+    price: 80000, // $800 — update when confirmed
   },
 ];
 
@@ -187,6 +209,7 @@ const emilyOflaherty = [
     dimensions: "22x28",
     sn: null,
     image: "/artists/emily_oflaherty/oil_canvas_22_28_1.JPG",
+    price: null,
   },
   {
     id: "eo-2",
@@ -197,6 +220,7 @@ const emilyOflaherty = [
     dimensions: "22x28",
     sn: null,
     image: "/artists/emily_oflaherty/oil_canvas_22_28_2.JPG",
+    price: null,
   },
   {
     id: "eo-3",
@@ -207,6 +231,7 @@ const emilyOflaherty = [
     dimensions: "20x24",
     sn: "SN/2020.339.52",
     image: "/artists/emily_oflaherty/oil_canvas_20_24.JPG",
+    price: null,
   },
   {
     id: "eo-4",
@@ -217,6 +242,7 @@ const emilyOflaherty = [
     dimensions: "36x24",
     sn: null,
     image: "/artists/emily_oflaherty/oil_canvas_36_24.JPG",
+    price: null,
   },
 ];
 
@@ -235,6 +261,7 @@ const artistSections = [
 
 const ALL_ARTISTS = "All Artists";
 
+// ── Types ─────────────────────────────────────────────────────────────────────
 type Artwork = {
   id: string;
   title: string | null;
@@ -244,7 +271,18 @@ type Artwork = {
   dimensions: string | null;
   sn: string | null;
   image: string;
+  price: number | null; // USD cents; null = inquire
 };
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function formatPrice(cents: number) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(cents / 100);
+}
 
 function buildPreviewUrl(work: Artwork) {
   const params = new URLSearchParams({
@@ -257,7 +295,408 @@ function buildPreviewUrl(work: Artwork) {
   return `/virtual-placement?${params.toString()}`;
 }
 
-function ArtworkCard({ work }: { work: Artwork }) {
+// ── Inquiry Modal ─────────────────────────────────────────────────────────────
+function InquiryModal({
+  work,
+  onClose,
+}: {
+  work: Artwork;
+  onClose: () => void;
+}) {
+  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const displayTitle = work.title ?? `${work.artist} — ${work.medium} (${work.dimensions ?? "Dimensions TBD"})`;
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/inquire", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          artworkId: work.id,
+          artworkTitle: displayTitle,
+          artist: work.artist,
+          message: form.message,
+        }),
+      });
+      if (!res.ok) throw new Error("Failed to submit");
+      setSubmitted(true);
+    } catch {
+      setError("Something went wrong. Please try again or contact us directly.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    // Backdrop
+    <div
+      onClick={onClose}
+      style={{
+        position: "fixed",
+        inset: 0,
+        backgroundColor: "rgba(10,10,10,0.65)",
+        backdropFilter: "blur(4px)",
+        zIndex: 100,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "1.5rem",
+      }}
+    >
+      {/* Panel */}
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          backgroundColor: "#faf7f2",
+          width: "100%",
+          maxWidth: "34rem",
+          maxHeight: "90vh",
+          overflowY: "auto",
+          padding: "2.5rem",
+          position: "relative",
+        }}
+      >
+        {/* Close */}
+        <button
+          onClick={onClose}
+          aria-label="Close"
+          style={{
+            position: "absolute",
+            top: "1.25rem",
+            right: "1.25rem",
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            color: "rgba(10,10,10,0.4)",
+            fontSize: "1.25rem",
+            lineHeight: 1,
+          }}
+        >
+          ✕
+        </button>
+
+        {submitted ? (
+          // ── Success state ────────────────────────────────────────────────
+          <div style={{ textAlign: "center", padding: "2rem 0" }}>
+            <div
+              style={{
+                width: "3.5rem",
+                height: "3.5rem",
+                border: "1px solid #c9a84c",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "0 auto 1.5rem",
+              }}
+            >
+              <span style={{ color: "#c9a84c" }}>✦</span>
+            </div>
+            <h2
+              style={{
+                fontFamily: "Cormorant Garamond, Georgia, serif",
+                fontWeight: 300,
+                fontSize: "1.75rem",
+                color: "#0a0a0a",
+                marginBottom: "0.75rem",
+              }}
+            >
+              Inquiry Received
+            </h2>
+            <div
+              style={{
+                width: "2.5rem",
+                height: "1px",
+                backgroundColor: "#c9a84c",
+                margin: "0 auto 1.25rem",
+              }}
+            />
+            <p
+              style={{
+                fontFamily: "Jost, system-ui, sans-serif",
+                fontSize: "0.875rem",
+                color: "rgba(10,10,10,0.55)",
+                lineHeight: 1.75,
+              }}
+            >
+              Thank you, {form.name.split(" ")[0]}. We will be in touch within
+              24 hours regarding{" "}
+              <em
+                style={{
+                  fontFamily: "Cormorant Garamond, Georgia, serif",
+                  fontStyle: "italic",
+                }}
+              >
+                {displayTitle}
+              </em>
+              .
+            </p>
+            <button
+              onClick={onClose}
+              style={{
+                marginTop: "2rem",
+                backgroundColor: "#0a0a0a",
+                color: "#f5f0e8",
+                border: "none",
+                padding: "0.75rem 2rem",
+                fontSize: "0.7rem",
+                letterSpacing: "0.25em",
+                textTransform: "uppercase",
+                fontFamily: "Jost, system-ui, sans-serif",
+                cursor: "pointer",
+              }}
+            >
+              Close
+            </button>
+          </div>
+        ) : (
+          // ── Form state ───────────────────────────────────────────────────
+          <>
+            {/* Header */}
+            <div style={{ marginBottom: "2rem" }}>
+              <p
+                style={{
+                  fontFamily: "Jost, system-ui, sans-serif",
+                  fontSize: "0.7rem",
+                  letterSpacing: "0.3em",
+                  textTransform: "uppercase",
+                  color: "#c9a84c",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                Purchase Inquiry
+              </p>
+              <h2
+                style={{
+                  fontFamily: "Cormorant Garamond, Georgia, serif",
+                  fontWeight: 300,
+                  fontSize: "1.5rem",
+                  color: "#0a0a0a",
+                  lineHeight: 1.3,
+                  marginBottom: "0.25rem",
+                }}
+              >
+                {displayTitle}
+              </h2>
+              <p
+                style={{
+                  fontFamily: "Jost, system-ui, sans-serif",
+                  fontSize: "0.75rem",
+                  color: "rgba(10,10,10,0.4)",
+                  letterSpacing: "0.08em",
+                }}
+              >
+                {work.artist}
+                {work.medium ? ` · ${work.medium}` : ""}
+                {work.dimensions ? ` · ${work.dimensions}` : ""}
+              </p>
+            </div>
+
+            <form
+              onSubmit={handleSubmit}
+              style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}
+            >
+              {/* Name */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+                <label
+                  htmlFor="inq-name"
+                  style={labelStyle}
+                >
+                  Full Name *
+                </label>
+                <input
+                  id="inq-name"
+                  name="name"
+                  type="text"
+                  required
+                  value={form.name}
+                  onChange={handleChange}
+                  placeholder="Alexandra Whitmore"
+                  style={inputStyle}
+                />
+              </div>
+
+              {/* Email + Phone row */}
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "1.25rem",
+                }}
+              >
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+                  <label htmlFor="inq-email" style={labelStyle}>
+                    Email *
+                  </label>
+                  <input
+                    id="inq-email"
+                    name="email"
+                    type="email"
+                    required
+                    value={form.email}
+                    onChange={handleChange}
+                    placeholder="your@email.com"
+                    style={inputStyle}
+                  />
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+                  <label htmlFor="inq-phone" style={labelStyle}>
+                    Phone
+                  </label>
+                  <input
+                    id="inq-phone"
+                    name="phone"
+                    type="tel"
+                    value={form.phone}
+                    onChange={handleChange}
+                    placeholder="(555) 000-0000"
+                    style={inputStyle}
+                  />
+                </div>
+              </div>
+
+              {/* Message */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+                <label htmlFor="inq-message" style={labelStyle}>
+                  Message
+                </label>
+                <textarea
+                  id="inq-message"
+                  name="message"
+                  rows={4}
+                  value={form.message}
+                  onChange={handleChange}
+                  placeholder="Any questions, budget range, or placement considerations..."
+                  style={{ ...inputStyle, resize: "none" }}
+                />
+              </div>
+
+              {error && (
+                <p
+                  style={{
+                    fontFamily: "Jost, system-ui, sans-serif",
+                    fontSize: "0.8rem",
+                    color: "#c0392b",
+                  }}
+                >
+                  {error}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading}
+                style={{
+                  width: "100%",
+                  backgroundColor: loading ? "rgba(10,10,10,0.5)" : "#0a0a0a",
+                  color: "#f5f0e8",
+                  border: "none",
+                  padding: "0.875rem",
+                  fontSize: "0.7rem",
+                  letterSpacing: "0.3em",
+                  textTransform: "uppercase",
+                  fontFamily: "Jost, system-ui, sans-serif",
+                  cursor: loading ? "not-allowed" : "pointer",
+                  transition: "background-color 0.3s",
+                  marginTop: "0.25rem",
+                }}
+              >
+                {loading ? "Sending…" : "Submit Inquiry"}
+              </button>
+
+              <p
+                style={{
+                  fontFamily: "Jost, system-ui, sans-serif",
+                  fontSize: "0.7rem",
+                  color: "rgba(10,10,10,0.3)",
+                  textAlign: "center",
+                }}
+              >
+                We respond within 24 hours. No commitment required.
+              </p>
+            </form>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Shared form element styles
+const labelStyle: React.CSSProperties = {
+  fontFamily: "Jost, system-ui, sans-serif",
+  fontSize: "0.7rem",
+  letterSpacing: "0.2em",
+  textTransform: "uppercase",
+  color: "rgba(10,10,10,0.45)",
+};
+
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  borderBottom: "1px solid rgba(10,10,10,0.2)",
+  borderTop: "none",
+  borderLeft: "none",
+  borderRight: "none",
+  backgroundColor: "transparent",
+  padding: "0.65rem 0",
+  fontSize: "0.875rem",
+  color: "#0a0a0a",
+  outline: "none",
+  fontFamily: "Jost, system-ui, sans-serif",
+};
+
+// ── Artwork Card ──────────────────────────────────────────────────────────────
+function ArtworkCard({
+  work,
+  onInquire,
+}: {
+  work: Artwork;
+  onInquire: (work: Artwork) => void;
+}) {
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
+
+  const handleBuyNow = async () => {
+    setCheckoutLoading(true);
+    setCheckoutError(null);
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: work.id,
+          title: work.title ?? `${work.artist} — ${work.medium}`,
+          artist: work.artist,
+          price: work.price,
+          image: work.image,
+          sn: work.sn,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.url) {
+        throw new Error(data.error ?? "Checkout failed.");
+      }
+      window.location.href = data.url;
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Checkout unavailable.";
+      setCheckoutError(message);
+      setCheckoutLoading(false);
+    }
+  };
+
   return (
     <article
       className="group"
@@ -292,11 +731,7 @@ function ArtworkCard({ work }: { work: Artwork }) {
 
       {/* Info */}
       <div style={{ padding: "1.5rem" }}>
-        <div
-          style={{
-            marginBottom: "0.25rem",
-          }}
-        >
+        <div style={{ marginBottom: "0.25rem" }}>
           {work.title && (
             <h3
               style={{
@@ -321,9 +756,11 @@ function ArtworkCard({ work }: { work: Artwork }) {
               marginBottom: "0.75rem",
             }}
           >
-            {work.artist}{work.year ? ` (${work.year})` : ""}
+            {work.artist}
+            {work.year ? ` (${work.year})` : ""}
           </p>
         </div>
+
         <div
           style={{
             height: "1px",
@@ -331,6 +768,7 @@ function ArtworkCard({ work }: { work: Artwork }) {
             marginBottom: "0.75rem",
           }}
         />
+
         <div
           style={{
             fontSize: "0.75rem",
@@ -355,35 +793,94 @@ function ArtworkCard({ work }: { work: Artwork }) {
             </div>
           )}
         </div>
-        <button
-          className="hover:border-[#c9a84c] hover:text-[#c9a84c] hover:bg-[#c9a84c]/5 transition-all duration-300 cursor-pointer"
-          style={{
-            width: "100%",
-            border: "1px solid rgba(10,10,10,0.2)",
-            color: "rgba(10,10,10,0.7)",
-            padding: "0.75rem",
-            fontSize: "0.75rem",
-            letterSpacing: "0.25em",
-            textTransform: "uppercase",
-            fontFamily: "Jost, system-ui, sans-serif",
-            backgroundColor: "transparent",
-          }}
-        >
-          Inquire to Purchase
-        </button>
+
+        {/* Price */}
+        {work.price !== null && (
+          <p
+            style={{
+              fontFamily: "Cormorant Garamond, Georgia, serif",
+              fontSize: "1.125rem",
+              fontWeight: 400,
+              color: "#0a0a0a",
+              marginBottom: "0.75rem",
+              letterSpacing: "0.02em",
+            }}
+          >
+            {formatPrice(work.price)}
+          </p>
+        )}
+
+        {/* CTA — Buy Now or Inquire */}
+        {work.price !== null ? (
+          <div>
+            <button
+              onClick={handleBuyNow}
+              disabled={checkoutLoading}
+              className="hover:bg-[#c9a84c] hover:text-[#0a0a0a] hover:border-[#c9a84c] transition-all duration-300 cursor-pointer"
+              style={{
+                width: "100%",
+                backgroundColor: checkoutLoading ? "rgba(10,10,10,0.5)" : "#0a0a0a",
+                color: "#f5f0e8",
+                border: "1px solid transparent",
+                padding: "0.75rem",
+                fontSize: "0.75rem",
+                letterSpacing: "0.25em",
+                textTransform: "uppercase",
+                fontFamily: "Jost, system-ui, sans-serif",
+                cursor: checkoutLoading ? "not-allowed" : "pointer",
+              }}
+            >
+              {checkoutLoading ? "Redirecting…" : "Buy Now"}
+            </button>
+            {checkoutError && (
+              <p
+                style={{
+                  fontFamily: "Jost, system-ui, sans-serif",
+                  fontSize: "0.7rem",
+                  color: "#c0392b",
+                  marginTop: "0.5rem",
+                  textAlign: "center",
+                }}
+              >
+                {checkoutError}
+              </p>
+            )}
+          </div>
+        ) : (
+          <button
+            onClick={() => onInquire(work)}
+            className="hover:border-[#c9a84c] hover:text-[#c9a84c] hover:bg-[#c9a84c]/5 transition-all duration-300 cursor-pointer"
+            style={{
+              width: "100%",
+              border: "1px solid rgba(10,10,10,0.2)",
+              color: "rgba(10,10,10,0.7)",
+              padding: "0.75rem",
+              fontSize: "0.75rem",
+              letterSpacing: "0.25em",
+              textTransform: "uppercase",
+              fontFamily: "Jost, system-ui, sans-serif",
+              backgroundColor: "transparent",
+            }}
+          >
+            Inquire to Purchase
+          </button>
+        )}
       </div>
     </article>
   );
 }
 
+// ── Artist Section ────────────────────────────────────────────────────────────
 function ArtistSection({
   artist,
   bio,
   works,
+  onInquire,
 }: {
   artist: string;
   bio: string;
   works: Artwork[];
+  onInquire: (work: Artwork) => void;
 }) {
   return (
     <div style={{ marginBottom: "5rem" }}>
@@ -433,15 +930,17 @@ function ArtistSection({
       {/* Grid */}
       <div className="section-grid">
         {works.map((work) => (
-          <ArtworkCard key={work.id} work={work} />
+          <ArtworkCard key={work.id} work={work} onInquire={onInquire} />
         ))}
       </div>
     </div>
   );
 }
 
+// ── Page ──────────────────────────────────────────────────────────────────────
 export default function GalleryPage() {
   const [activeArtist, setActiveArtist] = useState<string>(ALL_ARTISTS);
+  const [inquiryWork, setInquiryWork] = useState<Artwork | null>(null);
 
   const artistNames = artistSections.map((s) => s.artist);
   const filterOptions = [ALL_ARTISTS, ...artistNames];
@@ -453,6 +952,11 @@ export default function GalleryPage() {
 
   return (
     <>
+      {/* Inquiry Modal */}
+      {inquiryWork && (
+        <InquiryModal work={inquiryWork} onClose={() => setInquiryWork(null)} />
+      )}
+
       {/* Page header */}
       <div className="page-hero" style={{ backgroundColor: "#0a0a0a" }}>
         <div className="page-container">
@@ -567,8 +1071,10 @@ export default function GalleryPage() {
                 }}
                 onMouseLeave={(e) => {
                   if (!isActive) {
-                    (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(10,10,10,0.15)";
-                    (e.currentTarget as HTMLButtonElement).style.color = "rgba(10,10,10,0.55)";
+                    (e.currentTarget as HTMLButtonElement).style.borderColor =
+                      "rgba(10,10,10,0.15)";
+                    (e.currentTarget as HTMLButtonElement).style.color =
+                      "rgba(10,10,10,0.55)";
                   }
                 }}
               >
@@ -599,15 +1105,14 @@ export default function GalleryPage() {
       {/* Gallery */}
       <section style={{ backgroundColor: "#faf7f2", padding: "5rem 0" }}>
         <div className="page-container">
-
           {visibleSections.map((section, index) => (
             <div key={section.artist}>
               <ArtistSection
                 artist={section.artist}
                 bio={section.bio}
                 works={section.works}
+                onInquire={setInquiryWork}
               />
-              {/* Divider between sections */}
               {index < visibleSections.length - 1 && (
                 <div
                   style={{
