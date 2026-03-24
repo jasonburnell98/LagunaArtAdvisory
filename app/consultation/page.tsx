@@ -221,7 +221,7 @@ export default function ConsultationPage() {
                   }}
                 >
                   <p>(949) 303-3673</p>
-                  <p>hello@lagunaartadvisory.com</p>
+                  <p>Info@lagartadvisory.com</p>
                   <p>Mon – Sat, 9am – 6pm PST</p>
                 </div>
               </div>

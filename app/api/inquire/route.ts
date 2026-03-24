@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: NextRequest) {
   try {
@@ -21,25 +24,21 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ── Log the inquiry (replace with email service when ready) ──────────────
-    console.log("=== New Purchase Inquiry ===");
-    console.log(`Artwork:  ${artworkTitle} by ${artist} (${artworkId})`);
-    console.log(`From:     ${name} <${email}>`);
-    if (phone) console.log(`Phone:    ${phone}`);
-    if (message) console.log(`Message:  ${message}`);
-    console.log("============================");
-
-    // TODO: Integrate an email service here (e.g. Resend, SendGrid, Nodemailer)
-    // Example with Resend:
-    //
-    // import { Resend } from "resend";
-    // const resend = new Resend(process.env.RESEND_API_KEY);
-    // await resend.emails.send({
-    //   from: "gallery@lagunaartadvisory.com",
-    //   to: "hello@lagunaartadvisory.com",
-    //   subject: `Purchase Inquiry: ${artworkTitle} by ${artist}`,
-    //   html: `<p><strong>${name}</strong> (${email}) is interested in purchasing <em>${artworkTitle}</em> by ${artist}.</p><p>${message ?? ""}</p>`,
-    // });
+    // ── Send inquiry email via Resend ─────────────────────────────────────────
+    await resend.emails.send({
+      from: "Laguna Art Advisory <Info@lagartadvisory.com>",
+      to: "Info@lagartadvisory.com",
+      replyTo: email,
+      subject: `Purchase Inquiry: ${artworkTitle} by ${artist}`,
+      html: `
+        <h2>New Purchase Inquiry</h2>
+        <p><strong>Artwork:</strong> ${artworkTitle} by ${artist} (ID: ${artworkId})</p>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        ${phone ? `<p><strong>Phone:</strong> ${phone}</p>` : ""}
+        ${message ? `<p><strong>Message:</strong> ${message}</p>` : ""}
+      `,
+    });
 
     return NextResponse.json({ success: true });
   } catch (err) {

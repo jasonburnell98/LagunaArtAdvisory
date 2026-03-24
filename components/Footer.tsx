@@ -159,11 +159,11 @@ export default function Footer() {
               <li style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
                 <span style={{ color: "#c9a84c" }}>✦</span>
                 <a
-                  href="mailto:hello@lagunaartadvisory.com"
+                  href="mailto:Info@lagartadvisory.com"
                   className="hover:text-[#c9a84c] transition-colors duration-300"
                   style={{ color: "rgba(245,240,232,0.6)", textDecoration: "none" }}
                 >
-                  hello@lagunaartadvisory.com
+                  Info@lagartadvisory.com
                 </a>
               </li>
             </ul>
