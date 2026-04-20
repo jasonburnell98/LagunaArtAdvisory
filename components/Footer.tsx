@@ -166,6 +166,41 @@ export default function Footer() {
                   Info@lagartadvisory.com
                 </a>
               </li>
+              <li style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                <span style={{ color: "#c9a84c" }}>✦</span>
+                <a
+                  href="https://www.instagram.com/lagunaartadvisory/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Follow Laguna Art Advisory on Instagram"
+                  className="hover:text-[#c9a84c] transition-colors duration-300"
+                  style={{
+                    color: "rgba(245,240,232,0.6)",
+                    textDecoration: "none",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                  </svg>
+                  @lagunaartadvisory
+                </a>
+              </li>
             </ul>
           </div>
         </div>
