@@ -429,6 +429,9 @@ function ArtworkCard({
         backgroundColor: "#fff",
         boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
         transition: "box-shadow 0.5s ease",
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
       }}
     >
       {/* Image */}
@@ -485,7 +488,14 @@ function ArtworkCard({
       </div>
 
       {/* Info */}
-      <div style={{ padding: "1.5rem" }}>
+      <div
+        style={{
+          padding: "1.5rem",
+          display: "flex",
+          flexDirection: "column",
+          flex: "1 1 auto",
+        }}
+      >
         <div style={{ marginBottom: "0.25rem" }}>
           {work.title && (
             <h3
@@ -549,24 +559,26 @@ function ArtworkCard({
           )}
         </div>
 
-        {/* Price */}
-        {work.price !== null && (
-          <p
-            style={{
-              fontFamily: "Cormorant Garamond, Georgia, serif",
-              fontSize: "1.125rem",
-              fontWeight: 400,
-              color: "#0a0a0a",
-              marginBottom: "0.75rem",
-              letterSpacing: "0.02em",
-            }}
-          >
-            {formatPrice(work.price)}
-          </p>
-        )}
+        {/* Price + CTA — pushed to bottom so buttons align across cards */}
+        <div style={{ marginTop: "auto" }}>
+          {/* Price */}
+          {work.price !== null && (
+            <p
+              style={{
+                fontFamily: "Cormorant Garamond, Georgia, serif",
+                fontSize: "1.125rem",
+                fontWeight: 400,
+                color: "#0a0a0a",
+                marginBottom: "0.75rem",
+                letterSpacing: "0.02em",
+              }}
+            >
+              {formatPrice(work.price)}
+            </p>
+          )}
 
-        {/* CTA */}
-        {isSold ? (
+          {/* CTA */}
+          {isSold ? (
           <button
             disabled
             style={{
@@ -638,10 +650,12 @@ function ArtworkCard({
             Inquire to Purchase
           </button>
         )}
+        </div>
       </div>
     </article>
   );
 }
+
 
 // ── Artist Bios ───────────────────────────────────────────────────────────────
 const artistBios: Record<string, string[]> = {
