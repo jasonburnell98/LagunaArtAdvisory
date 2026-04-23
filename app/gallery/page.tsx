@@ -659,6 +659,9 @@ const artistBios: Record<string, string[]> = {
     "Thomas Brady captures the overlooked poetry of everyday life\u2014workers, passersby, and rural communities\u2014through bold, gestural compositions. Rooted in his working-class upbringing, his paintings begin as quick, observational pastels and evolve into richly layered canvases driven by movement, instinct, and color.",
     "Brady's work balances urgency and refinement, transforming fleeting moments into expressive scenes that question what is essential, real, and true.",
   ],
+  "Greg Urquhart": [
+    "Greg Urquhart\u2019s work centers on nostalgia, using familiar childhood toys and symbols to evoke shared memories of simpler, more joyful times. Through vibrant, pop art\u2013inspired resin pieces, he blends bold modern aesthetics with sentimental themes, inviting viewers to reconnect with their inner child. His art acts as a bridge to the past, encouraging reflection on the universal experiences that connect us all.",
+  ],
 };
 
 // ── Artist Section ────────────────────────────────────────────────────────────
