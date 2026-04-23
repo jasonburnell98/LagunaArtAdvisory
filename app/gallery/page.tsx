@@ -650,6 +650,15 @@ const artistBios: Record<string, string[]> = {
     "Her work spans landscapes, figurative painting, and still life, often embracing an intentionally \u201cunfinished\u201d quality that preserves immediacy and emotional expression. Through soft palettes and intuitive mark-making, Emily captures fleeting moments with a sense of quiet depth and vulnerability.",
     "After completing her studies, she relocated to Orange County where she continues to grow her artistic practice. In addition to her studio work, Emily is a dedicated educator, teaching high school students and traveling throughout the region to share the transformative benefits of art with young people.",
   ],
+  "Scott Troxel": [
+    "Scott Troxel is a contemporary American artist known for his retro-futurist wooden sculptures that blend mid-century modern design with nostalgic references to past technologies. Drawing on his background in industrial design and branding, Troxel creates bold, minimalist works that combine organic wood textures with vibrant color palettes, capturing a sense of both history and futurism.",
+    "His recent \u201cSmall Pops\u201d series emphasizes compact, dynamic forms that maintain a strong visual presence while allowing for greater experimentation and spontaneity.",
+    "Troxel has exhibited widely at major art fairs and galleries across the United States and internationally, with his work held in prominent corporate, hotel, and private collections worldwide.",
+  ],
+  "Thomas Brady": [
+    "Thomas Brady captures the overlooked poetry of everyday life\u2014workers, passersby, and rural communities\u2014through bold, gestural compositions. Rooted in his working-class upbringing, his paintings begin as quick, observational pastels and evolve into richly layered canvases driven by movement, instinct, and color.",
+    "Brady's work balances urgency and refinement, transforming fleeting moments into expressive scenes that question what is essential, real, and true.",
+  ],
 };
 
 // ── Artist Section ────────────────────────────────────────────────────────────

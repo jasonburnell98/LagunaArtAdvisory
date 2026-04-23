@@ -80,7 +80,7 @@ h1, h2, h3, h4, h5, h6 {
   text-align: center;
 }
 
-/* 3-column grid: desktop → tablet 2-col → mobile 1-col */
+/* 3-column grid: desktop → tablet 2-col → mobile 2-col */
 .section-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -102,11 +102,13 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (max-width: 768px) {
   .page-container {
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
+  /* Mobile: 2-column grid matching a store-style layout */
   .section-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
   .two-col-grid {
     grid-template-columns: 1fr;
@@ -114,6 +116,23 @@ h1, h2, h3, h4, h5, h6 {
   .consult-grid {
     grid-template-columns: 1fr;
     gap: 2.5rem;
+  }
+
+  /* Tighten the artwork card on mobile so two fit cleanly side-by-side */
+  .section-grid article > div:last-child {
+    padding: 0.875rem !important;
+  }
+  .section-grid article h3 {
+    font-size: 1rem !important;
+    line-height: 1.25 !important;
+  }
+  .section-grid article p {
+    font-size: 0.7rem !important;
+  }
+  .section-grid article button {
+    padding: 0.625rem !important;
+    font-size: 0.65rem !important;
+    letter-spacing: 0.2em !important;
   }
 }
 
