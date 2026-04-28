@@ -68,7 +68,6 @@ VALUES
   ('gu-2', 'Duck Supreme',             'Greg Urquhart', 2026, 'Aluminum with Welded Base',         '8x10',  'Edition 1/12', '/artists/greg_urquhart/AA_metal_duck.jpeg',  33300, 23),
   ('gu-3', 'Orange Crush — Orange',    'Greg Urquhart', 2025, 'Resin on Wood Panel',               '12x18', NULL, '/artists/greg_urquhart/B_hot_wheels.jpeg',   42500, 24),
   ('gu-4', 'Flock Mentality — White',  'Greg Urquhart', 2025, 'Resin on Wood Panel, Framed',       '15x20', NULL, '/artists/greg_urquhart/C_white_duck.jpeg',   45000, 25),
-  ('gu-5', 'Chew On This — Pink',      'Greg Urquhart', 2026, 'Resin on Wood Panel',               '16x24', NULL, '/artists/greg_urquhart/D_bazooka_joe.jpeg',  47500, 26),
   ('gu-6', 'Flock Mentality — Red',    'Greg Urquhart', 2025, 'Resin on Wood Panel, Framed',       '13x19', NULL, '/artists/greg_urquhart/E_red_duck.jpeg',     42500, 27)
 ON CONFLICT (id) DO NOTHING;
 
