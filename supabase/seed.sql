@@ -89,21 +89,23 @@ VALUES
   ('st-11', 'Waikiki',     'Scott Troxel', 2024, 'Acrylic and texture on solid maple with mahogany',         '14x11x5',       NULL, '/artists/scott_troxel/waikikimain.jpg',      195000, 38)
 ON CONFLICT (id) DO NOTHING;
 
--- ── Seed: Thomas Brady ────────────────────────────────────────────────────────
--- Oil on panel paintings capturing the poetry of everyday life.
--- Prices include shipping in a wooden crate to protect the surface.
+-- ── Seed: Sean W. Spellman ────────────────────────────────────────────────────
+-- Minimalist sea-and-sunset abstractions; works in acrylic on canvas/paper plus
+-- one carved birch panel. Featured in Vogue, Dwell, Rolling Stone; murals at
+-- Hotel Joaquin (Laguna Beach), Marram (Montauk), Ceylon Sliders, Freehand.
 INSERT INTO artworks (id, title, artist, year, medium, dimensions, sn, image, price, display_order)
 VALUES
-  ('tb-1',  'Curve in the Road',          'Thomas Brady', 2020, 'Oil/Panel', '34x53',   NULL, '/artists/thomas_brady/curve_in_the_road_34x53_2020.jpg',        730000, 39),
-  ('tb-2',  'BV by Hardee''s',            'Thomas Brady', 2025, 'Oil/Panel', '35x47',   NULL, '/artists/thomas_brady/bv_by_hardees_35x47.jpg',                 686000, 40),
-  ('tb-3',  'Lady at Hardees',            'Thomas Brady', 2025, 'Oil/Panel', '42x32',   NULL, '/artists/thomas_brady/lady_at_hardees_42x32.jpg',               630000, 41),
-  ('tb-4',  'Landscape with Telephone Pole', 'Thomas Brady', 2017, 'Oil/Panel', '30x43.5', NULL, '/artists/thomas_brady/landscape_with_telephone_pole_30x43.5.jpg', 630000, 42),
-  ('tb-5',  'Olney Couple',               'Thomas Brady', 2023, 'Oil/Panel', '44x50.5', NULL, '/artists/thomas_brady/olney_couple_44x50.5.jpg',                770000, 43),
-  ('tb-6',  'Rita''s',                    'Thomas Brady', 2024, 'Oil/Panel', '39x45',   NULL, '/artists/thomas_brady/ritas_by_walgreens_39x45.jpg',            700000, 44),
-  ('tb-7',  'Stewardburg Road',           'Thomas Brady', 2025, 'Oil/Panel', '31x47',   NULL, '/artists/thomas_brady/stewardburg_road_31x47.jpg',              660000, 45),
-  ('tb-8',  'Striped Fields',             'Thomas Brady', 2019, 'Oil/Panel', '38x51',   NULL, '/artists/thomas_brady/striped_fields_19_38x51.jpg',             NULL,   46),
-  ('tb-9',  'The DC Highway',             'Thomas Brady', 2016, 'Oil/Panel', '31x42.5', NULL, '/artists/thomas_brady/the_dc_highway_31x42.5.jpg',              620000, 47),
-  ('tb-10', 'The Lexington Restaurant',   'Thomas Brady', 2023, 'Oil/Panel', '42x40',   NULL, '/artists/thomas_brady/the_lexington_restaurant_42x40_23.jpg',   680000, 48),
-  ('tb-11', 'The Train Station',          'Thomas Brady', 2024, 'Oil/Panel', '35x47',   NULL, '/artists/thomas_brady/the_train_station_35x47.jpg',             686000, 49),
-  ('tb-12', 'VMI',                        'Thomas Brady', 2023, 'Oil/Panel', '35x45',   NULL, '/artists/thomas_brady/vmi_35x45_23.jpg',                        670000, 50)
+  ('ss-1',  'Cool/Floating',       'Sean W. Spellman', 2024, 'Acrylic on stretched canvas',                                              '48x36',     NULL, '/artists/sean_spellman/cool_floating.webp',        300000, 39),
+  ('ss-2',  'December Plant 1',    'Sean W. Spellman', 2024, 'Acrylic on antique paper',                                                 '12x12',     NULL, '/artists/sean_spellman/december_plant_1.webp',      75000, 40),
+  ('ss-3',  'Western Hills',       'Sean W. Spellman', 2024, 'Acrylic on stretched canvas',                                              '36x36',     NULL, '/artists/sean_spellman/western_hills.webp',        350000, 41),
+  ('ss-4',  'December Plant 2',    'Sean W. Spellman', 2024, 'Acrylic and turmeric on antique paper',                                    '12x12',     NULL, '/artists/sean_spellman/december_plant_2.webp',      55000, 42),
+  ('ss-5',  'Drifting',            'Sean W. Spellman', 2024, 'Acrylic on canvas',                                                        '36x48',     NULL, '/artists/sean_spellman/drifting.webp',             550000, 43),
+  ('ss-6',  'Moon Over Laguna',    'Sean W. Spellman', 2023, 'Acrylic on canvas, basswood floater frame by Preservation Framer',         '54.5x52',   NULL, '/artists/sean_spellman/moon_over_laguna.webp',     550000, 44),
+  ('ss-7',  'Primitive Pot 2',     'Sean W. Spellman', 2023, 'Ink and turmeric on antique paper',                                        '12x12',     NULL, '/artists/sean_spellman/primitive_pot_2.webp',       75000, 45),
+  ('ss-8',  'Radiance',            'Sean W. Spellman', 2024, 'Acrylic on stretched canvas',                                              '36x48',     NULL, '/artists/sean_spellman/radiance.webp',             550000, 46),
+  ('ss-9',  'Untitled',            'Sean W. Spellman', 2025, 'Acrylic on canvas',                                                        '30x40',     NULL, '/artists/sean_spellman/untitled.webp',             250000, 47),
+  ('ss-10', 'Watching It Go Down', 'Sean W. Spellman', 2024, 'Acrylic on stretched canvas',                                              '48x36',     NULL, '/artists/sean_spellman/watching_it_go_down.webp',  250000, 48),
+  ('ss-11', 'Experientialism #2',  'Sean W. Spellman', 2025, 'Acrylic on canvas',                                                        '36x48',     NULL, '/artists/sean_spellman/experientialism_2.webp',    250000, 49),
+  ('ss-12', 'Music Man',           'Sean W. Spellman', 2025, 'Acrylic on canvas',                                                        '36x48',     NULL, '/artists/sean_spellman/music_man.webp',            350000, 50),
+  ('ss-13', 'Wavelengths',         'Sean W. Spellman', 2021, 'Birch wood panel carving (LA pickup or Hangman Fine Arts delivery)',       '59x39',     NULL, '/artists/sean_spellman/wavelengths.webp',          750000, 51)
 ON CONFLICT (id) DO NOTHING;

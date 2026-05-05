@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Inserts (upserts) the Scott Troxel + Thomas Brady rows into Supabase.
+// Inserts (upserts) the Scott Troxel + Sean W. Spellman rows into Supabase.
 // Run with:  node scripts/sync-new-artists.mjs
 // Uses NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY from .env.local.
 
@@ -57,19 +57,20 @@ const rows = [
   { id: "st-10", title: "Penna",       artist: "Scott Troxel", year: 2024, medium: "Pigmented satin lacquer on solid poplar",                   dimensions: "9x15.5x2",      sn: null, image: "/artists/scott_troxel/pennamain.jpeg",     price: 220000, display_order: 37 },
   { id: "st-11", title: "Waikiki",     artist: "Scott Troxel", year: 2024, medium: "Acrylic and texture on solid maple with mahogany",          dimensions: "14x11x5",       sn: null, image: "/artists/scott_troxel/waikikimain.jpg",    price: 195000, display_order: 38 },
 
-  // ── Thomas Brady (12 works) ───────────────────────────────────────────────
-  { id: "tb-1",  title: "Curve in the Road",               artist: "Thomas Brady", year: 2020, medium: "Oil/Panel", dimensions: "34x53",   sn: null, image: "/artists/thomas_brady/curve_in_the_road_34x53_2020.jpg",        price: 730000, display_order: 39 },
-  { id: "tb-2",  title: "BV by Hardee's",                  artist: "Thomas Brady", year: 2025, medium: "Oil/Panel", dimensions: "35x47",   sn: null, image: "/artists/thomas_brady/bv_by_hardees_35x47.jpg",                 price: 686000, display_order: 40 },
-  { id: "tb-3",  title: "Lady at Hardees",                 artist: "Thomas Brady", year: 2025, medium: "Oil/Panel", dimensions: "42x32",   sn: null, image: "/artists/thomas_brady/lady_at_hardees_42x32.jpg",               price: 630000, display_order: 41 },
-  { id: "tb-4",  title: "Landscape with Telephone Pole",   artist: "Thomas Brady", year: 2017, medium: "Oil/Panel", dimensions: "30x43.5", sn: null, image: "/artists/thomas_brady/landscape_with_telephone_pole_30x43.5.jpg", price: 630000, display_order: 42 },
-  { id: "tb-5",  title: "Olney Couple",                    artist: "Thomas Brady", year: 2023, medium: "Oil/Panel", dimensions: "44x50.5", sn: null, image: "/artists/thomas_brady/olney_couple_44x50.5.jpg",                price: 770000, display_order: 43 },
-  { id: "tb-6",  title: "Rita's",                          artist: "Thomas Brady", year: 2024, medium: "Oil/Panel", dimensions: "39x45",   sn: null, image: "/artists/thomas_brady/ritas_by_walgreens_39x45.jpg",            price: 700000, display_order: 44 },
-  { id: "tb-7",  title: "Stewardburg Road",                artist: "Thomas Brady", year: 2025, medium: "Oil/Panel", dimensions: "31x47",   sn: null, image: "/artists/thomas_brady/stewardburg_road_31x47.jpg",              price: 660000, display_order: 45 },
-  { id: "tb-8",  title: "Striped Fields",                  artist: "Thomas Brady", year: 2019, medium: "Oil/Panel", dimensions: "38x51",   sn: null, image: "/artists/thomas_brady/striped_fields_19_38x51.jpg",             price: null,   display_order: 46 },
-  { id: "tb-9",  title: "The DC Highway",                  artist: "Thomas Brady", year: 2016, medium: "Oil/Panel", dimensions: "31x42.5", sn: null, image: "/artists/thomas_brady/the_dc_highway_31x42.5.jpg",              price: 620000, display_order: 47 },
-  { id: "tb-10", title: "The Lexington Restaurant",        artist: "Thomas Brady", year: 2023, medium: "Oil/Panel", dimensions: "42x40",   sn: null, image: "/artists/thomas_brady/the_lexington_restaurant_42x40_23.jpg",   price: 680000, display_order: 48 },
-  { id: "tb-11", title: "The Train Station",               artist: "Thomas Brady", year: 2024, medium: "Oil/Panel", dimensions: "35x47",   sn: null, image: "/artists/thomas_brady/the_train_station_35x47.jpg",             price: 686000, display_order: 49 },
-  { id: "tb-12", title: "VMI",                             artist: "Thomas Brady", year: 2023, medium: "Oil/Panel", dimensions: "35x45",   sn: null, image: "/artists/thomas_brady/vmi_35x45_23.jpg",                        price: 670000, display_order: 50 },
+  // ── Sean W. Spellman (13 works) ───────────────────────────────────────────
+  { id: "ss-1",  title: "Cool/Floating",       artist: "Sean W. Spellman", year: 2024, medium: "Acrylic on stretched canvas",                                                 dimensions: "48x36",   sn: null, image: "/artists/sean_spellman/cool_floating.webp",       price: 300000, display_order: 39 },
+  { id: "ss-2",  title: "December Plant 1",    artist: "Sean W. Spellman", year: 2024, medium: "Acrylic on antique paper",                                                    dimensions: "12x12",   sn: null, image: "/artists/sean_spellman/december_plant_1.webp",     price:  75000, display_order: 40 },
+  { id: "ss-3",  title: "Western Hills",       artist: "Sean W. Spellman", year: 2024, medium: "Acrylic on stretched canvas",                                                 dimensions: "36x36",   sn: null, image: "/artists/sean_spellman/western_hills.webp",       price: 350000, display_order: 41 },
+  { id: "ss-4",  title: "December Plant 2",    artist: "Sean W. Spellman", year: 2024, medium: "Acrylic and turmeric on antique paper",                                       dimensions: "12x12",   sn: null, image: "/artists/sean_spellman/december_plant_2.webp",     price:  55000, display_order: 42 },
+  { id: "ss-5",  title: "Drifting",            artist: "Sean W. Spellman", year: 2024, medium: "Acrylic on canvas",                                                           dimensions: "36x48",   sn: null, image: "/artists/sean_spellman/drifting.webp",            price: 550000, display_order: 43 },
+  { id: "ss-6",  title: "Moon Over Laguna",    artist: "Sean W. Spellman", year: 2023, medium: "Acrylic on canvas, basswood floater frame by Preservation Framer",            dimensions: "54.5x52", sn: null, image: "/artists/sean_spellman/moon_over_laguna.webp",    price: 550000, display_order: 44 },
+  { id: "ss-7",  title: "Primitive Pot 2",     artist: "Sean W. Spellman", year: 2023, medium: "Ink and turmeric on antique paper",                                           dimensions: "12x12",   sn: null, image: "/artists/sean_spellman/primitive_pot_2.webp",     price:  75000, display_order: 45 },
+  { id: "ss-8",  title: "Radiance",            artist: "Sean W. Spellman", year: 2024, medium: "Acrylic on stretched canvas",                                                 dimensions: "36x48",   sn: null, image: "/artists/sean_spellman/radiance.webp",            price: 550000, display_order: 46 },
+  { id: "ss-9",  title: "Untitled",            artist: "Sean W. Spellman", year: 2025, medium: "Acrylic on canvas",                                                           dimensions: "30x40",   sn: null, image: "/artists/sean_spellman/untitled.webp",            price: 250000, display_order: 47 },
+  { id: "ss-10", title: "Watching It Go Down", artist: "Sean W. Spellman", year: 2024, medium: "Acrylic on stretched canvas",                                                 dimensions: "48x36",   sn: null, image: "/artists/sean_spellman/watching_it_go_down.webp", price: 250000, display_order: 48 },
+  { id: "ss-11", title: "Experientialism #2",  artist: "Sean W. Spellman", year: 2025, medium: "Acrylic on canvas",                                                           dimensions: "36x48",   sn: null, image: "/artists/sean_spellman/experientialism_2.webp",   price: 250000, display_order: 49 },
+  { id: "ss-12", title: "Music Man",           artist: "Sean W. Spellman", year: 2025, medium: "Acrylic on canvas",                                                           dimensions: "36x48",   sn: null, image: "/artists/sean_spellman/music_man.webp",           price: 350000, display_order: 50 },
+  { id: "ss-13", title: "Wavelengths",         artist: "Sean W. Spellman", year: 2021, medium: "Birch wood panel carving (LA pickup or Hangman Fine Arts delivery)",          dimensions: "59x39",   sn: null, image: "/artists/sean_spellman/wavelengths.webp",         price: 750000, display_order: 51 },
 ];
 
 // ── Upsert via PostgREST ─────────────────────────────────────────────────────
