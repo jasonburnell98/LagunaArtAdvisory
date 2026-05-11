@@ -44,6 +44,9 @@ if (!SUPABASE_URL || !SERVICE_ROLE) {
 // Dimensions are H x W x D (inches) for sculptures, H x W for paintings.
 // price is in USD cents. NULL => inquire to purchase.
 const rows = [
+  // ── Greg Urquhart (new additions) ─────────────────────────────────────────
+  { id: "gu-7", title: "Flock Mentality — Acid Green Edition", artist: "Greg Urquhart", year: 2026, medium: "Resin on Wood Panel", dimensions: "16x12", sn: null, image: "/artists/greg_urquhart/F_acid_green_duck.jpeg", price: null, display_order: 52 },
+
   // ── Scott Troxel (11 works) ───────────────────────────────────────────────
   { id: "st-1",  title: "Two Two",     artist: "Scott Troxel", year: 2026, medium: "Pigmented lacquer and enamel on solid birch",              dimensions: "20x11x1.75",    sn: null, image: "/artists/scott_troxel/two_two.jpg",        price: 180000, display_order: 28 },
   { id: "st-2",  title: "Flowmeter",   artist: "Scott Troxel", year: 2024, medium: "Pigmented satin lacquer on solid maple",                    dimensions: "14.5x9.75x2",   sn: null, image: "/artists/scott_troxel/flowmetermain.jpg",  price: 210000, display_order: 29 },
