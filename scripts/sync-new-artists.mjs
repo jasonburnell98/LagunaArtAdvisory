@@ -45,7 +45,8 @@ if (!SUPABASE_URL || !SERVICE_ROLE) {
 // price is in USD cents. NULL => inquire to purchase.
 const rows = [
   // ── Greg Urquhart (new additions) ─────────────────────────────────────────
-  { id: "gu-7", title: "Flock Mentality — Acid Green Edition", artist: "Greg Urquhart", year: 2026, medium: "Resin on Wood Panel", dimensions: "16x12", sn: null, image: "/artists/greg_urquhart/F_acid_green_duck.jpeg", price: null, display_order: 52 },
+  { id: "gu-7", title: "Flock Mentality — Acid Green Edition", artist: "Greg Urquhart", year: 2026, medium: "Resin on Wood Panel", dimensions: "16x12", sn: null, image: "/artists/greg_urquhart/F_acid_green_duck.jpeg", price: 50000, display_order: 52 },
+  { id: "gu-8", title: "Flock Mentality — Electric Blue",      artist: "Greg Urquhart", year: 2026, medium: "Resin on Wood Panel", dimensions: "16x20", sn: null, image: "/artists/greg_urquhart/G_blue_duck.jpeg",        price: 50000, display_order: 53 },
 
   // ── Scott Troxel (11 works) ───────────────────────────────────────────────
   { id: "st-1",  title: "Two Two",     artist: "Scott Troxel", year: 2026, medium: "Pigmented lacquer and enamel on solid birch",              dimensions: "20x11x1.75",    sn: null, image: "/artists/scott_troxel/two_two.jpg",        price: 180000, display_order: 28 },

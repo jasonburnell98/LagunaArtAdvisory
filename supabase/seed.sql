@@ -67,9 +67,9 @@ VALUES
   ('gu-1', 'Flock Mentality — Yellow', 'Greg Urquhart', 2026, 'Resin on Wood Panel',               '16x20', NULL, '/artists/greg_urquhart/A_yellow_duck.jpeg',  50000, 22),
   ('gu-2', 'Duck Supreme',             'Greg Urquhart', 2026, 'Aluminum with Welded Base',         '8x10',  'Edition 1/12', '/artists/greg_urquhart/AA_metal_duck.jpeg',  33300, 23),
   ('gu-3', 'Orange Crush — Orange',    'Greg Urquhart', 2025, 'Resin on Wood Panel',               '12x18', NULL, '/artists/greg_urquhart/B_hot_wheels.jpeg',   42500, 24),
-  ('gu-4', 'Flock Mentality — White',  'Greg Urquhart', 2025, 'Resin on Wood Panel, Framed',       '15x20', NULL, '/artists/greg_urquhart/C_white_duck.jpeg',   45000, 25),
   ('gu-6', 'Flock Mentality — Red',    'Greg Urquhart', 2025, 'Resin on Wood Panel, Framed',       '13x19', NULL, '/artists/greg_urquhart/E_red_duck.jpeg',     42500, 27),
-  ('gu-7', 'Flock Mentality — Acid Green Edition', 'Greg Urquhart', 2026, 'Resin on Wood Panel',  '16x12', NULL, '/artists/greg_urquhart/F_acid_green_duck.jpeg', NULL, 52)
+  ('gu-7', 'Flock Mentality — Acid Green Edition', 'Greg Urquhart', 2026, 'Resin on Wood Panel',  '16x12', NULL, '/artists/greg_urquhart/F_acid_green_duck.jpeg', 50000, 52),
+  ('gu-8', 'Flock Mentality — Electric Blue', 'Greg Urquhart', 2026, 'Resin on Wood Panel',       '16x20', NULL, '/artists/greg_urquhart/G_blue_duck.jpeg',    50000, 53)
 ON CONFLICT (id) DO NOTHING;
 
 -- ── Seed: Scott Troxel ────────────────────────────────────────────────────────
