@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Laguna Art Advisory
 
-## Getting Started
+A [Next.js](https://nextjs.org) gallery + checkout site for Laguna Art Advisory.
 
-First, run the development server:
+## Local development
 
 ```bash
+npm install
+cp .env.local.example .env.local   # then fill in keys
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Required environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Used for |
+|---|---|
+| `STRIPE_SECRET_KEY` | Server-side Stripe API calls (checkout, webhooks) |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe.js on the client |
+| `STRIPE_WEBHOOK_SECRET` | Verifies `/api/webhook` requests are really from Stripe |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public read access to `artworks` |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server-only — full DB access (used by API routes + scripts) |
+| `RESEND_API_KEY` | Transactional email (sale notifications, inquiry forwarding) |
+| `NEXT_PUBLIC_APP_URL` | Optional — overrides the auto-detected host for Stripe redirects |
 
-## Learn More
+## Stripe webhook setup (CRITICAL)
 
-To learn more about Next.js, take a look at the following resources:
+Sales will **not** be recorded in the database and **no email will be sent**
+unless a live webhook endpoint is registered in Stripe pointing at this app.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### One-time setup
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Stripe Dashboard → Developers → Webhooks → Add endpoint**
+   - Make sure you are in **Live mode** (top-left toggle), not Test mode.
+2. **Endpoint URL:** `https://lagunaartadvisory.com/api/webhook`
+3. **Events to send:** at minimum
+   - `checkout.session.completed`
+   - (recommended later: `checkout.session.async_payment_succeeded`,
+     `payment_intent.payment_failed`)
+4. Stripe will reveal a **signing secret** that starts with `whsec_…`.
+   Copy it.
+5. In **Vercel → Project → Settings → Environment Variables**, set
+   `STRIPE_WEBHOOK_SECRET` to that value for the **Production** environment.
+   Redeploy so the new env var takes effect.
+6. Back in Stripe → click the endpoint → **Send test webhook** →
+   `checkout.session.completed`. You should see a 200 response in Stripe and
+   a `🎨 Sale Complete` email land in `Info@lagartadvisory.com` and
+   `jasonburnell98@gmail.com`.
 
-## Deploy on Vercel
+### Sanity check from CLI
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+node --env-file=.env.local -e "
+const Stripe = require('stripe');
+const s = new Stripe(process.env.STRIPE_SECRET_KEY);
+s.webhookEndpoints.list({ limit: 5 }).then(r => console.log(r.data));
+"
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+If that prints an empty array in live mode, the endpoint is not registered
+and no sale will be auto-recorded.
+
+## Database
+
+The schema lives in `supabase/seed.sql` and migrations in
+`supabase/migrations/`. Run each file in the Supabase SQL Editor when setting
+up a fresh project or applying a new migration.
+
+Tables:
+
+- **`artworks`** — gallery inventory. Soft-flagged `sold = true` when a sale
+  completes (drives the gallery's "available / sold" badge).
+- **`sales`** — authoritative, append-only sale history. Persists even if the
+  corresponding artwork is later deleted or renamed. Includes shipping
+  address, customer phone, and a JSON snapshot of the artwork at sale time.
+
+## Useful scripts
+
+```bash
+# Remove an artwork from the gallery (does NOT touch sales history)
+node scripts/remove-artwork.mjs <artwork_id>
+
+# Backfill a sale that wasn't captured by the webhook
+# (e.g. because the webhook wasn't registered yet)
+node scripts/backfill-sale.mjs <stripe_session_id>
+
+# Sync newly-added artist folders into supabase
+node scripts/sync-new-artists.mjs
+```
+
+## Deploy
+
+Hosted on Vercel — pushing to `main` triggers a production deploy.
+Remember to set all env vars in the Vercel dashboard for both Preview and
+Production environments.

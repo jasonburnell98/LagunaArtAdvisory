@@ -38,3 +38,26 @@ export type ArtworkRow = {
   display_order: number;
   created_at: string;
 };
+
+// Authoritative record of every completed Stripe checkout. See
+// supabase/migrations/20260521_sales_table.sql for the schema.
+export type SaleRow = {
+  id: string;
+  artwork_id: string | null;
+  stripe_session_id: string;
+  stripe_payment_intent_id: string | null;
+  amount_total: number | null; // USD cents
+  currency: string | null;
+  customer_email: string | null;
+  customer_name: string | null;
+  customer_phone: string | null;
+  shipping_name: string | null;
+  shipping_line1: string | null;
+  shipping_line2: string | null;
+  shipping_city: string | null;
+  shipping_state: string | null;
+  shipping_postal_code: string | null;
+  shipping_country: string | null;
+  artwork_snapshot: Partial<ArtworkRow> | null;
+  created_at: string;
+};

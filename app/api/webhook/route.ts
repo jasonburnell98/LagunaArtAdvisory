@@ -40,7 +40,20 @@ export async function POST(req: NextRequest) {
 
   // ── Handle checkout.session.completed ────────────────────────────────────
   if (event.type === "checkout.session.completed") {
-    const session = event.data.object as Stripe.Checkout.Session;
+    // Re-fetch the session with shipping_details + customer_details expanded so
+    // we always get the latest, fully-populated address even if the webhook
+    // arrives before Stripe attaches everything to the original event payload.
+    const sessionStub = event.data.object as Stripe.Checkout.Session;
+    let session: Stripe.Checkout.Session;
+    try {
+      session = await stripe.checkout.sessions.retrieve(sessionStub.id, {
+        expand: ["customer_details", "shipping_details", "payment_intent"],
+      });
+    } catch (err) {
+      console.error("[Webhook] Failed to retrieve session:", err);
+      session = sessionStub;
+    }
+
     const artworkId = session.metadata?.artwork_id;
 
     if (!artworkId) {
@@ -51,40 +64,103 @@ export async function POST(req: NextRequest) {
     try {
       const supabase = createServerSupabaseClient();
 
-      const { error } = await supabase
+      // ── Pull shipping + customer info ────────────────────────────────────
+      // Stripe has moved shipping into two places depending on API version:
+      //   • session.shipping_details (legacy)
+      //   • session.collected_information.shipping_details (newer Checkout)
+      // We check both for forward/backward compat.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const collected = (session as any).collected_information?.shipping_details;
+      const shipping =
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (session as any).shipping_details ?? collected ?? null;
+      const shippingAddress = shipping?.address ?? null;
+
+      const customer = session.customer_details;
+      const paymentIntentId =
+        typeof session.payment_intent === "string"
+          ? session.payment_intent
+          : session.payment_intent?.id ?? null;
+
+      // ── Mark the artwork sold (so the gallery hides it immediately) ──────
+      const { error: artworkUpdateError } = await supabase
         .from("artworks")
         .update({
           sold: true,
           sold_at: new Date().toISOString(),
           sold_session_id: session.id,
           sold_amount: session.amount_total,
-          sold_customer_email: session.customer_details?.email ?? null,
+          sold_customer_email: customer?.email ?? null,
         })
         .eq("id", artworkId);
 
-      if (error) throw error;
+      if (artworkUpdateError) {
+        // Don't bail — the artwork might have been deleted/renamed, but we
+        // still want to record the sale in the `sales` table below.
+        console.warn(
+          `[Webhook] Could not update artworks row for "${artworkId}":`,
+          artworkUpdateError.message
+        );
+      }
 
-      console.log(`[Webhook] ✓ Artwork "${artworkId}" marked as sold in Supabase.`);
-
-      // ── Fetch artwork details for the notification email ──────────────────
+      // ── Snapshot the artwork so the sale record stands on its own ────────
       const { data: artwork } = await supabase
         .from("artworks")
-        .select("title, artist, medium, dimensions, price")
+        .select("id, title, artist, year, medium, dimensions, sn, image, price")
         .eq("id", artworkId)
-        .single();
+        .maybeSingle();
 
+      // ── Insert into sales (idempotent via UNIQUE on stripe_session_id) ───
+      const saleRow = {
+        artwork_id: artworkId,
+        stripe_session_id: session.id,
+        stripe_payment_intent_id: paymentIntentId,
+        amount_total: session.amount_total,
+        currency: session.currency,
+        customer_email: customer?.email ?? null,
+        customer_name: customer?.name ?? null,
+        customer_phone: customer?.phone ?? null,
+        shipping_name: shipping?.name ?? customer?.name ?? null,
+        shipping_line1: shippingAddress?.line1 ?? null,
+        shipping_line2: shippingAddress?.line2 ?? null,
+        shipping_city: shippingAddress?.city ?? null,
+        shipping_state: shippingAddress?.state ?? null,
+        shipping_postal_code: shippingAddress?.postal_code ?? null,
+        shipping_country: shippingAddress?.country ?? null,
+        artwork_snapshot: artwork ?? null,
+      };
+
+      const { error: saleInsertError } = await supabase
+        .from("sales")
+        .upsert(saleRow, { onConflict: "stripe_session_id" });
+
+      if (saleInsertError) throw saleInsertError;
+
+      console.log(`[Webhook] ✓ Sale recorded for artwork "${artworkId}" (${session.id}).`);
+
+      // ── Build & send the sale notification email ─────────────────────────
       const artworkLabel = artwork?.title
         ? `"${artwork.title}" by ${artwork.artist}`
-        : `${artwork?.artist ?? "Unknown artist"} — ${artwork?.medium ?? ""}`;
+        : `${artwork?.artist ?? session.metadata?.artist ?? "Unknown artist"} — ${artwork?.medium ?? ""}`;
 
       const saleAmount = session.amount_total
         ? `$${(session.amount_total / 100).toLocaleString("en-US", { minimumFractionDigits: 2 })}`
         : "N/A";
 
-      const customerEmail = session.customer_details?.email ?? "N/A";
-      const customerName = session.customer_details?.name ?? "N/A";
+      const addressLines = [
+        shipping?.name ?? customer?.name,
+        shippingAddress?.line1,
+        shippingAddress?.line2,
+        [shippingAddress?.city, shippingAddress?.state, shippingAddress?.postal_code]
+          .filter(Boolean)
+          .join(", "),
+        shippingAddress?.country,
+      ].filter(Boolean);
 
-      // ── Send sale notification email ──────────────────────────────────────
+      const shippingHtml = addressLines.length
+        ? addressLines.map((l) => `<div>${l}</div>`).join("")
+        : `<div style="color:#b00;">⚠️ No shipping address captured — follow up with the buyer.</div>`;
+
       await resend.emails.send({
         from: "Laguna Art Advisory <Info@lagartadvisory.com>",
         to: NOTIFY_EMAILS,
@@ -92,22 +168,24 @@ export async function POST(req: NextRequest) {
         html: `
           <h2>🎉 A Sale Just Completed</h2>
           <table style="border-collapse:collapse;font-family:sans-serif;font-size:15px;">
-            <tr><td style="padding:6px 12px;font-weight:bold;">Artwork</td><td style="padding:6px 12px;">${artworkLabel}</td></tr>
-            ${artwork?.dimensions ? `<tr><td style="padding:6px 12px;font-weight:bold;">Dimensions</td><td style="padding:6px 12px;">${artwork.dimensions}</td></tr>` : ""}
-            ${artwork?.medium ? `<tr><td style="padding:6px 12px;font-weight:bold;">Medium</td><td style="padding:6px 12px;">${artwork.medium}</td></tr>` : ""}
-            <tr><td style="padding:6px 12px;font-weight:bold;">Sale Amount</td><td style="padding:6px 12px;">${saleAmount}</td></tr>
-            <tr><td style="padding:6px 12px;font-weight:bold;">Customer Name</td><td style="padding:6px 12px;">${customerName}</td></tr>
-            <tr><td style="padding:6px 12px;font-weight:bold;">Customer Email</td><td style="padding:6px 12px;">${customerEmail}</td></tr>
-            <tr><td style="padding:6px 12px;font-weight:bold;">Stripe Session</td><td style="padding:6px 12px;">${session.id}</td></tr>
+            <tr><td style="padding:6px 12px;font-weight:bold;vertical-align:top;">Artwork</td><td style="padding:6px 12px;">${artworkLabel}</td></tr>
+            ${artwork?.dimensions ? `<tr><td style="padding:6px 12px;font-weight:bold;vertical-align:top;">Dimensions</td><td style="padding:6px 12px;">${artwork.dimensions}</td></tr>` : ""}
+            ${artwork?.medium ? `<tr><td style="padding:6px 12px;font-weight:bold;vertical-align:top;">Medium</td><td style="padding:6px 12px;">${artwork.medium}</td></tr>` : ""}
+            <tr><td style="padding:6px 12px;font-weight:bold;vertical-align:top;">Sale Amount</td><td style="padding:6px 12px;">${saleAmount}</td></tr>
+            <tr><td style="padding:6px 12px;font-weight:bold;vertical-align:top;">Customer Name</td><td style="padding:6px 12px;">${customer?.name ?? "N/A"}</td></tr>
+            <tr><td style="padding:6px 12px;font-weight:bold;vertical-align:top;">Customer Email</td><td style="padding:6px 12px;">${customer?.email ?? "N/A"}</td></tr>
+            <tr><td style="padding:6px 12px;font-weight:bold;vertical-align:top;">Customer Phone</td><td style="padding:6px 12px;">${customer?.phone ?? "N/A"}</td></tr>
+            <tr><td style="padding:6px 12px;font-weight:bold;vertical-align:top;">Ship To</td><td style="padding:6px 12px;">${shippingHtml}</td></tr>
+            <tr><td style="padding:6px 12px;font-weight:bold;vertical-align:top;">Stripe Session</td><td style="padding:6px 12px;"><code>${session.id}</code></td></tr>
           </table>
         `,
       });
 
       console.log(`[Webhook] ✓ Sale notification email sent for artwork "${artworkId}".`);
     } catch (err) {
-      console.error(`[Webhook] Failed to mark artwork "${artworkId}" as sold:`, err);
+      console.error(`[Webhook] Failed to record sale for "${artworkId}":`, err);
       // Return 500 so Stripe retries the webhook
-      return NextResponse.json({ error: "Database update failed." }, { status: 500 });
+      return NextResponse.json({ error: "Sale recording failed." }, { status: 500 });
     }
   }
 

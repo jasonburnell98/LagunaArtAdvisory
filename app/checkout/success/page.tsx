@@ -91,9 +91,10 @@ export default async function CheckoutSuccessPage({
             marginBottom: "2.5rem",
           }}
         >
-          You will receive a confirmation email shortly. One of our advisors
-          will be in touch within 24 hours to coordinate delivery and
-          authentication documentation.
+          You will receive a confirmation email from Stripe shortly. We have
+          your shipping address on file and one of our advisors will be in
+          touch within 24 hours to confirm delivery details, authentication
+          documentation, and estimated arrival.
         </p>
 
         {/* CTAs */}

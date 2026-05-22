@@ -57,6 +57,14 @@ export async function POST(req: NextRequest) {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
+      // ── Collect shipping address + phone on Stripe's hosted checkout ────────
+      // We physically ship every piece, so this is required to fulfill the
+      // order. Stripe handles the UI and validation for us.
+      // Expand `allowed_countries` later if/when we ship internationally.
+      shipping_address_collection: {
+        allowed_countries: ["US"],
+      },
+      phone_number_collection: { enabled: true },
       line_items: [
         {
           quantity: 1,
