@@ -7,9 +7,12 @@ export async function GET() {
   try {
     const supabase = createServerSupabaseClient();
 
+    // Exclude sold pieces — once an artwork sells we don't want it on the site
+    // anymore. The row stays in the DB (and in `sales`) for our records.
     const { data, error } = await supabase
       .from("artworks")
       .select("*")
+      .neq("sold", true)
       .order("display_order", { ascending: true });
 
     if (error) throw error;
