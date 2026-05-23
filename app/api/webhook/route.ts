@@ -46,8 +46,11 @@ export async function POST(req: NextRequest) {
     const sessionStub = event.data.object as Stripe.Checkout.Session;
     let session: Stripe.Checkout.Session;
     try {
+      // NB: `shipping_details` is no longer expandable on newer Stripe API
+      // versions — it's now auto-populated under `collected_information`.
+      // Only expand fields Stripe still allows.
       session = await stripe.checkout.sessions.retrieve(sessionStub.id, {
-        expand: ["customer_details", "shipping_details", "payment_intent"],
+        expand: ["customer_details", "payment_intent"],
       });
     } catch (err) {
       console.error("[Webhook] Failed to retrieve session:", err);

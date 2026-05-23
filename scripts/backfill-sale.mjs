@@ -87,8 +87,11 @@ const supabase = createClient(
 );
 
 console.log(`[backfill] fetching Stripe session ${SESSION_ID}…`);
+// NB: `shipping_details` is no longer expandable on newer Stripe API versions
+// (it's auto-included via `collected_information`). Only expand fields that
+// Stripe still allows.
 const session = await stripe.checkout.sessions.retrieve(SESSION_ID, {
-  expand: ["customer_details", "shipping_details", "payment_intent"],
+  expand: ["customer_details", "payment_intent"],
 });
 
 if (session.payment_status !== "paid") {
