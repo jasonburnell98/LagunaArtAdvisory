@@ -71,6 +71,12 @@ const MANUAL_ARTWORK_BACKFILLS = {
 };
 
 const Stripe = (await import("stripe")).default;
+
+// Polyfill global WebSocket for older Node 20 environments so Supabase Realtime doesn't crash
+if (typeof globalThis.WebSocket === "undefined") {
+  globalThis.WebSocket = class {};
+}
+
 const { createClient } = await import("@supabase/supabase-js");
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
