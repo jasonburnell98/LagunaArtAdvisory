@@ -384,13 +384,115 @@ const inputStyle: React.CSSProperties = {
   fontFamily: "Jost, system-ui, sans-serif",
 };
 
+// ── Lightbox ──────────────────────────────────────────────────────────────────
+// Full-screen enlarged view of a painting. Opened by clicking a card image;
+// each painting is deep-linkable via /gallery?view=<id>.
+function Lightbox({ work, onClose }: { work: Artwork; onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  return (
+    <div
+      onClick={onClose}
+      style={{
+        position: "fixed",
+        inset: 0,
+        backgroundColor: "rgba(10,10,10,0.94)",
+        zIndex: 200,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "1.5rem",
+        cursor: "zoom-out",
+      }}
+    >
+      <button
+        onClick={onClose}
+        aria-label="Close"
+        style={{
+          position: "absolute",
+          top: "1.5rem",
+          right: "1.75rem",
+          background: "none",
+          border: "none",
+          cursor: "pointer",
+          color: "rgba(245,240,232,0.6)",
+          fontSize: "1.5rem",
+          lineHeight: 1,
+        }}
+      >
+        ✕
+      </button>
+
+      <div
+        style={{
+          position: "relative",
+          width: "min(92vw, 90rem)",
+          height: "78vh",
+        }}
+      >
+        <Image
+          src={work.image}
+          alt={work.title ?? `${work.artist} — ${work.medium}`}
+          fill
+          sizes="92vw"
+          quality={90}
+          style={{ objectFit: "contain" }}
+        />
+      </div>
+
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{ textAlign: "center", marginTop: "1.25rem", cursor: "default" }}
+      >
+        {work.title && (
+          <p
+            style={{
+              fontFamily: "Cormorant Garamond, Georgia, serif",
+              fontStyle: "italic",
+              fontWeight: 300,
+              fontSize: "1.35rem",
+              color: "#f5f0e8",
+              marginBottom: "0.35rem",
+            }}
+          >
+            {work.title}
+          </p>
+        )}
+        <p
+          style={{
+            fontFamily: "Jost, system-ui, sans-serif",
+            fontSize: "0.75rem",
+            letterSpacing: "0.15em",
+            textTransform: "uppercase",
+            color: "rgba(245,240,232,0.55)",
+          }}
+        >
+          {work.artist}
+          {work.year ? ` (${work.year})` : ""}
+          {work.medium ? ` · ${work.medium}` : ""}
+          {work.dimensions ? ` · ${work.dimensions}` : ""}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 // ── Artwork Card ──────────────────────────────────────────────────────────────
 function ArtworkCard({
   work,
   onInquire,
+  onView,
 }: {
   work: Artwork;
   onInquire: (work: Artwork) => void;
+  onView: (work: Artwork) => void;
 }) {
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
@@ -434,10 +536,11 @@ function ArtworkCard({
         height: "100%",
       }}
     >
-      {/* Image */}
+      {/* Image — click to enlarge */}
       <div
         className="relative overflow-hidden"
-        style={{ aspectRatio: "5/6", position: "relative" }}
+        style={{ aspectRatio: "5/6", position: "relative", cursor: "zoom-in" }}
+        onClick={() => onView(work)}
       >
         <Image
           src={work.image}
@@ -478,6 +581,7 @@ function ArtworkCard({
           <div className="absolute inset-0 bg-[#0a0a0a]/0 group-hover:bg-[#0a0a0a]/30 transition-all duration-500 flex items-center justify-center">
             <Link
               href={buildPreviewUrl(work)}
+              onClick={(e) => e.stopPropagation()}
               className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[#f5f0e8]/10 backdrop-blur-sm border border-[#f5f0e8]/40 text-[#f5f0e8] text-xs tracking-[0.2em] uppercase px-4 py-2 hover:bg-[#c9a84c]/20 hover:border-[#c9a84c]"
               style={{ fontFamily: "Jost, system-ui, sans-serif" }}
             >
@@ -688,10 +792,12 @@ function ArtistSection({
   artist,
   works,
   onInquire,
+  onView,
 }: {
   artist: string;
   works: Artwork[];
   onInquire: (work: Artwork) => void;
+  onView: (work: Artwork) => void;
 }) {
   const bio = artistBios[artist];
 
@@ -767,7 +873,12 @@ function ArtistSection({
 
       <div className="section-grid">
         {works.map((work) => (
-          <ArtworkCard key={work.id} work={work} onInquire={onInquire} />
+          <ArtworkCard
+            key={work.id}
+            work={work}
+            onInquire={onInquire}
+            onView={onView}
+          />
         ))}
       </div>
     </div>
@@ -780,6 +891,7 @@ export default function GalleryPage() {
   const [loading, setLoading] = useState(true);
   const [activeArtist, setActiveArtist] = useState<string>(ALL_ARTISTS);
   const [inquiryWork, setInquiryWork] = useState<Artwork | null>(null);
+  const [viewWork, setViewWork] = useState<Artwork | null>(null);
 
   // Fetch all artworks (includes sold status) from the database on mount
   useEffect(() => {
@@ -791,6 +903,29 @@ export default function GalleryPage() {
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
+
+  // Deep-linking: /gallery?view=<id> opens the lightbox for that painting.
+  // Open/close pushes history entries so Back closes the lightbox naturally.
+  useEffect(() => {
+    if (artworks.length === 0) return;
+    const syncFromUrl = () => {
+      const id = new URLSearchParams(window.location.search).get("view");
+      setViewWork(id ? artworks.find((w) => w.id === id) ?? null : null);
+    };
+    syncFromUrl();
+    window.addEventListener("popstate", syncFromUrl);
+    return () => window.removeEventListener("popstate", syncFromUrl);
+  }, [artworks]);
+
+  const openView = (work: Artwork) => {
+    setViewWork(work);
+    window.history.pushState(null, "", `?view=${encodeURIComponent(work.id)}`);
+  };
+
+  const closeView = () => {
+    setViewWork(null);
+    window.history.pushState(null, "", window.location.pathname);
+  };
 
   // Compute artist sections dynamically from DB data — order preserved by display_order
   const artistNames = [...new Set(artworks.map((w) => w.artist))];
@@ -810,6 +945,7 @@ export default function GalleryPage() {
       {inquiryWork && (
         <InquiryModal work={inquiryWork} onClose={() => setInquiryWork(null)} />
       )}
+      {viewWork && <Lightbox work={viewWork} onClose={closeView} />}
 
       {/* Page header */}
       <div className="page-hero" style={{ backgroundColor: "#0a0a0a" }}>
@@ -994,6 +1130,7 @@ export default function GalleryPage() {
                   artist={section.artist}
                   works={section.works}
                   onInquire={setInquiryWork}
+                  onView={openView}
                 />
                 {index < visibleSections.length - 1 && (
                   <div
