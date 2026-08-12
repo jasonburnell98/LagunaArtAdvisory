@@ -112,3 +112,23 @@ VALUES
   ('ss-12', 'Music Man',           'Sean W. Spellman', 2025, 'Acrylic on canvas',                                                        '36x48',     NULL, '/artists/sean_spellman/music_man.webp',            350000, 50),
   ('ss-13', 'Wavelengths',         'Sean W. Spellman', 2021, 'Birch wood panel carving (LA pickup or Hangman Fine Arts delivery)',       '59x39',     NULL, '/artists/sean_spellman/wavelengths.webp',          750000, 51)
 ON CONFLICT (id) DO NOTHING;
+
+-- ── Seed: Thomas Brady ────────────────────────────────────────────────────────
+-- Oil on panel paintings capturing the poetry of everyday life.
+-- Prices include shipping in a wooden crate to protect the surface.
+-- (Restored 2026-08-12 after removal in bcc6cd7; display_order re-assigned.)
+INSERT INTO artworks (id, title, artist, year, medium, dimensions, sn, image, price, display_order)
+VALUES
+  ('tb-1',  'Curve in the Road',          'Thomas Brady', 2020, 'Oil/Panel', '34x53',   NULL, '/artists/thomas_brady/curve_in_the_road_34x53_2020.jpg',        730000, 58),
+  ('tb-2',  'BV by Hardee''s',            'Thomas Brady', 2025, 'Oil/Panel', '35x47',   NULL, '/artists/thomas_brady/bv_by_hardees_35x47.jpg',                 686000, 59),
+  ('tb-3',  'Lady at Hardees',            'Thomas Brady', 2025, 'Oil/Panel', '42x32',   NULL, '/artists/thomas_brady/lady_at_hardees_42x32.jpg',               630000, 60),
+  ('tb-4',  'Landscape with Telephone Pole', 'Thomas Brady', 2017, 'Oil/Panel', '30x43.5', NULL, '/artists/thomas_brady/landscape_with_telephone_pole_30x43.5.jpg', 630000, 61),
+  ('tb-5',  'Olney Couple',               'Thomas Brady', 2023, 'Oil/Panel', '44x50.5', NULL, '/artists/thomas_brady/olney_couple_44x50.5.jpg',                770000, 62),
+  ('tb-6',  'Rita''s',                    'Thomas Brady', 2024, 'Oil/Panel', '39x45',   NULL, '/artists/thomas_brady/ritas_by_walgreens_39x45.jpg',            700000, 63),
+  ('tb-7',  'Stewardburg Road',           'Thomas Brady', 2025, 'Oil/Panel', '31x47',   NULL, '/artists/thomas_brady/stewardburg_road_31x47.jpg',              660000, 64),
+  ('tb-8',  'Striped Fields',             'Thomas Brady', 2019, 'Oil/Panel', '38x51',   NULL, '/artists/thomas_brady/striped_fields_19_38x51.jpg',             NULL,   65),
+  ('tb-9',  'The DC Highway',             'Thomas Brady', 2016, 'Oil/Panel', '31x42.5', NULL, '/artists/thomas_brady/the_dc_highway_31x42.5.jpg',              620000, 66),
+  ('tb-10', 'The Lexington Restaurant',   'Thomas Brady', 2023, 'Oil/Panel', '42x40',   NULL, '/artists/thomas_brady/the_lexington_restaurant_42x40_23.jpg',   680000, 67),
+  ('tb-11', 'The Train Station',          'Thomas Brady', 2024, 'Oil/Panel', '35x47',   NULL, '/artists/thomas_brady/the_train_station_35x47.jpg',             686000, 68),
+  ('tb-12', 'VMI',                        'Thomas Brady', 2023, 'Oil/Panel', '35x45',   NULL, '/artists/thomas_brady/vmi_35x45_23.jpg',                        670000, 69)
+ON CONFLICT (id) DO NOTHING;

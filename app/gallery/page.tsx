@@ -674,6 +674,10 @@ const artistBios: Record<string, string[]> = {
     "His work has been featured in publications such as Vogue, Dwell, and Rolling Stone, and can be seen in collaborations with brands like Gap, Urban Outfitters, and Rivian. Sean\u2019s painting and mural work lives in some of the world\u2019s most interesting boutique hotels: Ceylon Sliders in southern Sri Lanka, Hotel Joaquin in Laguna Beach, Marram in Montauk, and several Freehand Hotels. His alter ego, Sgt Joe Roberts, has documented his own public art in locations from the Mojave to New Delhi. His signature depiction is that of a rolling sea and golden sunset\u2014a traditional abstraction in minimalist form.",
     "\u201cI am attempting to create pieces that become meaningful to people by combining the simplicity of colors and shapes in the most rudimentary way\u2014sometimes in context with design, with sound, or directly with other artists\u2019 creations. I want my paintings to coexist with ease across all spectrums and varied settings, and to enter the perception of a vast consciousness of interpretive viewers. Plainly, I want my work to make people feel good, myself included.\u201d \u2014 Sean W. Spellman",
   ],
+  "Thomas Brady": [
+    "Thomas Brady captures the overlooked poetry of everyday life—workers, passersby, and rural communities—through bold, gestural compositions. Rooted in his working-class upbringing, his paintings begin as quick, observational pastels and evolve into richly layered canvases driven by movement, instinct, and color.",
+    "Brady's work balances urgency and refinement, transforming fleeting moments into expressive scenes that question what is essential, real, and true.",
+  ],
   "Greg Urquhart": [
     "Greg Urquhart\u2019s work centers on nostalgia, using familiar childhood toys and symbols to evoke shared memories of simpler, more joyful times. Through vibrant, pop art\u2013inspired resin pieces, he blends bold modern aesthetics with sentimental themes, inviting viewers to reconnect with their inner child. His art acts as a bridge to the past, encouraging reflection on the universal experiences that connect us all.",
   ],
