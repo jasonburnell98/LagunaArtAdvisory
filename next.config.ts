@@ -2,7 +2,15 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    // Local images served from /public — no remote patterns needed
+    // Repo images are served from /public; admin-uploaded images live in
+    // Supabase Storage and are served from the project's *.supabase.co host.
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
+    ],
   },
 };
 
