@@ -107,7 +107,7 @@ export default async function CheckoutSuccessPage({
           }}
         >
           <Link
-            href="/gallery"
+            href="/"
             style={{
               backgroundColor: "#0a0a0a",
               color: "#f5f0e8",
