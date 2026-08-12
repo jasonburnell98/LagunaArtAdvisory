@@ -4,7 +4,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 // Hardcoded defaults; override with ADMIN_USERNAME / ADMIN_PASSWORD env vars
 // (recommended in production — set them in Vercel project settings).
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME ?? "admin";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "LagunaGold!2026";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "PlagunaGold!2026";
 
 export const SESSION_COOKIE = "laguna_admin_session";
 
