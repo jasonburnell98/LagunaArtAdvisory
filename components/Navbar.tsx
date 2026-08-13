@@ -30,7 +30,7 @@ export default function Navbar() {
           : "bg-transparent"
       }`}
     >
-      <nav className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between h-20">
+      <nav className="relative max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between h-20">
         {/* Logo */}
         <Link href="/" className="flex flex-col leading-none group">
           <span
@@ -47,8 +47,8 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop nav */}
-        <ul className="hidden md:flex items-center gap-8">
+        {/* Desktop nav — centered on the page, independent of the logo width */}
+        <ul className="hidden md:flex items-center gap-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           {navLinks.map((link) => (
             <li key={link.href}>
               <Link
