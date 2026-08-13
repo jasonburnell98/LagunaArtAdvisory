@@ -14,10 +14,14 @@
   --font-sans: 'Jost', system-ui, sans-serif;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* Layered so Tailwind utilities (a later layer) can override the reset —
+   unlayered rules would silently beat every margin/padding utility. */
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 }
 
 html {
